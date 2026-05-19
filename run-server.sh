@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Octagon MCP Server Run Script
+# Octagon Claude Plugin Runtime Script
 
-echo "Starting Octagon MCP Server..."
+echo "Starting Octagon Claude Plugin runtime..."
 
 # Check if the dist directory exists, if not, build the project
 if [ ! -d "./dist" ]; then

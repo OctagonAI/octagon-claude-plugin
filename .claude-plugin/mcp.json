@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "octagon-mcp": {
+    "octagon-claude-plugin": {
       "command": "node",
       "args": [
         "${CLAUDE_PLUGIN_ROOT}/dist/plugin-runtime.cjs"

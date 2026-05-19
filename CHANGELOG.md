@@ -1,0 +1,20 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on Keep a Changelog and this project follows semantic versioning.
+
+## [0.1.0] - 2026-05-19
+
+### Added
+
+- Initial standalone `octagon-claude-plugin` repository
+- Claude Code plugin manifest, marketplace manifest, and bundled MCP runtime wiring
+- Skills catalog, routing agent, and session-start hook
+- Validation tests for manifest, skills, hooks, and MCP configuration
+
+### Changed
+
+- Renamed inherited `octagon-mcp` branding to `octagon-claude-plugin`
+- Reworked repository documentation to be plugin-first
+- Hardened marketplace compliance posture for secure config, runtime distribution, and validation

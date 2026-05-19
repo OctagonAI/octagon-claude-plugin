@@ -7,7 +7,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { OCTAGON_MCP_DEBUG, debugLog } from "./debug.js";
 import { VERSION } from "./version.js";
 
-const PACKAGE_NAME = "octagon-mcp";
+const PACKAGE_NAME = "octagon-claude-plugin";
 
 // Start the server with stdio transport
 async function main() {

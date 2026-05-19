@@ -1,11 +1,11 @@
 ---
 name: octagon-api-smoke-test
-description: Validate Octagon plugin configuration and run a lightweight smoke test across the main Octagon MCP workflows. Use when checking whether the plugin is configured correctly, debugging auth, or verifying tool availability.
+description: Validate Octagon plugin configuration and run a lightweight smoke test across the main Octagon Claude plugin workflows. Use when checking whether the plugin is configured correctly, debugging auth, or verifying tool availability.
 ---
 
 # Octagon API Smoke Test
 
-Use this skill to confirm that the Claude plugin and Octagon MCP are configured correctly.
+Use this skill to confirm that the Claude plugin and bundled Octagon runtime are configured correctly.
 
 ## Smoke test sequence
 
@@ -20,7 +20,7 @@ General agent:
 
 ```json
 {
-  "server": "octagon-mcp",
+  "server": "octagon-claude-plugin",
   "toolName": "octagon-agent",
   "arguments": {
     "prompt": "Give me a one-sentence summary of Apple's latest quarter."
@@ -32,7 +32,7 @@ Deep research:
 
 ```json
 {
-  "server": "octagon-mcp",
+  "server": "octagon-claude-plugin",
   "toolName": "octagon-deep-research-agent",
   "arguments": {
     "prompt": "Research the current AI infrastructure spending cycle in one short paragraph."

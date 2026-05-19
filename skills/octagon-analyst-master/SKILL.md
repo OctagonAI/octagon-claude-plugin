@@ -33,7 +33,7 @@ Build an investment analyst brief on <COMPANY OR TICKER> covering business quali
 
 ```json
 {
-  "server": "octagon-mcp",
+  "server": "octagon-claude-plugin",
   "toolName": "octagon-agent",
   "arguments": {
     "prompt": "Build an investment analyst brief on NVDA covering business quality, latest performance, guidance, valuation context, and key near-term risks."

@@ -18,7 +18,7 @@ async def main():
         async with ClientSession(read, write) as session:
             # Initialize the connection
             await session.initialize()
-            print("Connected to Octagon MCP server")
+            print("Connected to the Octagon Claude Plugin runtime")
 
             # List available tools
             tools = await session.list_tools()

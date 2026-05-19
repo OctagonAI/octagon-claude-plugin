@@ -1,7 +1,7 @@
 {
-  "name": "octagon-mcp",
-  "version": "1.1.0",
-  "description": "MCP server for Octagon API. Provides specialized AI agents for investment research of public and private markets.",
+  "name": "octagon-claude-plugin",
+  "version": "0.1.0",
+  "description": "Skills-first Claude Code plugin with a bundled Octagon MCP runtime for financial research and prediction market workflows.",
   "main": "dist/index.js",
   "type": "module",
   "imports": {
@@ -19,7 +19,7 @@
     }
   },
   "bin": {
-    "octagon-mcp": "dist/index.js"
+    "octagon-claude-plugin": "dist/index.js"
   },
   "files": [
     ".claude-plugin",
@@ -36,12 +36,14 @@
     "prebuild": "node scripts/write-version.mjs",
     "build": "tsc && npm run build:plugin-runtime && node -e \"require('fs').chmodSync('dist/index.js', '755'); require('fs').chmodSync('dist/plugin-runtime.cjs', '755')\"",
     "build:plugin-runtime": "esbuild src/index.ts --bundle --platform=node --format=cjs --target=node18 --outfile=dist/plugin-runtime.cjs",
+    "validate:plugin": "claude plugin validate .",
+    "validate:all": "npm test && npm run validate:plugin",
     "test": "npm run build && node --test tests/octagon-agent-threading.test.js tests/plugin-manifest.test.js",
     "start": "node dist/index.js",
     "lint": "echo \"No linting configured\"",
     "format": "echo \"No formatting configured\"",
     "prepare": "npm run build",
-    "release": "npm run build && npm publish"
+    "release": "npm run validate:all && npm publish"
   },
   "keywords": [
     "mcp",
@@ -74,10 +76,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OctagonAI/octagon-mcp-server.git"
+    "url": "git+https://github.com/OctagonAI/octagon-claude-plugin.git"
   },
   "bugs": {
-    "url": "https://github.com/OctagonAI/octagon-mcp-server/issues"
+    "url": "https://github.com/OctagonAI/octagon-claude-plugin/issues"
   },
   "homepage": "https://docs.octagonagents.com"
 }

@@ -1,16 +1,17 @@
 {
-  "name": "octagon-local",
-  "description": "Local marketplace for testing the Octagon Claude Code plugin from the octagon-mcp-server repository.",
+  "$schema": "https://json.schemastore.org/claude-code-marketplace-manifest.json",
+  "name": "octagon-claude-plugins",
+  "version": "0.1.0",
+  "description": "Official Octagon Claude Code plugin marketplace for financial research and prediction market workflows.",
   "owner": {
     "name": "Octagon AI",
-    "url": "https://github.com/OctagonAI/octagon-mcp-server"
+    "url": "https://github.com/OctagonAI/octagon-claude-plugin"
   },
   "plugins": [
     {
-      "name": "octagon-market-intelligence",
+      "name": "octagon-claude-plugin",
       "description": "Skills-first Claude Code plugin for Octagon market intelligence, prediction market research, and financial analysis workflows.",
       "source": "./",
-      "version": "1.1.0",
       "category": "finance",
       "tags": [
         "finance",

@@ -16,7 +16,7 @@ async function main() {
     });
     await client.connect(transport);
 
-    console.log("Connected to Octagon MCP server");
+    console.log("Connected to the Octagon Claude Plugin runtime");
 
     // List available tools
     const toolsResult = await client.listTools();

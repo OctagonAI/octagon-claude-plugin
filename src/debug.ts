@@ -73,11 +73,11 @@ export function debugLog(label: string, payload?: unknown): void {
   }
 
   if (payload === undefined) {
-    console.error(`[octagon-mcp][debug] ${label}`);
+    console.error(`[octagon-claude-plugin][debug] ${label}`);
     return;
   }
 
   console.error(
-    `[octagon-mcp][debug] ${label}\n${safeSerialize(payload)}`,
+    `[octagon-claude-plugin][debug] ${label}\n${safeSerialize(payload)}`,
   );
 }
