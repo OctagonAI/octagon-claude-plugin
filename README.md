@@ -6,7 +6,7 @@ The Octagon Claude plugin is a skills-first Claude Code plugin for financial res
 - a routing agent for broad analyst workflows
 - a bundled Octagon MCP runtime for tool execution
 
-This repository is structured as a single-plugin Claude Code marketplace, so it can be used both for local development and marketplace-style installation.
+This repository is structured as a single-plugin Claude Code marketplace, so it can be used for both local development and marketplace installation.
 
 ## What It Includes
 
