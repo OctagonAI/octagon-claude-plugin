@@ -44,9 +44,9 @@ Before installing or running Octagon Claude plugin, you need to have `npx` (whic
 
 If you see version numbers for all three, you are ready to proceed.
 
-## Configure Cursor
+## Configure an MCP Client
 
-1. Open Cursor Settings
+1. Open your MCP client settings
 2. Go to **Features > MCP Servers**
 3. Click **+ Add New MCP Server**
 4. Enter:
@@ -61,7 +61,7 @@ Replace `<your-api-key>` with your actual Octagon API key.
 cmd /c "set OCTAGON_API_KEY=<your-api-key> && npx -y octagon-claude-plugin"
 ```
 
-After adding, refresh the MCP server list to see the new tools. The Composer Agent will automatically use Octagon Claude plugin when appropriate. Access the Composer via Command+L (Mac), select "Agent" next to the submit button, and enter your query.
+After adding, refresh the MCP server list to see the new tools. Your MCP-capable client should surface the Octagon tools after the server is configured and refreshed.
 
 ## Configure Claude Desktop
 

@@ -1,4 +1,4 @@
-# Octagon Claude plugin Setup for Cursor
+# Octagon Claude plugin Setup for MCP Clients
 
 ## Prerequisites
 
@@ -23,9 +23,9 @@ node -v && npm -v && npx -v
 2. Navigate to **API Keys** in left menu
 3. Generate and save your key
 
-## Configure Cursor
+## Configure an MCP Client
 
-1. Open Cursor Settings
+1. Open your MCP client settings
 2. Go to **Features > MCP Servers**
 3. Click **+ Add New MCP Server**
 4. Enter:

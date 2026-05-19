@@ -78,58 +78,6 @@ The plugin is skills-first:
 
 This keeps Claude interactions analyst-oriented while still using typed MCP tools under the hood.
 
-## Validation
-
-Run these checks before publishing or tagging a release:
-
-```bash
-npm test
-claude plugin validate .
-```
-
-Or use the package script:
-
-```bash
-npm run validate:all
-```
-
-## Development
-
-Build the bundled runtime:
-
-```bash
-npm run build
-```
-
-Important distribution note:
-
-- git-based marketplace installs need `dist/plugin-runtime.cjs` available in the repository checkout
-- this repo therefore treats `dist/` as a shippable artifact for marketplace readiness
-
-## Release Guidance
-
-This repository uses explicit plugin versioning.
-
-- `package.json` tracks the package version
-- `.claude-plugin/plugin.json` tracks the plugin release version used by Claude Code
-- `CHANGELOG.md` records release history
-
-When publishing a release:
-
-1. update versioned metadata
-2. run `npm run validate:all`
-3. review `CHANGELOG.md`
-4. publish or tag the release
-
-## CI
-
-The repository includes a GitHub Actions workflow that runs:
-
-- `npm test`
-- `claude plugin validate .` when the Claude CLI is available in the runner
-
-If the CLI is not available in CI, validation still remains part of the documented release checklist.
-
 ## Standalone Runtime Usage
 
 Although this repo is plugin-first, the bundled runtime can still be invoked like a standalone MCP server.

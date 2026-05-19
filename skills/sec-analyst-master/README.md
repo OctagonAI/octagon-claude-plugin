@@ -56,9 +56,9 @@ This skill requires the [Octagon Claude plugin](https://github.com/OctagonAI/oct
 2. Navigate to **API Keys** from the left menu
 3. Generate and save your API key
 
-### Configure Cursor
+### Configure an MCP Client
 
-1. Open Cursor Settings → **Features > MCP Servers**
+1. Open your client settings for MCP server configuration
 2. Click **+ Add New MCP Server**
 3. Enter:
    - **Name**: `octagon-claude-plugin`
