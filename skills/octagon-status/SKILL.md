@@ -7,6 +7,12 @@ description: Check whether the Octagon Claude plugin is connected and summarize 
 
 Use this skill to report the current state of the Octagon connector and available Octagon tools.
 
+This is a plugin-scoped health check:
+
+- Inspect only the server `octagon-claude-plugin`
+- Do not use `octagon-local` or any other Octagon server as a fallback
+- If another Octagon server is healthy but the plugin server is not, report that the plugin connector still needs setup or reconnect
+
 ## Step 1: Check tool availability
 
 Inspect whether the Octagon MCP tools for server `octagon-claude-plugin` are visible and callable.

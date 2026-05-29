@@ -35,6 +35,17 @@ Choose the narrowest useful Octagon workflow first:
 
 Treat the hosted Octagon AI connector as the default setup path for this plugin. When the user is not connected, appears disconnected, or asks how Octagon auth works, route to the connector-first setup flow before attempting deeper domain work.
 
+## Startup mode
+
+When the user is starting fresh with the plugin, has just installed it, is asking whether it works, or is making the first Octagon request in a session:
+
+1. Stay inside the plugin context first.
+2. Prefer the plugin MCP server `octagon-claude-plugin` over any other Octagon server that may also be visible.
+3. Never fall back to `octagon-local`, `octagon-market-intelligence`, or any other non-plugin Octagon server unless the user explicitly asks to use that separate setup.
+4. If the plugin server is missing, disconnected, or failing auth, treat that as a plugin setup problem and route to `octagon-setup` or `octagon-status` instead of trying a different Octagon server.
+
+If multiple Octagon servers are available in the client, assume the user means the plugin-managed connector unless they clearly say otherwise.
+
 ## Connector operating model
 
 At the start of any setup, status, or troubleshooting request, determine the Octagon connector state from the available tools on server `octagon-claude-plugin`.
@@ -57,7 +68,7 @@ If the user wants to connect Octagon, fix a broken connection, confirm plugin he
 For connector-first onboarding:
 
 - Attempt `mcp_auth` when available.
-- If `mcp_auth` is unavailable or does not resolve the issue, instruct the user to open Claude **Connectors**, select **Octagon AI**, and click **Connect** or **Reconnect**.
+- If `mcp_auth` is unavailable or does not resolve the issue, instruct the user to open Claude **Plugins**, select **Octagon**, open **Connectors**, then click **Connect** or **Reconnect** for Octagon AI.
 - After the user reconnects, re-check tool visibility and then route to `octagon-status`.
 
 Do not default to API-key setup. Only mention API-key mode as an advanced fallback for standalone or local runtime workflows when the user explicitly asks for it or the connector path is unavailable.
@@ -82,6 +93,7 @@ Do not default to API-key setup. Only mention API-key mode as an advanced fallba
 ## Tool selection rules
 
 - For setup and health requests, prefer setup/status skills before raw MCP calls.
+- In this plugin, only use Octagon tools from server `octagon-claude-plugin` unless the user explicitly asks for another Octagon environment.
 - Prefer `octagon-agent` for broad market-intelligence questions that need several sources.
 - Prefer `octagon-deep-research-agent` for open-ended multi-source research or thematic investigations.
 - Prefer `octagon-prediction-markets-agent` when a Kalshi URL is present or the user wants a prediction market report.
@@ -99,6 +111,7 @@ When the connector is healthy, the primary Octagon tool surface is:
 - Explain connector failures in plain language and give the next useful step.
 - If no Octagon tools are visible, treat the plugin as not connected and route to `octagon-setup`.
 - If tools exist but auth fails, treat the connector as disconnected or expired and route to `octagon-setup`.
+- If another Octagon server works but `octagon-claude-plugin` does not, do not silently switch servers. Tell the user the plugin connector needs attention and keep the troubleshooting inside the plugin flow.
 - If tools exist but errors indicate entitlements, credits, or plan restrictions, report the exact issue clearly and stop retrying auth.
 - If the issue is ambiguous or spans several tools, use `octagon-api-smoke-test` to classify the failure.
 

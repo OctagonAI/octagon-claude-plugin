@@ -40572,7 +40572,7 @@ ${safeSerialize2(payload)}`
 }
 
 // src/version.ts
-var VERSION2 = "0.1.1";
+var VERSION2 = "0.1.2";
 
 // src/index.ts
 var PACKAGE_NAME = "octagon-claude-plugin";

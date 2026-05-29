@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project follows semantic versioning.
 
+## [0.1.2] - 2026-05-29
+
+### Changed
+
+- Tightened startup-mode instructions so the specialist stays inside the plugin-managed Octagon connector flow
+- Updated setup and reconnect guidance to send users to `Plugins -> Octagon -> Connectors`
+- Bumped plugin metadata to `0.1.2` for the startup-flow fix release
+
 ## [0.1.1] - 2026-05-29
 
 ### Changed

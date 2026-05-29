@@ -1,6 +1,6 @@
 {
   "name": "octagon-claude-plugin",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Octagon helps investment professionals make better decisions by generating cited AI research on prediction markets and public equities, including SEC filings, earnings transcripts, and stock data.",
   "main": "dist/index.js",
   "type": "module",

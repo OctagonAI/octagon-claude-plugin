@@ -26,7 +26,7 @@ test("plugin manifest exposes the bundled MCP runtime and required config", () =
   assert.ok(!("hooks" in pluginManifest));
   assert.ok(!("userConfig" in pluginManifest));
   assert.equal(marketplaceManifest.name, "octagon-claude-plugins");
-  assert.equal(marketplaceManifest.version, "0.1.1");
+  assert.equal(marketplaceManifest.version, "0.1.2");
   assert.ok(!("version" in marketplaceManifest.plugins[0]));
 
   assert.deepEqual(mcpConfig.mcpServers["octagon-claude-plugin"], {

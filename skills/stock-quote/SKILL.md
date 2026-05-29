@@ -11,6 +11,8 @@ Retrieve real-time stock quotes with current price, volume, day range, 52-week r
 
 Ensure the Octagon Claude plugin is installed and configured in Claude Code before invoking this skill.
 
+When multiple Octagon servers are available in Claude, use only the plugin server `octagon-claude-plugin` for this workflow. If the plugin server is disconnected or failing auth, stop and route the user to `octagon-setup` instead of falling back to `octagon-local` or another Octagon environment.
+
 ## Workflow
 
 ### 1. Identify the Stock

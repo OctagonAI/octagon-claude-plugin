@@ -7,6 +7,12 @@ description: Set up or reconnect the Octagon Claude plugin through the hosted Oc
 
 Guide the user through the Octagon connector-first setup flow for Claude. Treat the hosted Octagon connector as the primary auth path. Only mention API-key mode as an advanced fallback.
 
+Always treat this as a plugin-scoped workflow:
+
+- Use only the Octagon MCP server `octagon-claude-plugin` when checking plugin health.
+- Do not fall back to `octagon-local` or any other separate Octagon server just because it is available.
+- If another Octagon server exists in the client, ignore it unless the user explicitly asks to troubleshoot that different setup.
+
 ## Step 1: Brief introduction
 
 Start with a short explanation of what the Octagon connector enables:
@@ -37,9 +43,10 @@ If no Octagon tools are visible or the server appears disconnected:
 2. If `mcp_auth` succeeds, re-check tool visibility and continue to `octagon-status`.
 3. If `mcp_auth` is unavailable or fails, give manual connector instructions:
 
-   - In Claude settings, open **Connectors**
-   - Select **Octagon AI**
-   - Click **Connect**
+   - In Claude, open **Plugins**
+   - Select **Octagon**
+   - Open **Connectors**
+   - Click **Connect** for Octagon AI
 
 4. Wait for the user to confirm, then re-check tool visibility.
 
@@ -49,7 +56,7 @@ If the server exists but calls fail with auth or 401/403 style errors:
 
 1. Tell the user the Octagon connector looks installed but disconnected or expired.
 2. Attempt `mcp_auth` if available.
-3. Otherwise instruct the user to open the Octagon connector and click **Reconnect**.
+3. Otherwise instruct the user to open **Plugins -> Octagon -> Connectors** and click **Reconnect** for Octagon AI.
 4. After reconnect, route to `octagon-status`.
 
 ### Entitlement or service issue

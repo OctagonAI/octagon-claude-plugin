@@ -7,6 +7,10 @@ description: Validate Octagon connector health and run a lightweight smoke test 
 
 Use this skill to confirm that the Claude plugin and hosted Octagon connector are configured correctly.
 
+Run this smoke test only against the plugin-managed server `octagon-claude-plugin`.
+
+If another Octagon server such as `octagon-local` is available in the client, do not use it as a substitute for the plugin connector. Report the plugin as unhealthy until the plugin server itself is working.
+
 ## Smoke test sequence
 
 1. Check whether Octagon tools for server `octagon-claude-plugin` are visible
@@ -54,7 +58,7 @@ Classify failures before suggesting next steps:
 
 ## Failure triage
 
-- No tools visible: connect the Octagon AI connector, then rerun the smoke test
+- No tools visible: open **Plugins -> Octagon -> Connectors**, connect Octagon AI, then rerun the smoke test
 - Auth or reconnect needed: use `octagon-setup`
 - Prediction market failures mentioning Kalshi URL: supply a valid Kalshi market URL
 - Credit or entitlement failures: report the exact error and stop
