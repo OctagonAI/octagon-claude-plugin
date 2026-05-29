@@ -21,11 +21,12 @@ test("plugin manifest exposes the bundled MCP runtime and required config", () =
   const marketplaceManifest = readJson(".claude-plugin/marketplace.json");
 
   assert.equal(pluginManifest.name, "octagon-claude-plugin");
+  assert.equal(pluginManifest.displayName, "Octagon");
   assert.equal(pluginManifest.mcpServers, "./.claude-plugin/mcp.json");
   assert.ok(!("hooks" in pluginManifest));
   assert.ok(!("userConfig" in pluginManifest));
   assert.equal(marketplaceManifest.name, "octagon-claude-plugins");
-  assert.equal(marketplaceManifest.version, "0.1.0");
+  assert.equal(marketplaceManifest.version, "0.1.1");
   assert.ok(!("version" in marketplaceManifest.plugins[0]));
 
   assert.deepEqual(mcpConfig.mcpServers["octagon-claude-plugin"], {
@@ -169,6 +170,6 @@ test("routing agent and session-start hook are wired into the plugin", () => {
     hooksConfig.hooks.SessionStart[0].hooks[0].command,
     "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/plugin-session-start.sh",
   );
-  assert.match(agentText, /name: octagon-mcp-specialist/);
+  assert.match(agentText, /name: Octagon MCP Specialist/);
   assert.match(agentText, /financial-analyst-master/);
 });

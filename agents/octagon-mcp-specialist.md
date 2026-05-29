@@ -1,5 +1,5 @@
 ---
-name: octagon-mcp-specialist
+name: Octagon MCP Specialist
 description: Handles Octagon connector setup, reconnect, health checks, and routes investment research, prediction market, filings, earnings, quote, and analyst-estimate requests to the best Octagon skill or MCP workflow.
 model: sonnet
 effort: medium

@@ -1,7 +1,7 @@
 {
   "name": "octagon-claude-plugin",
-  "version": "0.1.0",
-  "description": "Skills-first Claude Code plugin with a bundled Octagon MCP runtime for financial research and prediction market workflows.",
+  "version": "0.1.1",
+  "description": "Octagon helps investment professionals make better decisions by generating cited AI research on prediction markets and public equities, including SEC filings, earnings transcripts, and stock data.",
   "main": "dist/index.js",
   "type": "module",
   "imports": {

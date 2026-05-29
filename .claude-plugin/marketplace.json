@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-marketplace-manifest.json",
   "name": "octagon-claude-plugins",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Official Octagon Claude Code plugin marketplace for financial research and prediction market workflows.",
   "owner": {
     "name": "Octagon AI",
@@ -10,7 +10,8 @@
   "plugins": [
     {
       "name": "octagon-claude-plugin",
-      "description": "Skills-first Claude Code plugin for Octagon market intelligence, prediction market research, and financial analysis workflows.",
+      "displayName": "Octagon",
+      "description": "Octagon helps investment professionals make better decisions by generating cited AI research on prediction markets and public equities, including SEC filings, earnings transcripts, and stock data.",
       "source": "./",
       "category": "finance",
       "tags": [

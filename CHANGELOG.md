@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project follows semantic versioning.
 
+## [0.1.1] - 2026-05-29
+
+### Changed
+
+- Updated the plugin display name to `Octagon` and refreshed the marketplace description copy
+- Renamed the routing agent in plugin UI surfaces to `Octagon MCP Specialist`
+- Bumped plugin metadata to `0.1.1` so fresh installs surface the latest release clearly
+
 ## [0.1.0] - 2026-05-19
 
 ### Added
