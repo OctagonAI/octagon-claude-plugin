@@ -7,7 +7,7 @@ Analyze S-1 registration statements for IPO risks, opportunities, and capitaliza
 ## When to Use
 
 - IPO due diligence
-- Pre-IPO company research
+- IPO filing research
 - Understanding cap table and ownership
 - Assessing use of proceeds
 

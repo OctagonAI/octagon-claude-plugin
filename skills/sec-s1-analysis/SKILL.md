@@ -1,6 +1,6 @@
 ---
 name: sec-s1-analysis
-description: Analyze S-1 registration statements for IPOs using the Octagon Claude plugin. Use when researching pre-IPO companies, extracting business models, risk factors, use of proceeds, capitalization, principal shareholders, and growth opportunities from IPO filings.
+description: Analyze S-1 registration statements for IPOs using the Octagon Claude plugin. Use when researching companies preparing to go public, extracting business models, risk factors, use of proceeds, capitalization, principal shareholders, and growth opportunities from IPO filings.
 ---
 
 # SEC S-1 Analysis
@@ -281,7 +281,7 @@ Compare to:
 ## Use Cases
 
 - **IPO investing**: Evaluate new public offerings
-- **Private market research**: Understand pre-IPO companies
+- **IPO diligence**: Understand companies preparing to go public
 - **Competitive intelligence**: Analyze emerging competitors
 - **Industry research**: Track sector trends through filings
 - **Due diligence**: Comprehensive company assessment

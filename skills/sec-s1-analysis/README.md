@@ -34,7 +34,7 @@ This skill analyzes IPO registration statements:
 - Use of proceeds
 - Risk factor analysis
 - Capitalization structure
-- Pre-IPO investor details
+- Principal shareholder details
 
 ## Example Usage
 

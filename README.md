@@ -15,8 +15,8 @@ Core plugin components:
 - plugin manifest: `.claude-plugin/plugin.json`
 - marketplace manifest: `.claude-plugin/marketplace.json`
 - bundled MCP config: `.claude-plugin/mcp.json`
-- routing agent: `agents/claude-octagon-coordinator.md`
-- skills: 68 total
+- routing agent: `agents/octagon-mcp-specialist.md`
+- skills: 67 total
   - company and financial analysis skills
   - earnings and transcript analysis skills
   - SEC filing analysis skills

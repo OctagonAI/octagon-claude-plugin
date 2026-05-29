@@ -23901,7 +23901,7 @@ function clearOctagonConversation(context, reason) {
 
 // dist/tools/octagonAgent.js
 var AGENT_NAME2 = "octagon-agent";
-var AGENT_DESCRIPTION2 = "Orchestrates all agents for comprehensive market intelligence analysis. Capabilities: Combines insights from SEC filings, earnings calls, financial metrics, stock data, institutional holdings, private company research, funding analysis, M&A transactions, investor intelligence, and debt analysis to provide holistic market intelligence. Best for: Complex research requiring multiple data sources and comprehensive analysis across public and private markets.";
+var AGENT_DESCRIPTION2 = "Orchestrates all agents for comprehensive market intelligence analysis. Capabilities: Combines insights from SEC filings, earnings calls, financial metrics, stock data, institutional holdings, M&A transactions, and debt analysis to provide holistic market intelligence. Best for: Complex research requiring multiple data sources and comprehensive analysis across public markets and corporate disclosures.";
 var octagonAgentInputShape = {
   prompt: z2.string().describe("Your natural language query or request for the agent"),
   conversation: z2.string().trim().min(1).optional().describe("Existing Octagon conversation ID to continue a prior octagon-agent thread. Omit on the first turn."),

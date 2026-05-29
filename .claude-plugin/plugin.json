@@ -18,22 +18,7 @@
     "claude-code"
   ],
   "agents": [
-    "./agents/claude-octagon-coordinator.md"
+    "./agents/octagon-mcp-specialist.md"
   ],
-  "mcpServers": "./.claude-plugin/mcp.json",
-  "userConfig": {
-    "api_key": {
-      "type": "string",
-      "title": "Octagon API key",
-      "description": "API key used for Octagon agent and prediction market tool calls.",
-      "sensitive": true,
-      "required": true
-    },
-    "api_base_url": {
-      "type": "string",
-      "title": "Octagon API base URL",
-      "description": "Optional override for staging, private environments, or self-hosted Octagon API deployments.",
-      "default": "https://api.octagonagents.com/v1"
-    }
-  }
+  "mcpServers": "./.claude-plugin/mcp.json"
 }

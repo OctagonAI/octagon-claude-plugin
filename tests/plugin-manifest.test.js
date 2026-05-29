@@ -23,23 +23,13 @@ test("plugin manifest exposes the bundled MCP runtime and required config", () =
   assert.equal(pluginManifest.name, "octagon-claude-plugin");
   assert.equal(pluginManifest.mcpServers, "./.claude-plugin/mcp.json");
   assert.ok(!("hooks" in pluginManifest));
-  assert.equal(pluginManifest.userConfig.api_key.required, true);
-  assert.equal(pluginManifest.userConfig.api_key.sensitive, true);
-  assert.equal(
-    pluginManifest.userConfig.api_base_url.default,
-    "https://api.octagonagents.com/v1",
-  );
+  assert.ok(!("userConfig" in pluginManifest));
   assert.equal(marketplaceManifest.name, "octagon-claude-plugins");
   assert.equal(marketplaceManifest.version, "0.1.0");
   assert.ok(!("version" in marketplaceManifest.plugins[0]));
 
   assert.deepEqual(mcpConfig.mcpServers["octagon-claude-plugin"], {
-    command: "node",
-    args: ["${CLAUDE_PLUGIN_ROOT}/dist/plugin-runtime.cjs"],
-    env: {
-      OCTAGON_API_KEY: "${user_config.api_key}",
-      OCTAGON_API_BASE_URL: "${user_config.api_base_url}",
-    },
+    url: "https://mcp.octagonagents.com/mcp",
   });
 });
 
@@ -63,7 +53,6 @@ test("plugin package publishes Claude plugin assets alongside dist output", () =
 
 test("skills catalog includes the full upstream Octagon skill set", () => {
   const expectedSkillNames = [
-    "octagon-analyst-master",
     "financial-analyst-master",
     "earnings-analyst-master",
     "market-analyst-master",
@@ -104,6 +93,8 @@ test("skills catalog includes the full upstream Octagon skill set", () => {
     "industry-pe-ratios",
     "industry-performance-snapshot",
     "octagon-api-smoke-test",
+    "octagon-setup",
+    "octagon-status",
     "price-target-consensus",
     "price-target-summary",
     "ratings-snapshot",
@@ -167,10 +158,10 @@ test("routing agent and session-start hook are wired into the plugin", () => {
   const agentPath = path.join(
     repoRoot,
     "agents",
-    "claude-octagon-coordinator.md",
+    "octagon-mcp-specialist.md",
   );
   const hookScriptPath = path.join(repoRoot, "scripts", "plugin-session-start.sh");
-  const agentText = readText(path.join("agents", "claude-octagon-coordinator.md"));
+  const agentText = readText(path.join("agents", "octagon-mcp-specialist.md"));
 
   assert.ok(existsSync(agentPath));
   assert.ok(existsSync(hookScriptPath));
@@ -178,6 +169,6 @@ test("routing agent and session-start hook are wired into the plugin", () => {
     hooksConfig.hooks.SessionStart[0].hooks[0].command,
     "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/plugin-session-start.sh",
   );
-  assert.match(agentText, /name: claude-octagon-coordinator/);
-  assert.match(agentText, /octagon-analyst-master/);
+  assert.match(agentText, /name: octagon-mcp-specialist/);
+  assert.match(agentText, /financial-analyst-master/);
 });
