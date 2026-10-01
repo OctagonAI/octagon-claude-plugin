@@ -7,7 +7,7 @@
 **Status:**
 - **Done (this repo, steps 1–6 of §9):** packaging tooling, OpenAI content, brand assets, and 65 tests. The package builds with 0 errors, and all non-regression invariants pass.
 - **Remaining:**
-  - hosted-server PRs (§6), which need the server repo (A7)
+  - review, merge, and deploy the hosted-server PR ([OctagonAI/octagon-remote-mcp#18](https://github.com/OctagonAI/octagon-remote-mcp/pull/18), §6)
   - account prerequisites (§4)
   - the ChatGPT dev-mode run and demo video (§7)
   - portal submission (§8)
@@ -27,13 +27,12 @@
 1. **Path:** "With MCP" submission. Hosted server `https://mcp.octagonai.co/mcp` + skills, in one ZIP.
 2. **Package:** generated into `out/` by `tools/openai-plugin/`, a small OOP pipeline. It is declaratively configured from `openai/`, read-only on the Claude source, and deterministic.
 3. **Remaining blockers:**
-   1. `/.well-known/openai-apps-challenge` returns 404 on `mcp.octagonai.co`.
-   2. No tool annotations on any of the 4 tools.
-   3. We need a password-only reviewer account (unconfirmed).
-   4. The demo video doesn't exist yet.
+   1. Server PR [octagon-remote-mcp#18](https://github.com/OctagonAI/octagon-remote-mcp/pull/18) (challenge route + tool annotations) needs review, merge, and deploy.
+   2. We need a password-only reviewer account (unconfirmed).
+   3. The demo video doesn't exist yet.
    - *Resolved:* square icons are now packaged, and the support URL uses `/contact/`, since `/support/` returns 404. Add a `/support/` page later if you prefer.
 4. **Repo footprint:** only new files, plus **3 new keys in `package.json` `scripts`** and **1 line in `.gitignore`**.
-5. **Hosted server footprint:** three small PRs. The challenge route and the annotations are purely additive. Result minimization ships behind a default-off flag.
+5. **Hosted server footprint:** one PR ([#18](https://github.com/OctagonAI/octagon-remote-mcp/pull/18)): the challenge route and the annotations, both additive. Result minimization isn't needed, because the hosted tools already return text only.
 
 ---
 
@@ -65,7 +64,7 @@
 | `mcp.octagonagents.com` | Advertises `resource = mcp.octagonai.co` (a mismatch), so **submit the `octagonai.co` origin**. The origin is permanent once published |
 | AS metadata | PKCE S256, DCR, `openid email profile offline_access`, `userinfo_endpoint`, `none` auth ✅. No RFC 9207 or CIMD (optional) |
 | `/.well-known/openai-apps-challenge` | **404** |
-| Source location | **Not in any local checkout.** `octagon-mcp-server` is the stdio build, and `octagonai.co` is the marketing site. **Action: identify the hosted service's repo and deploy target** |
+| Source location | [`OctagonAI/octagon-remote-mcp`](https://github.com/OctagonAI/octagon-remote-mcp) (Express 5 + Bun), deployed on Render as service `srv-d12uqi95pdvs73d5vrtg`. Both `mcp.octagonai.co` and `mcp.octagonagents.com` point to it |
 
 ### 2.3 Listing URLs
 `www.octagonai.co/` 200 · `/privacy/` 200 · `/terms-of-service/` 200 · `/support/` **404** (`/contact/` 200).
@@ -84,7 +83,7 @@ Every invariant has an owning check. All of them were green when this was implem
 | I4 | The build never modifies source. Inside the repo, output may only go under `out/` | `PackageWriter` refuses any output dir that overlaps a top-level repo entry or contains the repo (`writer.test.mjs`) + `pipeline.test.mjs` (SHA-256 of `skills/`, `agents/`, `hooks/`, `.claude-plugin/`, `openai/` before and after) | ✅ |
 | I5 | Modified tracked files: only `package.json` (+3 `scripts` keys) and `.gitignore` (+`out/`) | `git diff --stat` | ✅ |
 | I6 | Builds are reproducible: byte-identical ZIP | `pipeline.test.mjs` builds twice and compares SHA-256 | ✅ |
-| I7 | Hosted server: with new env vars unset, responses are byte-identical | Server PR tests (§6) | ⏳ server repo needed (A7) |
+| I7 | Hosted server: with new env vars unset, behavior is unchanged | octagon-remote-mcp#18: challenge route 404s when unset; tool names/schemas/handlers unchanged; local smoke test (`/mcp` still 401, PRM unchanged) | ✅ in PR, pending deploy |
 | I8 | No new dependencies; `package-lock.json` untouched | `git diff --exit-code package-lock.json` | ✅ |
 
 ---
@@ -99,7 +98,7 @@ Every invariant has an owning check. All of them were green when this was implem
 | A4 | **Reviewer account:** email + password, **no MFA, magic link or email/SMS code**, credits for about 20 full test runs, sample data only | Logs in from incognito with only email + password |
 | A5 | Written confirmation that our data licenses allow serving through ChatGPT/Codex | Written OK |
 | A6 | Launch countries: `["US"]` (current config) vs `[]` (all) | Decision |
-| A7 | Name the **hosted MCP repo + owner** (§2.2) | Repo URL known |
+| A7 | Name the **hosted MCP repo + owner** (§2.2) | ✅ `OctagonAI/octagon-remote-mcp` on Render |
 
 ---
 
@@ -225,19 +224,19 @@ General research framing ("investment decisions", "trading signals" as market de
 
 ---
 
-## 6. Hosted MCP server changes (separate repo, A7)
+## 6. Hosted MCP server changes ([octagon-remote-mcp#18](https://github.com/OctagonAI/octagon-remote-mcp/pull/18))
 
-Three independent PRs, each reversible. With the env vars unset, behavior is byte-identical (I7).
+Implemented in one PR with two commits (S1 and S2). S3 isn't needed (see below). With `OPENAI_APPS_CHALLENGE` unset, behavior is unchanged (I7).
 
-### PR-S1: Domain-verification route (blocker, purely additive)
-- `ChallengeController.get('/.well-known/openai-apps-challenge')` serves `process.env.OPENAI_APPS_CHALLENGE`: `text/plain`, exact bytes, no newline, `Cache-Control: no-store`.
-- When unset, it returns **404**, which is the same as today.
-- Mount it **before** the auth middleware. Tests cover set, unset, and exact body bytes.
+### S1: Domain-verification route ✅ in PR
+- `src/domainVerification.ts`: `GET /.well-known/openai-apps-challenge` serves `OPENAI_APPS_CHALLENGE` as `text/plain` with `Cache-Control: no-store` (whitespace trimmed). It returns **404** when the variable is unset or blank.
+- Unauthenticated. The server has no global auth middleware; auth is per route on `/mcp`.
+- Tests: exact body, headers, trimming, 404 when unset or blank. Smoke-tested against the real entrypoint.
 
-### PR-S2: Tool annotations (blocker, metadata-only)
-- Move from the 4-arg `server.tool(name, desc, schema, cb)` to the SDK overload that takes annotations (`server.tool(name, desc, schema, annotations, cb)` or `registerTool(name, {description, inputSchema, annotations}, cb)`).
-- **Names, input schemas, descriptions and handlers stay unchanged.**
-- Keep the annotations in one `TOOL_ANNOTATIONS` map so they can be reviewed and tested.
+### S2: Tool annotations ✅ in PR
+- `src/annotations.ts`: one `TOOL_ANNOTATIONS` map passed through the SDK 1.15 overload `server.tool(name, desc, schema, annotations, cb)`. Registering a tool without an entry throws.
+- **Names, input schemas, descriptions and handlers are unchanged.**
+- The hosted server also has a fifth tool, `prediction_markets_cache`, registered only for public-key auth (not on the OAuth `/mcp` route). It gets the same annotations.
 
 | Tool | readOnly | destructive | openWorld | Portal justification |
 |---|---|---|---|---|
@@ -248,10 +247,12 @@ Three independent PRs, each reversible. With the env vars unset, behavior is byt
 
 Confirmed with the team (2026-10-01): deep research does not save jobs or results, so `readOnlyHint: true` is correct for all four tools.
 
-- Test: snapshot of `tools/list`. The only diff is the added `annotations` objects.
-- Apply the same map to `octagon-mcp-server` (stdio) later for parity. That's optional and out of the critical path.
+- Tests read the hints back over the MCP protocol (in-memory client) and check the map matches the registered tools exactly.
+- Applying the same map to `octagon-mcp-server` (stdio) is optional and out of the critical path.
 
-### PR-S3: Response minimization (behind a default-off flag)
+### S3: Response minimization: not needed
+The hosted agent tools return only the model's text (`content[0].text`). The `responseId`/`rawMetadata` fields exist only in the local stdio build (`octagon-mcp-server`). The original proposal is kept below for reference.
+
 - Add a `ResultSanitizer` class with a field **allowlist** at the single result boundary (e.g. `createToolResult`): `text`, `conversation` (the continuity handle), and citations.
 - It drops `responseId`, `rawMetadata` and any trace or timestamp fields from `content` and `structuredContent`.
 - Gate: `MCP_RESULT_MINIMIZE=1`. **Default off**, so today's output is unchanged.
@@ -332,7 +333,7 @@ Lives in `openai/plugin.config.json`. Run every case with the reviewer account f
 | 4 | `Validator` + 12 rules + rule tests | Every rule has a pass and a fail fixture | ✅ |
 | 5 | `openai/` content: configs, assets, 3 skills, review cases | `validate:openai` (online) → 0 errors | ✅ (1 warning: video) |
 | 6 | `package.json`/`.gitignore` edits; npm tarball check | I3, I5, I8, `validate:plugin` | ✅ |
-| 7 | Hosted server PR-S1, S2 → deploy; PR-S3 flag on in staging → prod | I7 snapshots | ⏳ needs A7 |
+| 7 | Hosted server S1 + S2 ([octagon-remote-mcp#18](https://github.com/OctagonAI/octagon-remote-mcp/pull/18)) → review, merge, deploy | I7 | ✅ PR open, 13/13 tests; ⏳ merge + deploy |
 | 8 | ChatGPT dev-mode run of §7, then record the video and set `review.demo_recording_url` | All 8 cases behave as specified | ⏳ |
 | 9 | Portal upload → fix loop → submit | Portal shows 0 Issues | ⏳ |
 
@@ -349,7 +350,7 @@ Optionally, add `npm run test:openai && npm run build:openai` later as a **new, 
 | Financial-advice concerns | N2; limits stated in `get-started` and the long description; position-sizing and buy/sell guidance removed |
 | Deep-research latency exceeds the ChatGPT timeout | Measure p95 before recording; shorten P5 scope if needed |
 | An upstream skill change silently undoes a rewrite | Per-skill edits are strict (the build fails when they stop matching); forbidden-text guards on output |
-| The hosted server repo is unknown (A7) | Blocks steps 7–9 only |
+| Server PR not deployed before the portal scan | Merge and deploy #18 before step 9. The route is inert until the env var is set, so it's safe to ship early |
 | 66+ skills generate many portal findings | Each finding becomes a config edit or a new `Rule`. Fallback: ship a curated core via `excludeSkills` |
 | Wrong origin locked in | `mcp.octagonai.co`, pinned in config and asserted by `pipeline.test.mjs` |
 
@@ -358,7 +359,8 @@ Optionally, add `npm run test:openai && npm run build:openai` later as a **new, 
 ## 11. Definition of done
 - [x] I1–I6, I8 green
 - [x] `npm run build:openai` and `npm run validate:openai`: 0 errors (1 warning until the video exists)
-- [ ] I7 (hosted server PRs)
+- [x] I7 implemented in octagon-remote-mcp#18
+- [ ] octagon-remote-mcp#18 merged and deployed to Render
 - [ ] Portal: 0 issues in Metadata & Skills and in MCPs; domain verified; OAuth works for a fresh ChatGPT user
 - [ ] 5/3 cases pass with the reviewer account; the video plays logged-out
 - [ ] Submitted by Ken → approved → published
