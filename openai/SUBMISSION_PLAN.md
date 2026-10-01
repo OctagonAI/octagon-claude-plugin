@@ -242,11 +242,11 @@ Three independent PRs, each reversible. With the env vars unset, behavior is byt
 | Tool | readOnly | destructive | openWorld | Portal justification |
 |---|---|---|---|---|
 | `octagon-agent` | true | false | true | Retrieves and summarizes public-company financial data, filings and transcripts. It doesn't modify user or external state. Open-world because it covers arbitrary public companies |
-| `octagon-deep-research-agent` | true* | false | true | Builds a cited report from public sources and changes nothing |
+| `octagon-deep-research-agent` | true | false | true | Builds a cited report from public sources and returns it in the response. No job or result is saved for later retrieval, and nothing is changed |
 | `octagon-prediction-markets-agent` | true | false | true | Analyzes public prediction-market events. It can't place orders |
 | `prediction_markets_history` | true | false | true | Returns historical public market data only |
 
-\* If deep research queues a persisted job the user can come back to, the guideline requires `readOnlyHint: false`. Confirm before shipping.
+Confirmed with the team (2026-10-01): deep research does not save jobs or results, so `readOnlyHint: true` is correct for all four tools.
 
 - Test: snapshot of `tools/list`. The only diff is the added `annotations` objects.
 - Apply the same map to `octagon-mcp-server` (stdio) later for parity. That's optional and out of the critical path.
