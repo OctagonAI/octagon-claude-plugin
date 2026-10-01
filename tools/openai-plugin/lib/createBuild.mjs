@@ -1,4 +1,5 @@
 // @ts-check
+import { readdirSync } from "node:fs";
 import path from "node:path";
 import { BuildPipeline } from "./BuildPipeline.mjs";
 import { SkillCatalog } from "./catalog/SkillCatalog.mjs";
@@ -26,6 +27,20 @@ export function layout(/** @type {string} */ repoRoot) {
 }
 
 /**
+ * Every top-level entry of the repository except the default output directory.
+ * Inside the repository, build output may therefore only go under `out/`.
+ *
+ * @param {ReturnType<typeof layout>} paths
+ * @returns {string[]}
+ */
+function protectedRepoPaths(paths) {
+  const outName = path.basename(paths.defaultOut);
+  return readdirSync(paths.repoRoot)
+    .filter(name => name !== outName)
+    .map(name => path.join(paths.repoRoot, name));
+}
+
+/**
  * Composition root: wires every collaborator from the repository layout.
  *
  * @param {{ repoRoot: string, outRoot?: string, online?: boolean }} options
@@ -48,7 +63,8 @@ export async function createBuild({ repoRoot, outRoot, online = false }) {
   const writer = new PackageWriter({
     outRoot: outRoot ?? paths.defaultOut,
     pluginName: config.data.name,
-    protectedPaths: [paths.repoRoot, paths.sourceSkills, paths.openaiRoot],
+    protectedPaths: protectedRepoPaths(paths),
+    enclosingRoots: [paths.repoRoot],
   });
 
   const pipeline = new BuildPipeline({

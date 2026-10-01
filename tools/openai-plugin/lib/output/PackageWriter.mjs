@@ -14,24 +14,36 @@ export const FIXED_MTIME = new Date("2000-01-01T00:00:00Z");
  *
  * All writes are confined to `<outRoot>/openai/<pluginName>/` (the staging
  * directory) and `<outRoot>` itself (archives and reports). The constructor
- * refuses an `outRoot` that contains any protected path, so a bad `--out`
- * argument can never wipe or overwrite source files.
+ * refuses an `outRoot` that overlaps a protected path in either direction, and
+ * one that contains an enclosing root such as the repository itself. A bad
+ * `--out` argument therefore can never wipe, overwrite, or add to source files.
  */
 export class PackageWriter {
   /** @type {string} */ outRoot;
   /** @type {string} */ stagingDir;
 
   /**
-   * @param {{ outRoot: string, pluginName: string, protectedPaths: readonly string[] }} options
+   * @param {{
+   *   outRoot: string,
+   *   pluginName: string,
+   *   protectedPaths: readonly string[],
+   *   enclosingRoots?: readonly string[],
+   * }} options `protectedPaths` must be neither inside nor around the output.
+   *   `enclosingRoots` (e.g. the repository) may hold the output but must not be inside it.
    */
-  constructor({ outRoot, pluginName, protectedPaths }) {
+  constructor({ outRoot, pluginName, protectedPaths, enclosingRoots = [] }) {
     const resolved = path.resolve(outRoot);
     if (resolved === path.parse(resolved).root) {
       throw new OutputError(`Refusing to use the filesystem root as output: ${resolved}`);
     }
     for (const protectedPath of protectedPaths) {
-      if (isWithin(resolved, protectedPath)) {
-        throw new OutputError(`Output directory ${resolved} would contain protected path ${protectedPath}`);
+      if (isWithin(resolved, protectedPath) || isWithin(protectedPath, resolved)) {
+        throw new OutputError(`Output directory ${resolved} overlaps protected path ${protectedPath}`);
+      }
+    }
+    for (const root of enclosingRoots) {
+      if (isWithin(resolved, root)) {
+        throw new OutputError(`Output directory ${resolved} would contain ${root}`);
       }
     }
     if (!/^[a-z0-9][a-z0-9-]*$/.test(pluginName)) {

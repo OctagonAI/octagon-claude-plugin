@@ -2,21 +2,30 @@ import assert from "node:assert/strict";
 import { stat } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
+import { createBuild } from "../../tools/openai-plugin/lib/createBuild.mjs";
 import { OutputError } from "../../tools/openai-plugin/lib/errors.mjs";
 import { FIXED_MTIME, PackageWriter } from "../../tools/openai-plugin/lib/output/PackageWriter.mjs";
-import { tempDir } from "./helpers.mjs";
+import { REPO_ROOT, tempDir } from "./helpers.mjs";
 
-test("refuses output roots that would contain protected paths", async t => {
+test("refuses output roots that overlap protected paths or contain the repository", async t => {
   const root = await tempDir(t);
   const repo = path.join(root, "repo");
-  for (const outRoot of [repo, root, path.parse(root).root]) {
-    assert.throws(
-      () => new PackageWriter({ outRoot, pluginName: "acme", protectedPaths: [repo] }),
-      OutputError,
-      outRoot,
-    );
+  const skills = path.join(repo, "skills");
+  const options = { pluginName: "acme", protectedPaths: [skills], enclosingRoots: [repo] };
+
+  for (const outRoot of [repo, root, skills, path.join(skills, "nested"), path.parse(root).root]) {
+    assert.throws(() => new PackageWriter({ ...options, outRoot }), OutputError, outRoot);
   }
-  assert.doesNotThrow(() => new PackageWriter({ outRoot: path.join(repo, "out"), pluginName: "acme", protectedPaths: [repo, path.join(repo, "skills")] }));
+  for (const outRoot of [path.join(repo, "out"), path.join(root, "elsewhere")]) {
+    assert.doesNotThrow(() => new PackageWriter({ ...options, outRoot }), outRoot);
+  }
+});
+
+test("the real build only accepts output under out/ inside the repository", async () => {
+  for (const dir of ["skills/demo", "openai", "tools/x", "."]) {
+    await assert.rejects(createBuild({ repoRoot: REPO_ROOT, outRoot: path.join(REPO_ROOT, dir) }), OutputError, dir);
+  }
+  await assert.doesNotReject(createBuild({ repoRoot: REPO_ROOT, outRoot: path.join(REPO_ROOT, "out", "custom") }));
 });
 
 test("refuses unsafe plugin names and writes outside the staging directory", async t => {

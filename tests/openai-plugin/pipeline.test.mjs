@@ -31,7 +31,6 @@ test("builds a valid, reproducible package without touching the source tree", as
   assert.deepEqual(first.catalog.added, ["get-started", "octagon-research-router"]);
   assert.deepEqual(first.catalog.overridden, ["octagon-status"]);
   assert.deepEqual(first.catalog.excluded, ["octagon-api-smoke-test", "octagon-setup"]);
-  assert.deepEqual(first.catalog.incomplete, ["octagon-analyst-master"]);
 
   const manifest = JSON.parse(await readFile(path.join(first.stagingDir, ".codex-plugin/plugin.json"), "utf8"));
   assert.equal(manifest.name, "octagon-ai");

@@ -5,7 +5,7 @@
 **Sources** (read 2026-10-01): [Submission](https://developers.openai.com/plugins/deploy/submission), [Claude→OpenAI guide](https://developers.openai.com/plugins/guides/submit-claude-plugin), [Guidelines](https://developers.openai.com/plugins/plugin-guidelines), [MCP review](https://developers.openai.com/plugins/deploy/app-review), [Auth](https://developers.openai.com/plugins/build/auth), [Errors](https://developers.openai.com/plugins/deploy/submission-errors).
 
 **Status:**
-- **Done (this repo, steps 1–6 of §9):** packaging tooling, OpenAI content, brand assets, and 64 tests. The package builds with 0 errors, and all non-regression invariants pass.
+- **Done (this repo, steps 1–6 of §9):** packaging tooling, OpenAI content, brand assets, and 65 tests. The package builds with 0 errors, and all non-regression invariants pass.
 - **Remaining:**
   - hosted-server PRs (§6), which need the server repo (A7)
   - account prerequisites (§4)
@@ -53,7 +53,7 @@
 | `engines.node >= 18`, CI on Node 20 | Use only `node:fs/promises`, `node:test`, `node:crypto`, global `fetch`. No `import.meta.dirname` |
 | Every SKILL.md frontmatter is exactly `name:` + `description:`, single-line, LF | A strict minimal frontmatter codec is safe with **zero deps**. It fails loudly on anything else |
 | 66 skills hold setup text under `## Prerequisites`, plus `references/mcp-setup.md` (npx/API key/Claude Desktop) | The transform targets are known and finite |
-| `skills/octagon-analyst-master/` has no SKILL.md | Exclude it from the OpenAI build. Don't delete it from source |
+| `skills/octagon-analyst-master/` exists only as an empty, untracked local directory (it isn't in git) | Nothing to do. The catalog reports directories without a SKILL.md as `incomplete` and never ships them |
 | `agents/` and `hooks/` are Claude-only (hooks block OpenAI submission) | Not copied to the OpenAI package. They stay in place for Claude |
 
 ### 2.2 Hosted MCP (live probe)
@@ -81,7 +81,7 @@ Every invariant has an owning check. All of them were green when this was implem
 | I1 | Existing `npm test` passes unchanged | `npm test` (script untouched) | ✅ 22/22 |
 | I2 | `claude plugin validate .` passes. `openai/` and `tools/` aren't Claude auto-discovery roots | `npm run validate:plugin` | ✅ |
 | I3 | Nothing new ships in the npm package | `tests/openai-plugin/npm-pack.test.mjs`. Also checked by hand against `main`: same 354 files; only `package.json` differs (+3 script keys) | ✅ |
-| I4 | The build never writes outside `out/` and never modifies source | `PackageWriter` guards + `pipeline.test.mjs` (SHA-256 of `skills/`, `agents/`, `hooks/`, `.claude-plugin/`, `openai/` before and after) | ✅ |
+| I4 | The build never modifies source. Inside the repo, output may only go under `out/` | `PackageWriter` refuses any output dir that overlaps a top-level repo entry or contains the repo (`writer.test.mjs`) + `pipeline.test.mjs` (SHA-256 of `skills/`, `agents/`, `hooks/`, `.claude-plugin/`, `openai/` before and after) | ✅ |
 | I5 | Modified tracked files: only `package.json` (+3 `scripts` keys) and `.gitignore` (+`out/`) | `git diff --stat` | ✅ |
 | I6 | Builds are reproducible: byte-identical ZIP | `pipeline.test.mjs` builds twice and compares SHA-256 | ✅ |
 | I7 | Hosted server: with new env vars unset, responses are byte-identical | Server PR tests (§6) | ⏳ server repo needed (A7) |
@@ -123,7 +123,7 @@ octagon-claude-plugin/
 ├── tools/openai-plugin/                      NEW · ESM + JSDoc (strict tsc-clean), zero dependencies
 │   ├── cli.mjs                               `build` / `validate` [--online] [--out DIR]
 │   └── lib/                                  see §5.2
-├── tests/openai-plugin/                      NEW · 64 node:test cases (`npm run test:openai`)
+├── tests/openai-plugin/                      NEW · 65 node:test cases (`npm run test:openai`)
 ├── out/                                      gitignored build output
 ├── package.json                              EDIT · +build:openai, +validate:openai, +test:openai
 └── .gitignore                                EDIT · +out/
@@ -155,7 +155,7 @@ tools/openai-plugin/lib/
 ├── catalog/SkillCatalog.mjs     (source − excluded) → transformed, then merged with the overlay; consistency checks
 ├── manifest/ManifestBuilder.mjs PluginConfig → .codex-plugin/plugin.json + .mcp.json (pure)
 ├── output/
-│   ├── PackageWriter.mjs        the only writer: confined to out/, refuses protected paths, fixed mtime/mode
+│   ├── PackageWriter.mjs        the only writer: confined to the staging dir; refuses output overlapping source; fixed mtime/mode
 │   └── Archiver.mjs             reproducible zip (sorted list, -X -D, TZ=UTC) + inspect via unzip -Z1
 └── validation/
     ├── Finding.mjs, Rule.mjs, Validator.mjs (ValidationReport), PackageView.mjs
@@ -166,7 +166,7 @@ tools/openai-plugin/lib/
 ```
 
 **Design rules:**
-- **Single responsibility.** One writer (`PackageWriter`). One opt-in network user (`UrlRule --online`). Transforms, builder, catalog and rules are otherwise pure.
+- **Single responsibility.** One writer (`PackageWriter`). One opt-in network user (`UrlRule --online`). Transforms and the manifest builder are pure; the repository, catalog and rules only read.
 - **Open/closed.** A new check is a new `Rule` subclass registered in `rules/index.mjs`. A new rewrite is usually just config; otherwise it's a new `SkillTransform`.
 - **Dependency injection.** `BuildPipeline` receives every collaborator. Tests use temp dirs and fakes (for example, an injected `fetcher` for `UrlRule`).
 - **Immutability.** Config objects are deep-frozen. `SkillDocument` is frozen, and transforms return new instances.
@@ -193,8 +193,8 @@ General research framing ("investment decisions", "trading signals" as market de
 | Metric | Value |
 |---|---|
 | Skills shipped | **69**: 66 converted, 2 added (`get-started`, `octagon-research-router`), 1 overridden (`octagon-status`) |
-| Excluded | `octagon-api-smoke-test`, `octagon-setup` (Claude-specific). `octagon-analyst-master` has no SKILL.md and is reported as incomplete |
-| Package | 204 files, about 500 KB zipped, reproducible SHA-256 |
+| Excluded | `octagon-api-smoke-test`, `octagon-setup` (Claude-specific) |
+| Package | 204 files, about 500 KB zipped. SHA-256 `84a5d940…` is identical across rebuilds and from a fresh clone |
 | Validation | **0 errors**, 1 warning (`demo_recording_url` pending), `--online` URL checks all 2xx |
 
 ### 5.5 Generated manifest (`.codex-plugin/plugin.json`)
@@ -208,7 +208,7 @@ General research framing ("investment decisions", "trading signals" as market de
 - **Not included:** no `screenshots` (no custom UI) and no `repository` (it would show the Claude repo name on the listing).
 - **`.mcp.json`:** exactly one server, `octagon` → `https://mcp.octagonai.co/mcp`.
 
-### 5.6 Tests (`npm run test:openai`): 64 passing
+### 5.6 Tests (`npm run test:openai`): 65 passing
 
 | Suite | Covers |
 |---|---|
@@ -217,9 +217,9 @@ General research framing ("investment decisions", "trading signals" as market de
 | `transforms.test.mjs` | Immutability, scoping, literal `$` handling, strict failures, idempotence, override precedence, config errors |
 | `catalog.test.mjs` | Merge/override/exclude semantics, junk-file skipping, consistency errors |
 | `manifest.test.mjs` | Exact manifest output, omitted extension, deep freeze, config rejection |
-| `rules.test.mjs` | A valid fixture passes every rule; 24 targeted failures assert the rule and the portal code |
+| `rules.test.mjs` | A valid fixture passes every rule; 24 targeted failures each assert their rule fires (9 also assert the portal error code) |
 | `support.test.mjs` | PNG/JPEG/SVG dimension parsing; WCAG contrast |
-| `writer.test.mjs` | Protected-path and traversal guards; seal() normalization |
+| `writer.test.mjs` | Overlap/containment guards (including the real repo layout), traversal guards, seal() normalization |
 | `pipeline.test.mjs` | End-to-end build of the real repo: valid, reproducible, source untouched, expected catalog |
 | `npm-pack.test.mjs` | No `openai/`, `tools/`, `out/` or `tests/` files in the npm tarball |
 
