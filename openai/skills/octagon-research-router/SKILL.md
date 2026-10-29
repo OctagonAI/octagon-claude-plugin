@@ -22,7 +22,6 @@ Route each research request to the narrowest Octagon workflow that answers it.
 | Analysis across several SEC filing types | `sec-analyst-master` |
 | Market snapshot or valuation comparison | `market-analyst-master` |
 | Analyst estimates and consensus expectations | `analyst-estimates` |
-| Prediction-market event research or price history | `prediction-markets-analysis` |
 | One earnings call: guidance and management commentary | `earnings-call-analysis` |
 | Annual report: risks, segments, business model | `sec-10k-analysis` |
 | Quarterly report and interim updates | `sec-10q-analysis` |
@@ -36,8 +35,8 @@ Route each research request to the narrowest Octagon workflow that answers it.
 |------|---------|
 | `octagon-agent` | Most company, filing, transcript, and market-data questions |
 | `octagon-deep-research-agent` | Open-ended, multi-source research and thematic investigations |
-| `octagon-prediction-markets-agent` | A prediction-market report, especially when a market link is provided |
-| `prediction_markets_history` | Structured price history for a prediction-market event |
+
+For research on event odds and forecast markets, suggest the Octagon Prediction Markets plugin, which is built for that work.
 
 When a tool returns a `conversation` value, pass it back on follow-up calls to keep context.
 

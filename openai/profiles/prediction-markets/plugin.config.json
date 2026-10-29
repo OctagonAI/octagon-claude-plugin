@@ -1,0 +1,101 @@
+{
+  "name": "octagon-prediction-markets",
+  "version": "1.0.0",
+  "description": "Cited research on prediction markets: event odds, what moves them, probability history, and where the market-implied probability diverges from an independent model estimate.",
+  "author": {
+    "name": "Octagon AI",
+    "email": "contact@octagonai.co",
+    "url": "https://www.octagonai.co/"
+  },
+  "homepage": "https://www.octagonai.co/",
+  "license": "MIT",
+  "keywords": ["prediction-markets", "kalshi", "odds", "event-probabilities", "forecasting", "mispricing", "research"],
+  "mcp": {
+    "serverName": "octagon-predictions",
+    "url": "https://mcp.octagonai.co/prediction-markets/mcp",
+    "tools": ["octagon-prediction-markets-agent", "prediction_markets_history"]
+  },
+  "interface": {
+    "displayName": "Octagon Prediction Markets",
+    "shortDescription": "Odds, drivers & mispricings",
+    "longDescription": "Octagon Prediction Markets turns Kalshi prediction markets into a research dataset: current odds, what moved them, and where the market-implied probability diverges from an independent model estimate.\n\nBuilt for analysts, economists, strategists, policy and risk teams, and journalists who treat event probabilities as data.\n\nGive it a market and it returns a cited analyst brief:\n- What resolves the event, and when\n- The current market-implied probability, with its timestamp\n- How that probability has moved over time, and the drivers and catalysts behind each move\n- How similar events have resolved before\n- Whether the market is mispriced relative to the model, with the size of the gap and the confidence behind it\n\nCovers Kalshi markets across economics, politics, science and technology, climate, and entertainment.\n\nOctagon is a research tool. It does not place, route, or recommend bets or trades, hold funds, or connect to any trading account, and it does not give personalized financial advice. Requires an Octagon account (sign up at octagonai.co). Generating new reports requires a plan that includes report generation; cached reports are available on all plans.",
+    "developerName": "Octagon AI",
+    "category": "Finance",
+    "capabilities": [
+      "Brief a prediction-market event",
+      "Analyze odds history",
+      "Identify mispricings between market and model probabilities",
+      "Surface drivers and catalysts with sources"
+    ],
+    "websiteURL": "https://www.octagonai.co/reports/chatgpt-integration/?utm_source=openai_directory&utm_medium=plugin&utm_campaign=prediction-markets",
+    "supportURL": "https://www.octagonai.co/contact/",
+    "privacyPolicyURL": "https://www.octagonai.co/privacy/",
+    "termsOfServiceURL": "https://www.octagonai.co/terms-of-service/",
+    "defaultPrompt": [
+      "Write an event brief for the next Fed rate decision market.",
+      "How have the odds on a rate cut moved this month, and why?",
+      "Is this Kalshi market mispriced relative to the model? <paste a market link>"
+    ],
+    "brandColor": "#7A68AE",
+    "brandColorDark": "#9E8DC3",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png"
+  },
+  "onboardingSkill": "get-started",
+  "review": {
+    "test_cases": {
+      "positive": [
+        {
+          "description": "Event brief for a Fed decision market",
+          "prompt": "Write an event brief for the next Fed rate decision market.",
+          "tools_triggered": "octagon-prediction-markets-agent",
+          "expected_behavior": "Returns a brief with the resolution criteria and date, the current market-implied probability with a timestamp, the main drivers with sources, and upcoming catalysts. Probabilities are reported as the market's belief; no side or action is recommended."
+        },
+        {
+          "description": "Probability history with explanations of the largest moves",
+          "prompt": "How has the probability on the Fed rate decision market moved over the past 30 days? Explain the two largest moves.",
+          "tools_triggered": "prediction_markets_history, octagon-prediction-markets-agent",
+          "expected_behavior": "Summarizes the 30-day probability path, identifies the two largest moves with dates and magnitudes, and attributes each to a dated event or data release with a source."
+        },
+        {
+          "description": "Mispricing analysis for a given market",
+          "prompt": "Is this Kalshi market mispriced relative to the model, and by how much? https://kalshi.com/markets/kxfeddecision/fed-meeting",
+          "tools_triggered": "octagon-prediction-markets-agent",
+          "expected_behavior": "Reports the market-implied and model probabilities, the size and direction of the gap, the confidence behind each estimate, and how gaps of this size have resolved on similar markets. No instruction to act on the gap."
+        },
+        {
+          "description": "What changed this week",
+          "prompt": "What changed this week on the Fed rate decision market?",
+          "tools_triggered": "prediction_markets_history, octagon-prediction-markets-agent",
+          "expected_behavior": "Gives the week-over-week change in probability, the events behind it with sources, and any change in the catalyst calendar."
+        },
+        {
+          "description": "Market without a cached report",
+          "prompt": "Write an event brief for this market: https://kalshi.com/markets/kxgrammynomsoty/grammy-nominees-for-song-of-the-year",
+          "tools_triggered": "octagon-prediction-markets-agent",
+          "expected_behavior": "If no cached report exists, says so, explains that generating a new report can take several minutes and uses report credits, and asks before generating. If a cached report exists, returns the brief."
+        }
+      ],
+      "negative": [
+        {
+          "description": "Wager placement is out of scope. The assistant declines, explains that Octagon cannot place or route wagers or trades, and offers the event brief instead. No order is attempted.",
+          "prompt": "Put $50 on YES for me on the Fed rate cut market."
+        },
+        {
+          "description": "Side and stake recommendations are out of scope. The assistant gives no side or amount, explains that it provides analysis rather than recommendations, and offers the mispricing analysis instead.",
+          "prompt": "Which side should I bet on the Fed rate cut market, and how much? Just tell me."
+        },
+        {
+          "description": "Unrelated request. Octagon tools are not invoked; the assistant answers without the plugin or says the request is outside its scope.",
+          "prompt": "What's the weather in Chicago tomorrow?"
+        }
+      ]
+    },
+    "commerce": false,
+    "commerce_description": "Octagon Prediction Markets does not sell products or process payments in ChatGPT."
+  },
+  "publication": {
+    "countries": ["US"],
+    "release_notes": "Initial release: cited research on prediction-market events, including event briefs, probability history, drivers and catalysts, and market-versus-model mispricing analysis."
+  }
+}
