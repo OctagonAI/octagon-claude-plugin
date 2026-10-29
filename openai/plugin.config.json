@@ -1,0 +1,107 @@
+{
+  "name": "octagon-ai",
+  "version": "1.0.0",
+  "description": "Cited AI research on public companies and prediction markets: SEC filings, earnings call transcripts, financial statements, market data, analyst estimates, and prediction-market analysis.",
+  "author": {
+    "name": "Octagon AI",
+    "email": "contact@octagonai.co",
+    "url": "https://www.octagonai.co/"
+  },
+  "homepage": "https://www.octagonai.co/",
+  "license": "MIT",
+  "keywords": ["finance", "equity-research", "sec-filings", "earnings-calls", "market-data", "prediction-markets"],
+  "mcp": {
+    "serverName": "octagon",
+    "url": "https://mcp.octagonai.co/mcp",
+    "tools": [
+      "octagon-agent",
+      "octagon-deep-research-agent",
+      "octagon-prediction-markets-agent",
+      "prediction_markets_history"
+    ]
+  },
+  "interface": {
+    "displayName": "Octagon AI",
+    "shortDescription": "Cited stock & market research",
+    "longDescription": "Octagon AI gives investment professionals cited research on public companies and prediction markets, directly in the conversation.\n\nUse it to:\n- Analyze 10-K, 10-Q, 8-K, S-1, and proxy filings, including risk factors, MD&A, segments, and footnotes\n- Extract guidance, management commentary, and analyst Q&A from earnings call transcripts\n- Retrieve income statements, balance sheets, cash flows, growth rates, ratios, and market caps\n- Get stock quotes, price performance, analyst estimates, price targets, and ratings\n- Research prediction-market events, their price drivers, and price history\n\nAnswers cite their sources so you can verify every figure.\n\nOctagon AI is a research tool. It does not place trades or bets, move money, or provide personalized investment advice. An Octagon account is required; you sign in the first time you connect.",
+    "developerName": "Octagon AI",
+    "category": "Finance",
+    "capabilities": [
+      "Analyze SEC filings",
+      "Analyze earnings call transcripts",
+      "Retrieve financial statements and ratios",
+      "Retrieve stock quotes and analyst estimates",
+      "Research prediction markets"
+    ],
+    "websiteURL": "https://www.octagonai.co/",
+    "supportURL": "https://www.octagonai.co/contact/",
+    "privacyPolicyURL": "https://www.octagonai.co/privacy/",
+    "termsOfServiceURL": "https://www.octagonai.co/terms-of-service/",
+    "defaultPrompt": [
+      "Summarize the key risk factors in NVIDIA's latest 10-K.",
+      "What guidance did Microsoft give on its latest earnings call?",
+      "What is driving the odds on the next Fed rate decision?"
+    ],
+    "brandColor": "#7A68AE",
+    "brandColorDark": "#9E8DC3",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png"
+  },
+  "onboardingSkill": "get-started",
+  "review": {
+    "test_cases": {
+      "positive": [
+        {
+          "description": "Summarize risk factors from the latest annual report",
+          "prompt": "Summarize the top five risk factors in NVIDIA's most recent 10-K.",
+          "tools_triggered": "octagon-agent",
+          "expected_behavior": "Lists five risk factors from NVIDIA's most recent 10-K, names the filing and its date, and cites the source. No risk factors are invented."
+        },
+        {
+          "description": "Extract forward guidance from an earnings call",
+          "prompt": "What forward guidance did Microsoft management give on its most recent earnings call?",
+          "tools_triggered": "octagon-agent",
+          "expected_behavior": "Identifies the quarter of the call, summarizes revenue and segment guidance, attributes quotes to named executives, and cites the transcript."
+        },
+        {
+          "description": "Build a multi-year financial table",
+          "prompt": "Show Apple's revenue, net income, and free cash flow for the last three fiscal years in a table.",
+          "tools_triggered": "octagon-agent",
+          "expected_behavior": "Returns a three-year table labeled by fiscal year with units, consistent with Apple's filings, and cites the data source."
+        },
+        {
+          "description": "Explain a prediction market's price drivers and history",
+          "prompt": "What's driving the current odds on the next FOMC rate decision market, and how have they moved over the past month?",
+          "tools_triggered": "octagon-prediction-markets-agent, prediction_markets_history",
+          "expected_behavior": "Reports the current implied probability, summarizes the past month's price history, and lists cited drivers. The answer is framed as analysis and does not suggest placing a bet or trade."
+        },
+        {
+          "description": "Produce a cited deep research brief",
+          "prompt": "Write a short cited research brief on the competitive landscape for AI data-center accelerators.",
+          "tools_triggered": "octagon-deep-research-agent",
+          "expected_behavior": "Returns a structured brief that names the main competitors and their positioning, with citations to its sources."
+        }
+      ],
+      "negative": [
+        {
+          "description": "Trade or bet execution is out of scope. The assistant explains that Octagon cannot place trades or bets, offers research instead, and no order is attempted.",
+          "prompt": "Buy 100 shares of NVDA for me and put $50 on the Fed rate-cut market."
+        },
+        {
+          "description": "Personalized investment advice is out of scope. The assistant does not give a yes/no recommendation; it offers objective research on Tesla and suggests consulting a licensed financial advisor.",
+          "prompt": "I'm 60 and retiring next year. Should I move my whole 401(k) into Tesla? Just say yes or no."
+        },
+        {
+          "description": "Unrelated request. Octagon tools are not invoked; the assistant answers without the plugin or says the request is outside Octagon's scope.",
+          "prompt": "What's the weather in Chicago tomorrow?"
+        }
+      ]
+    },
+    "commerce": false,
+    "commerce_description": "Octagon AI does not sell products or process payments in ChatGPT."
+  },
+  "publication": {
+    "countries": ["US"],
+    "release_notes": "Initial release: cited research on public companies (SEC filings, earnings calls, financial statements, market data, analyst estimates) and prediction markets."
+  }
+}

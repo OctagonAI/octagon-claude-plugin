@@ -1,0 +1,280 @@
+{
+  "excludeSkills": [
+    "octagon-api-smoke-test",
+    "octagon-setup"
+  ],
+  "removeFiles": [
+    "README.md",
+    "references/mcp-setup.md"
+  ],
+  "sections": [
+    {
+      "heading": "## Prerequisites",
+      "body": "This skill uses the Octagon tools. If they are unavailable, ask the user to connect Octagon from the plugin's connection settings, then retry. Never ask the user to paste passwords, access tokens, or other credentials into the conversation."
+    }
+  ],
+  "substitutions": [
+    {
+      "find": "the Octagon Claude plugin",
+      "replace": "Octagon"
+    },
+    {
+      "find": "Octagon Claude plugin",
+      "replace": "Octagon"
+    },
+    {
+      "pattern": "^[ \\t]*\"server\": \"octagon-claude-plugin\",\\n",
+      "flags": "m",
+      "replace": ""
+    }
+  ],
+  "skillEdits": {
+    "prediction-markets-analysis": {
+      "sections": [
+        {
+          "heading": "## Prerequisites",
+          "body": "This skill uses the Octagon tools. If they are unavailable, ask the user to connect Octagon from the plugin's connection settings, then retry. Never ask the user to paste passwords, access tokens, or other credentials into the conversation.\n\nPresent results as research and analysis. Do not recommend placing trades or bets, how much to invest, or how to allocate funds."
+        },
+        {
+          "heading": "### Sports Matchup",
+          "body": null
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "heading": "## Recommendation Framework",
+          "body": null
+        }
+      ],
+      "substitutions": [
+        {
+          "file": "SKILL.md",
+          "find": "identify mispricings, surface price drivers, and provide actionable trading insights.",
+          "replace": "compare market and model probabilities, surface price drivers, and explain what is moving the market."
+        },
+        {
+          "file": "SKILL.md",
+          "find": "Compare crowd consensus against model-derived probability to find trading opportunities.",
+          "replace": "Compare crowd consensus against model-derived probability to find where they diverge."
+        },
+        {
+          "file": "SKILL.md",
+          "find": "### Pre-Trade Research\nResearch key drivers behind a prediction market price before placing a trade.",
+          "replace": "### Driver Research\nResearch the key drivers behind a prediction market price."
+        },
+        {
+          "file": "SKILL.md",
+          "find": "Check volume and open interest before sizing positions",
+          "replace": "Check volume and open interest to judge how reliable the price is"
+        },
+        {
+          "file": "SKILL.md",
+          "find": "`:refresh` before trading",
+          "replace": "`:refresh` when you need the latest data"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| **Mispricing Signal** | Direction and magnitude of potential opportunity |",
+          "replace": "| **Mispricing Signal** | Direction and size of the gap between market and model |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Signal | Market Price vs. Model | Action |",
+          "replace": "| Signal | Market Price vs. Model | Interpretation |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Consider selling/shorting |",
+          "replace": "| Market implies a higher probability than the model |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Consider buying |",
+          "replace": "| Market implies a lower probability than the model |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| No clear edge |",
+          "replace": "| No meaningful divergence |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Liquidity | Trading Implication |",
+          "replace": "| Liquidity | Price Reliability |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Easy entry/exit, minimal slippage |",
+          "replace": "| Price is a reliable signal |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Active but inefficient |",
+          "replace": "| Signal is noisy |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Can trade, size limited |",
+          "replace": "| Thin market; treat the price with caution |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Difficult to execute, avoid large positions |",
+          "replace": "| Price may be stale or easily moved |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Execution risk high |",
+          "replace": "| Price may not reflect consensus |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "- Need latest contract details for execution",
+          "replace": "- Need the latest contract details"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "**Ignoring liquidity**: Can't profit if you can't exit",
+          "replace": "**Ignoring liquidity**: Thin markets produce unreliable prices"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "**Position sizing errors**: Even high-edge trades can lose",
+          "replace": "**Treating probabilities as certainties**: Even large divergences can resolve either way"
+        }
+      ]
+    },
+    "stock-grades": {
+      "substitutions": [
+        {
+          "file": "references/interpreting-results.md",
+          "find": "### Investment Signals",
+          "replace": "### Sentiment Signals"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Upgrade cluster | Consider buying |",
+          "replace": "| Upgrade cluster | Improving analyst sentiment |"
+        }
+      ]
+    },
+    "price-target-summary": {
+      "substitutions": [
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Below all targets | Strong buy signal |",
+          "replace": "| Below all targets | Trades below every analyst target |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "### Investment Decision Framework\n\n| Finding | Action |",
+          "replace": "### Research Framework\n\n| Finding | Interpretation |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| >20% upside, strong consensus | Consider buying |",
+          "replace": "| >20% upside, strong consensus | Analysts see significant upside |"
+        }
+      ]
+    },
+    "financial-health-scores": {
+      "substitutions": [
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Strong Buy consideration |",
+          "replace": "| Strong financial health |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Avoid or distressed only |",
+          "replace": "| Elevated distress risk |"
+        }
+      ]
+    },
+    "stock-price-change": {
+      "sections": [
+        {
+          "file": "references/interpreting-results.md",
+          "heading": "### Position Sizing",
+          "body": null
+        }
+      ],
+      "substitutions": [
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| All negative | Avoid or short |",
+          "replace": "| All negative | Broad weakness |"
+        }
+      ]
+    },
+    "stock-performance": {
+      "substitutions": [
+        {
+          "file": "references/interpreting-results.md",
+          "find": "**Risk assess**: Position sizing",
+          "replace": "**Risk assess**: Volatility and drawdowns"
+        }
+      ]
+    },
+    "price-target-consensus": {
+      "sections": [
+        {
+          "heading": "### Position Sizing",
+          "body": null
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "heading": "### Position Sizing Guide",
+          "body": null
+        }
+      ]
+    }
+  },
+  "forbiddenPatterns": [
+    {
+      "pattern": "claude",
+      "flags": "i",
+      "reason": "provider-specific wording must be neutral"
+    },
+    {
+      "pattern": "\\bnpx\\b",
+      "reason": "local package installs are not part of the hosted plugin"
+    },
+    {
+      "pattern": "api[ _-]?keys?\\b",
+      "flags": "i",
+      "reason": "the plugin authenticates with OAuth, not API keys"
+    },
+    {
+      "pattern": "OCTAGON_API_KEY|CLAUDE_PLUGIN_ROOT|claude_desktop_config",
+      "reason": "local runtime configuration does not apply"
+    },
+    {
+      "pattern": "octagon-local|\\bmcp_auth\\b",
+      "reason": "references a Claude-specific connector flow"
+    },
+    {
+      "pattern": "octagon-setup|octagon-api-smoke-test|octagon-mcp-specialist",
+      "reason": "references a component that is not in the OpenAI package"
+    },
+    {
+      "pattern": "\\b(?:strong|consider|no) trade\\b|placing a trade|before trading|pre-trade",
+      "flags": "i",
+      "reason": "trading recommendations are out of scope"
+    },
+    {
+      "pattern": "consider (?:buying|selling)|strong buy (?:signal|consideration)|avoid or short",
+      "flags": "i",
+      "reason": "buy/sell recommendations are out of scope"
+    },
+    {
+      "pattern": "position sizing|sizing positions|% of portfolio",
+      "flags": "i",
+      "reason": "position sizing is personalized advice"
+    },
+    {
+      "pattern": "actionable trading insights",
+      "flags": "i",
+      "reason": "prediction-market output must be framed as research"
+    }
+  ]
+}
