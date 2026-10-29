@@ -15,7 +15,7 @@ Report where the market-implied probability and the model's probability disagree
 
 1. Call `octagon-prediction-markets-agent` with the market link and `cache: true`, which returns a cached report only. If none exists, explain that generating one takes minutes and uses report credits, and call again with `cache: false` only after the user agrees.
 2. From the report, extract the market-implied probability (with timestamp), the model probability, and the reasoning the model gives.
-3. If the user asks whether the gap is new, call `prediction_markets_history` for the event ticker (the event-specific URL segment, such as `kxfeddecision-26jun`; a series-page link has none, so ask or take it from the report) and compare today's gap with recent levels.
+3. If the user asks whether the gap is new, call `prediction_markets_history` for the event ticker (the event-specific URL segment, such as `kxfeddecision-26jun`; a series-page link has none, so ask or take it from the report) and compare the latest available gap with recent levels. Describe it as today's gap only when the probability timestamps show it was captured today; a cached report may be older.
 4. Present the analysis in the structure below.
 
 ## Output structure
