@@ -1,5 +1,6 @@
 // @ts-check
 import { createHash } from "node:crypto";
+import { realpathSync } from "node:fs";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
@@ -82,4 +83,30 @@ export async function hashTree(root) {
 export function isWithin(parent, child) {
   const relative = path.relative(path.resolve(parent), path.resolve(child));
   return relative === "" || (!relative.startsWith("..") && !path.isAbsolute(relative));
+}
+
+/**
+ * Resolves a path to its canonical form even when it does not exist yet: the
+ * nearest existing ancestor is resolved through symlinks, and the missing
+ * components are appended unchanged. Use it before comparing a user-supplied
+ * path against protected locations, since `path.resolve` leaves symlinks in
+ * place and a link inside the output directory could otherwise point anywhere.
+ *
+ * @param {string} target
+ * @returns {string}
+ */
+export function canonicalize(target) {
+  let current = path.resolve(target);
+  /** @type {string[]} */
+  const missing = [];
+  for (;;) {
+    try {
+      return path.join(realpathSync(current), ...missing);
+    } catch {
+      const parent = path.dirname(current);
+      if (parent === current) return path.join(current, ...missing);
+      missing.unshift(path.basename(current));
+      current = parent;
+    }
+  }
 }

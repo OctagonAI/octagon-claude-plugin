@@ -26,12 +26,17 @@ function png(bytes) {
 function jpeg(bytes) {
   if (bytes.length < 4 || bytes[0] !== 0xff || bytes[1] !== 0xd8) return null;
   let offset = 2;
-  while (offset + 9 < bytes.length) {
+  // Each segment is 0xFF, a marker, then a 2-byte length that includes itself.
+  // A start-of-frame segment needs at least 7 bytes: length, precision, height, width.
+  const MIN_SOF_LENGTH = 7;
+  while (offset + 4 <= bytes.length) {
     if (bytes[offset] !== 0xff) return null;
     const marker = bytes[offset + 1];
     const length = bytes.readUInt16BE(offset + 2);
+    if (length < 2 || offset + 2 + length > bytes.length) return null;
     const isStartOfFrame = marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker);
     if (isStartOfFrame) {
+      if (length < MIN_SOF_LENGTH) return null;
       return { format: "jpeg", height: bytes.readUInt16BE(offset + 5), width: bytes.readUInt16BE(offset + 7) };
     }
     offset += 2 + length;

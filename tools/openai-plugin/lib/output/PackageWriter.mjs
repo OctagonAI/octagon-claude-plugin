@@ -4,7 +4,7 @@ import path from "node:path";
 import { OutputError } from "../errors.mjs";
 import { SKILLS_DIR } from "../manifest/ManifestBuilder.mjs";
 import { SKILL_FILE } from "../skill/SkillDocument.mjs";
-import { isWithin, listFiles } from "../util/fs.mjs";
+import { canonicalize, isWithin, listFiles } from "../util/fs.mjs";
 
 /** Fixed timestamp applied to every staged file so archives are reproducible. */
 export const FIXED_MTIME = new Date("2000-01-01T00:00:00Z");
@@ -32,16 +32,18 @@ export class PackageWriter {
    *   `enclosingRoots` (e.g. the repository) may hold the output but must not be inside it.
    */
   constructor({ outRoot, pluginName, protectedPaths, enclosingRoots = [] }) {
-    const resolved = path.resolve(outRoot);
+    // Compare canonical paths: a symlink anywhere in the output ancestry could
+    // otherwise point the staging directory at protected source content.
+    const resolved = canonicalize(outRoot);
     if (resolved === path.parse(resolved).root) {
       throw new OutputError(`Refusing to use the filesystem root as output: ${resolved}`);
     }
-    for (const protectedPath of protectedPaths) {
+    for (const protectedPath of protectedPaths.map(canonicalize)) {
       if (isWithin(resolved, protectedPath) || isWithin(protectedPath, resolved)) {
         throw new OutputError(`Output directory ${resolved} overlaps protected path ${protectedPath}`);
       }
     }
-    for (const root of enclosingRoots) {
+    for (const root of enclosingRoots.map(canonicalize)) {
       if (isWithin(resolved, root)) {
         throw new OutputError(`Output directory ${resolved} would contain ${root}`);
       }
@@ -54,8 +56,16 @@ export class PackageWriter {
     Object.freeze(this);
   }
 
-  /** Removes and recreates the staging directory. */
+  /**
+   * Removes and recreates the staging directory.
+   *
+   * The ancestry is re-checked at this point because a symlink could have been
+   * placed under the output directory after construction.
+   */
   async reset() {
+    if (!isWithin(this.outRoot, canonicalize(this.stagingDir))) {
+      throw new OutputError(`Staging directory ${this.stagingDir} no longer resolves inside ${this.outRoot}`);
+    }
     await rm(this.stagingDir, { recursive: true, force: true });
     await mkdir(this.stagingDir, { recursive: true });
   }

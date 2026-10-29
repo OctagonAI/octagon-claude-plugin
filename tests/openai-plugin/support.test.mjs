@@ -34,3 +34,12 @@ test("computes WCAG contrast ratios", () => {
   assert.ok(contrastRatio("#7A68AE", "#FFFFFF") >= 2);
   assert.ok(contrastRatio("#9E8DC3", "#212121") >= 2);
 });
+
+test("rejects JPEG segments that overrun or undersize the buffer", () => {
+  const truncated = Buffer.from([0xff, 0xd8, 0xff, 0xe0, 0xff, 0xff, 0x00, 0x00]);
+  assert.equal(imageInfo(truncated), null, "declared segment length beyond the buffer");
+  const shortFrame = Buffer.from([0xff, 0xd8, 0xff, 0xc0, 0x00, 0x04, 0x08, 0x00, 0x10, 0x00, 0x20, 0x00]);
+  assert.equal(imageInfo(shortFrame), null, "start-of-frame segment too short to hold dimensions");
+  const zeroLength = Buffer.from([0xff, 0xd8, 0xff, 0xe0, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+  assert.equal(imageInfo(zeroLength), null, "a length below 2 can never be valid");
+});
