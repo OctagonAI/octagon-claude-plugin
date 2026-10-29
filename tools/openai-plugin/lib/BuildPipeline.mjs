@@ -1,4 +1,5 @@
 // @ts-check
+import { rm } from "node:fs/promises";
 import path from "node:path";
 import { MANIFEST_PATH, MCP_CONFIG_PATH } from "./manifest/ManifestBuilder.mjs";
 import { PackageView } from "./validation/PackageView.mjs";
@@ -81,14 +82,15 @@ export class BuildPipeline {
 
     /** @type {ArchiveInfo | null} */
     let archive = null;
+    const { name, version } = this.#config.data;
+    const zipPath = this.#writer.artifactPath(`${name}-openai-${version}.zip`);
     if (validation.ok) {
-      const { name, version } = this.#config.data;
-      archive = await this.#archiver.create(
-        this.#writer.stagingDir,
-        files,
-        this.#writer.artifactPath(`${name}-openai-${version}.zip`),
-      );
+      archive = await this.#archiver.create(this.#writer.stagingDir, files, zipPath);
       validation = validation.merge(await this.#validator.run({ pkg, archive }, "archive"));
+    } else {
+      // A ZIP from an earlier successful build must not outlive a failed one,
+      // or `validate` and a careless upload would pick up stale output.
+      await rm(zipPath, { force: true });
     }
 
     /** @type {BuildResult} */
