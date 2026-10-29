@@ -1,6 +1,7 @@
 {
   "mcpServers": {
     "octagon-claude-plugin": {
+      "type": "http",
       "url": "https://mcp.octagonagents.com/mcp"
     }
   }
