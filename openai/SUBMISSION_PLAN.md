@@ -304,7 +304,7 @@ Lives in `openai/plugin.config.json`. Run every case with the reviewer account f
 
 ## 8. Portal runbook (Ken, or Andres with A3)
 
-1. Plugins → **Upload new or existing plugin** → verified Developer identity → upload `out/octagon-ai-openai-1.0.0.zip`.
+1. Octagon already has a **published** listing (plugin id `plugin_asdk_app_6abed7c438a481919d1338b2b5bee550`). This ZIP is its next version, so open that plugin and use **Upload plugin to make changes**, not "Upload new". First, download the live release ZIP from the plugin's **…** menu and read its manifest `name`; set `openai/plugin.config.json` → `name` to match (`plugin_name_mismatch` otherwise) and use a `version` higher than the published one (`plugin_version_unchanged`). The listing is re-oriented to public markets only; prediction markets move to a second plugin (see [PREDICTION_MARKETS_PLAN.md](PREDICTION_MARKETS_PLAN.md) §0).
 2. **Metadata & Skills:** **Copy issues**. Each one becomes a config fix, or a new `Rule` so it can never recur. Rebuild, then **Upload plugin to fix issues**.
 3. **MCPs → octagon → Connect:**
    1. Confirm the URL `https://mcp.octagonai.co/mcp` and OAuth via DCR.
