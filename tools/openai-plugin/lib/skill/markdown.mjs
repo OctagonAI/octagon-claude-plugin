@@ -1,25 +1,38 @@
 // @ts-check
 
 const HEADING = /^(#{1,6})[ \t]+\S/;
-/** A fence line: up to three spaces of indentation, then a run of backticks or tildes. */
-const FENCE = /^ {0,3}(`{3,}|~{3,})(.*)$/;
+/**
+ * A fence line: indentation, then a run of backticks or tildes. Any amount of
+ * indentation is accepted because a fence inside a list item is indented
+ * relative to its container, and this scanner does not track containers.
+ */
+const FENCE = /^( *)(`{3,}|~{3,})(.*)$/;
+
+/** @typedef {{ char: string, length: number, indent: number }} OpenFence */
 
 /**
  * Advances fenced-code-block state by one line, following the CommonMark rules:
  * a block opens on a fence run (a backtick run may not have backticks in its
  * info string) and closes only on a run of the same character that is at least
- * as long, with nothing but whitespace after it.
+ * as long, with nothing but whitespace after it. The closer may be indented at
+ * most three spaces more than the opener, which bounds the damage should an
+ * indented literal fence ever be mistaken for an opener.
  *
  * @param {string} line
- * @param {string | null} open The run that opened the current block, or `null`.
- * @returns {string | null} The run that opens the block after this line, or `null`.
+ * @param {OpenFence | null} open The fence that opened the current block, or `null`.
+ * @returns {OpenFence | null} The fence that opens the block after this line, or `null`.
  */
 function nextFence(line, open) {
   const match = FENCE.exec(line);
   if (!match) return open;
-  const [, run, rest] = match;
-  if (open === null) return run[0] === "`" && rest.includes("`") ? null : run;
-  return run[0] === open[0] && run.length >= open.length && rest.trim() === "" ? null : open;
+  const [, indent, run, rest] = match;
+  if (open === null) {
+    if (run[0] === "`" && rest.includes("`")) return null;
+    return { char: run[0], length: run.length, indent: indent.length };
+  }
+  const closes =
+    run[0] === open.char && run.length >= open.length && rest.trim() === "" && indent.length <= open.indent + 3;
+  return closes ? null : open;
 }
 
 /**
@@ -30,7 +43,7 @@ function nextFence(line, open) {
  * @returns {Generator<[line: string, inFence: boolean]>}
  */
 function* linesWithFenceState(text) {
-  /** @type {string | null} */
+  /** @type {OpenFence | null} */
   let fence = null;
   for (const line of text.split("\n")) {
     const wasInFence = fence !== null;
