@@ -30,6 +30,7 @@ test("plugin manifest exposes the bundled MCP runtime and required config", () =
   assert.ok(!("version" in marketplaceManifest.plugins[0]));
 
   assert.deepEqual(mcpConfig.mcpServers["octagon-claude-plugin"], {
+    type: "http",
     url: "https://mcp.octagonagents.com/mcp",
   });
 });

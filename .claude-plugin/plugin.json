@@ -8,6 +8,7 @@
     "name": "Octagon AI",
     "url": "https://github.com/OctagonAI/octagon-claude-plugin"
   },
+  "privacyPolicyUrl": "https://www.octagonai.co/privacy/",
   "homepage": "https://docs.octagonagents.com",
   "repository": "https://github.com/OctagonAI/octagon-claude-plugin",
   "license": "MIT",
