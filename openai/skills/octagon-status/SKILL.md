@@ -24,8 +24,6 @@ When connected, summarize the available tools:
 
 - `octagon-agent`: company, filing, transcript, and market-data research
 - `octagon-deep-research-agent`: multi-source research briefs
-- `octagon-prediction-markets-agent`: prediction-market reports
-- `prediction_markets_history`: prediction-market price history
 
 Then suggest a first request, or follow the `get-started` skill.
 

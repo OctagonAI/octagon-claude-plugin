@@ -18,9 +18,10 @@ Commands:
   validate   Re-validate the existing build in out/ without rebuilding
 
 Options:
-  --online   Also check that every public URL answers 2xx
-  --out DIR  Output directory (default: out/)
-  --help     Show this message`;
+  --profile NAME  Build the plugin under openai/profiles/NAME (default: openai/ itself)
+  --online        Also check that every public URL answers 2xx
+  --out DIR       Output directory (default: out/)
+  --help          Show this message`;
 
 /** @param {import("./lib/validation/Validator.mjs").ValidationReport} validation */
 function printFindings(validation) {
@@ -37,6 +38,7 @@ async function main() {
     options: {
       online: { type: "boolean", default: false },
       out: { type: "string" },
+      profile: { type: "string" },
       help: { type: "boolean", default: false },
     },
   });
@@ -47,7 +49,7 @@ async function main() {
   }
 
   const outRoot = values.out ? path.resolve(values.out) : undefined;
-  const build = await createBuild({ repoRoot: REPO_ROOT, outRoot, online: values.online });
+  const build = await createBuild({ repoRoot: REPO_ROOT, outRoot, online: values.online, profile: values.profile });
 
   if (command === "build") {
     const result = await build.pipeline.run();

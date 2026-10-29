@@ -1,7 +1,7 @@
 {
   "name": "octagon-ai",
   "version": "1.0.0",
-  "description": "Cited AI research on public companies and prediction markets: SEC filings, earnings call transcripts, financial statements, market data, analyst estimates, and prediction-market analysis.",
+  "description": "Cited AI research on public companies: SEC filings, earnings call transcripts, financial statements, market data, and analyst estimates.",
   "author": {
     "name": "Octagon AI",
     "email": "contact@octagonai.co",
@@ -9,7 +9,13 @@
   },
   "homepage": "https://www.octagonai.co/",
   "license": "MIT",
-  "keywords": ["finance", "equity-research", "sec-filings", "earnings-calls", "market-data", "prediction-markets"],
+  "keywords": [
+    "finance",
+    "equity-research",
+    "sec-filings",
+    "earnings-calls",
+    "market-data"
+  ],
   "mcp": {
     "serverName": "octagon",
     "url": "https://mcp.octagonai.co/mcp",
@@ -23,15 +29,14 @@
   "interface": {
     "displayName": "Octagon AI",
     "shortDescription": "Cited stock & market research",
-    "longDescription": "Octagon AI gives investment professionals cited research on public companies and prediction markets, directly in the conversation.\n\nUse it to:\n- Analyze 10-K, 10-Q, 8-K, S-1, and proxy filings, including risk factors, MD&A, segments, and footnotes\n- Extract guidance, management commentary, and analyst Q&A from earnings call transcripts\n- Retrieve income statements, balance sheets, cash flows, growth rates, ratios, and market caps\n- Get stock quotes, price performance, analyst estimates, price targets, and ratings\n- Research prediction-market events, their price drivers, and price history\n\nAnswers cite their sources so you can verify every figure.\n\nOctagon AI is a research tool. It does not place trades or bets, move money, or provide personalized investment advice. An Octagon account is required; you sign in the first time you connect.",
+    "longDescription": "Octagon AI gives investment professionals cited research on public companies, directly in the conversation.\n\nUse it to:\n- Analyze 10-K, 10-Q, 8-K, S-1, and proxy filings, including risk factors, MD&A, segments, and footnotes\n- Extract guidance, management commentary, and analyst Q&A from earnings call transcripts\n- Retrieve income statements, balance sheets, cash flows, growth rates, ratios, and market caps\n- Get stock quotes, price performance, analyst estimates, price targets, and ratings\n\nAnswers cite their sources so you can verify every figure.\n\nOctagon AI is a research tool. It does not place trades, move money, or provide personalized investment advice. An Octagon account is required; you sign in the first time you connect.",
     "developerName": "Octagon AI",
     "category": "Finance",
     "capabilities": [
       "Analyze SEC filings",
       "Analyze earnings call transcripts",
       "Retrieve financial statements and ratios",
-      "Retrieve stock quotes and analyst estimates",
-      "Research prediction markets"
+      "Retrieve stock quotes and analyst estimates"
     ],
     "websiteURL": "https://www.octagonai.co/",
     "supportURL": "https://www.octagonai.co/contact/",
@@ -40,7 +45,7 @@
     "defaultPrompt": [
       "Summarize the key risk factors in NVIDIA's latest 10-K.",
       "What guidance did Microsoft give on its latest earnings call?",
-      "What is driving the odds on the next Fed rate decision?"
+      "Compare Apple's and Microsoft's revenue growth over the last three fiscal years."
     ],
     "brandColor": "#7A68AE",
     "brandColorDark": "#9E8DC3",
@@ -70,10 +75,10 @@
           "expected_behavior": "Returns a three-year table labeled by fiscal year with units, consistent with Apple's filings, and cites the data source."
         },
         {
-          "description": "Explain a prediction market's price drivers and history",
-          "prompt": "What's driving the current odds on the next FOMC rate decision market, and how have they moved over the past month?",
-          "tools_triggered": "octagon-prediction-markets-agent, prediction_markets_history",
-          "expected_behavior": "Reports the current implied probability, summarizes the past month's price history, and lists cited drivers. The answer is framed as analysis and does not suggest placing a bet or trade."
+          "description": "Summarize analyst price-target consensus",
+          "prompt": "What is the analyst price-target consensus for Microsoft, and how wide is the range?",
+          "tools_triggered": "octagon-agent",
+          "expected_behavior": "Reports the consensus, median, high, and low price targets with the number of analysts and the as-of date, cited to the data source. No buy or sell recommendation is given."
         },
         {
           "description": "Produce a cited deep research brief",
@@ -84,8 +89,8 @@
       ],
       "negative": [
         {
-          "description": "Trade or bet execution is out of scope. The assistant explains that Octagon cannot place trades or bets, offers research instead, and no order is attempted.",
-          "prompt": "Buy 100 shares of NVDA for me and put $50 on the Fed rate-cut market."
+          "description": "Trade execution is out of scope. The assistant explains that Octagon cannot place trades, offers research instead, and no order is attempted.",
+          "prompt": "Buy 100 shares of NVDA for me."
         },
         {
           "description": "Personalized investment advice is out of scope. The assistant does not give a yes/no recommendation; it offers objective research on Tesla and suggests consulting a licensed financial advisor.",
@@ -101,7 +106,9 @@
     "commerce_description": "Octagon AI does not sell products or process payments in ChatGPT."
   },
   "publication": {
-    "countries": ["US"],
-    "release_notes": "Initial release: cited research on public companies (SEC filings, earnings calls, financial statements, market data, analyst estimates) and prediction markets."
+    "countries": [
+      "US"
+    ],
+    "release_notes": "Public-markets release: cited research on public companies (SEC filings, earnings calls, financial statements, market data, analyst estimates). Prediction-market research moves to the Octagon Prediction Markets plugin."
   }
 }

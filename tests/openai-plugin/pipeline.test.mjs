@@ -27,10 +27,10 @@ test("builds a valid, reproducible package without touching the source tree", as
   assert.ok(first.archive);
   assert.equal(first.archive.sha256, second.archive?.sha256, "builds are byte-for-byte reproducible");
 
-  assert.equal(first.catalog.count, 69);
+  assert.equal(first.catalog.count, 68);
   assert.deepEqual(first.catalog.added, ["get-started", "octagon-research-router"]);
   assert.deepEqual(first.catalog.overridden, ["octagon-status"]);
-  assert.deepEqual(first.catalog.excluded, ["octagon-api-smoke-test", "octagon-setup"]);
+  assert.deepEqual(first.catalog.excluded, ["octagon-api-smoke-test", "octagon-setup", "prediction-markets-analysis"]);
 
   const manifest = JSON.parse(await readFile(path.join(first.stagingDir, ".codex-plugin/plugin.json"), "utf8"));
   assert.equal(manifest.name, "octagon-ai");

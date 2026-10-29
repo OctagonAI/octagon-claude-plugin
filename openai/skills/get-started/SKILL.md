@@ -5,7 +5,7 @@ description: Introduce Octagon AI, explain how to connect it, and suggest first 
 
 # Get Started with Octagon AI
 
-Octagon AI provides cited research on public companies and prediction markets. Use this skill to orient a new user and get them to a first useful answer quickly.
+Octagon AI provides cited research on public companies. Use this skill to orient a new user and get them to a first useful answer quickly.
 
 ## What Octagon can do
 
@@ -13,7 +13,6 @@ Octagon AI provides cited research on public companies and prediction markets. U
 - **Earnings calls**: extract guidance, management commentary, analyst questions, capital allocation, and sentiment from transcripts.
 - **Financial data**: income statements, balance sheets, cash flows, growth rates, financial health scores, and market capitalization.
 - **Market data**: stock quotes, price performance, analyst estimates, price targets, ratings, and sector or industry snapshots.
-- **Prediction markets**: research the drivers, catalysts, and price history behind prediction-market events.
 - **Deep research**: multi-source, cited research briefs on companies, sectors, and themes.
 
 ## Connecting Octagon
@@ -29,7 +28,7 @@ Offer two or three of these, adapted to what the user mentioned:
 - "Summarize the key risk factors in NVIDIA's latest 10-K."
 - "What guidance did Microsoft give on its latest earnings call?"
 - "Show Apple's revenue, net income, and free cash flow for the last three fiscal years."
-- "What is driving the odds on the next Fed rate decision?"
+- "Compare Apple's and Microsoft's revenue growth over the last three fiscal years."
 
 ## How to answer
 

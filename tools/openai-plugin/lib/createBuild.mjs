@@ -4,6 +4,7 @@ import path from "node:path";
 import { BuildPipeline } from "./BuildPipeline.mjs";
 import { SkillCatalog } from "./catalog/SkillCatalog.mjs";
 import { PluginConfig } from "./config/PluginConfig.mjs";
+import { Profile } from "./config/Profile.mjs";
 import { TransformConfig } from "./config/TransformConfig.mjs";
 import { ManifestBuilder } from "./manifest/ManifestBuilder.mjs";
 import { Archiver } from "./output/Archiver.mjs";
@@ -14,14 +15,10 @@ import { Validator } from "./validation/Validator.mjs";
 
 /** Repository layout the tool reads from. Everything here is read-only. */
 export function layout(/** @type {string} */ repoRoot) {
-  const openaiRoot = path.join(repoRoot, "openai");
   return Object.freeze({
     repoRoot,
     sourceSkills: path.join(repoRoot, "skills"),
-    openaiRoot,
-    overlaySkills: path.join(openaiRoot, "skills"),
-    pluginConfig: path.join(openaiRoot, "plugin.config.json"),
-    transformConfig: path.join(openaiRoot, "transform.config.json"),
+    openaiRoot: path.join(repoRoot, "openai"),
     defaultOut: path.join(repoRoot, "out"),
   });
 }
@@ -41,15 +38,18 @@ function protectedRepoPaths(paths) {
 }
 
 /**
- * Composition root: wires every collaborator from the repository layout.
+ * Composition root: wires every collaborator from the repository layout and
+ * the selected profile.
  *
- * @param {{ repoRoot: string, outRoot?: string, online?: boolean }} options
+ * @param {{ repoRoot: string, outRoot?: string, online?: boolean, profile?: string }} options
+ *   `profile` names a directory under `openai/profiles/`; omitted means `openai/` itself.
  */
-export async function createBuild({ repoRoot, outRoot, online = false }) {
+export async function createBuild({ repoRoot, outRoot, online = false, profile: profileName }) {
   const paths = layout(path.resolve(repoRoot));
+  const profile = Profile.resolve(paths.openaiRoot, profileName);
   const [config, transforms] = await Promise.all([
-    PluginConfig.load(paths.pluginConfig),
-    TransformConfig.load(paths.transformConfig),
+    PluginConfig.load(profile.pluginConfig),
+    TransformConfig.load(profile.transformConfig),
   ]);
 
   const validator = new Validator(
@@ -71,8 +71,9 @@ export async function createBuild({ repoRoot, outRoot, online = false }) {
     config,
     catalog: new SkillCatalog({
       source: new SkillRepository(paths.sourceSkills),
-      overlay: new SkillRepository(paths.overlaySkills),
+      overlay: new SkillRepository(profile.skills),
       exclude: transforms.data.excludeSkills,
+      include: transforms.data.includeSkills,
       transform: transforms.toPipeline(),
       requiredSources: transforms.editedSkills(),
     }),
@@ -80,8 +81,8 @@ export async function createBuild({ repoRoot, outRoot, online = false }) {
     writer,
     validator,
     archiver: new Archiver(),
-    assetsRoot: paths.openaiRoot,
+    assetsRoot: profile.assets,
   });
 
-  return { pipeline, validator, writer, config, transforms, paths };
+  return { pipeline, validator, writer, config, transforms, paths, profile };
 }

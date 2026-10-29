@@ -1,4 +1,6 @@
 // @ts-check
+import path from "node:path";
+import { ConfigError } from "../errors.mjs";
 import { RemoveFiles } from "../transform/RemoveFiles.mjs";
 import { ReplaceSection } from "../transform/ReplaceSection.mjs";
 import { ReplaceText } from "../transform/ReplaceText.mjs";
@@ -11,24 +13,35 @@ import { Checker, readJsonFile } from "./validate.mjs";
  * @typedef {{ file?: string, heading: string, body?: string | null }} SectionSpec
  * @typedef {{ file?: string, find?: string, pattern?: string, flags?: string, replace: string }} SubstitutionSpec
  * @typedef {{ sections?: SectionSpec[], substitutions?: SubstitutionSpec[] }} SkillEdits
- * @typedef {{ pattern: string, flags?: string, reason: string }} ForbiddenPattern
+ * @typedef {{ pattern: string, flags?: string, reason: string, paths?: string[], inherit?: boolean }} ForbiddenPattern
+ *   `paths` limits a pattern to files whose package path starts with one of the prefixes.
+ *   `inherit: false` keeps a pattern out of configs that extend this one.
  * @typedef {{
  *   excludeSkills: string[],
+ *   includeSkills?: string[],
  *   removeFiles: string[],
  *   sections: SectionSpec[],
  *   substitutions: SubstitutionSpec[],
  *   skillEdits: Record<string, SkillEdits>,
  *   forbiddenPatterns: ForbiddenPattern[],
  * }} TransformConfigData
+ * @typedef {Partial<TransformConfigData> & { extends?: string }} TransformConfigFile
  */
 
 /**
- * Declarative rewrite rules (`openai/transform.config.json`) that turn the
- * Claude skill catalog into provider-neutral OpenAI skills.
+ * Declarative rewrite rules (`transform.config.json`) that turn the Claude
+ * skill catalog into provider-neutral OpenAI skills.
  *
  * Global rules are lenient: they apply wherever they match. Per-skill edits are
  * strict: an edit that no longer matches its source fails the build, so changes
  * to upstream skills can never silently skip a compliance rewrite.
+ *
+ * A profile's config may `extends` another file. Lists concatenate (parent
+ * first), `excludeSkills` is replaced when the child sets it, `includeSkills`
+ * is the child's alone, patterns marked `inherit: false` stay with the parent,
+ * and `skillEdits` merge by skill with the child winning.
+ * Inherited edits for skills the child does not ship are dropped rather than
+ * failing, since the child never claimed them; the child's own edits stay strict.
  */
 export class TransformConfig {
   /** @type {Readonly<TransformConfigData>} */ data;
@@ -40,16 +53,59 @@ export class TransformConfig {
   }
 
   /**
+   * Loads a config file, resolving its `extends` chain.
+   *
    * @param {string} file
+   * @param {readonly string[]} [chain] Files already being loaded, for cycle detection.
    * @returns {Promise<TransformConfig>}
    */
-  static async load(file) {
-    const raw = await readJsonFile(file);
-    TransformConfig.check(raw, file);
-    return new TransformConfig(/** @type {TransformConfigData} */ (raw));
+  static async load(file, chain = []) {
+    const resolved = path.resolve(file);
+    if (chain.includes(resolved)) {
+      throw new ConfigError(resolved, [`"extends" cycle: ${[...chain, resolved].join(" -> ")}`]);
+    }
+    const raw = await readJsonFile(resolved);
+    TransformConfig.check(raw, resolved);
+    const own = /** @type {TransformConfigFile} */ (raw);
+
+    if (own.extends === undefined) {
+      return new TransformConfig(/** @type {TransformConfigData} */ (own));
+    }
+    const parent = await TransformConfig.load(path.resolve(path.dirname(resolved), own.extends), [...chain, resolved]);
+    return new TransformConfig(TransformConfig.merge(parent.data, own));
   }
 
   /**
+   * @param {Readonly<TransformConfigData>} parent
+   * @param {TransformConfigFile} child
+   * @returns {TransformConfigData}
+   */
+  static merge(parent, child) {
+    const excludeSkills = child.excludeSkills ?? parent.excludeSkills;
+    const includeSkills = child.includeSkills;
+    const shipped = (/** @type {string} */ skill) =>
+      !excludeSkills.includes(skill) && (includeSkills === undefined || includeSkills.includes(skill));
+
+    const inherited = Object.fromEntries(Object.entries(parent.skillEdits).filter(([skill]) => shipped(skill)));
+
+    return {
+      excludeSkills,
+      ...(includeSkills === undefined ? {} : { includeSkills }),
+      removeFiles: [...parent.removeFiles, ...(child.removeFiles ?? [])],
+      sections: [...parent.sections, ...(child.sections ?? [])],
+      substitutions: [...parent.substitutions, ...(child.substitutions ?? [])],
+      skillEdits: { ...inherited, ...(child.skillEdits ?? {}) },
+      forbiddenPatterns: [
+        ...parent.forbiddenPatterns.filter(pattern => pattern.inherit !== false),
+        ...(child.forbiddenPatterns ?? []),
+      ],
+    };
+  }
+
+  /**
+   * Structural checks. A file that `extends` another may omit any list; a root
+   * file must declare all of them.
+   *
    * @param {unknown} raw
    * @param {string} source
    */
@@ -57,12 +113,17 @@ export class TransformConfig {
     const check = new Checker();
     if (!check.object(raw, "config")) return check.throwIfAny(source);
 
-    check.stringArray(raw.excludeSkills, "excludeSkills");
-    check.stringArray(raw.removeFiles, "removeFiles");
-    checkSections(check, raw.sections, "sections");
-    checkSubstitutions(check, raw.substitutions, "substitutions");
+    const partial = raw.extends !== undefined;
+    if (partial && typeof raw.extends !== "string") check.fail("extends must be a relative file path");
+    const present = (/** @type {string} */ key) => raw[key] !== undefined || !partial;
 
-    if (check.object(raw.skillEdits, "skillEdits")) {
+    if (present("excludeSkills")) check.stringArray(raw.excludeSkills, "excludeSkills");
+    if (raw.includeSkills !== undefined) check.stringArray(raw.includeSkills, "includeSkills");
+    if (present("removeFiles")) check.stringArray(raw.removeFiles, "removeFiles");
+    if (present("sections")) checkSections(check, raw.sections, "sections");
+    if (present("substitutions")) checkSubstitutions(check, raw.substitutions, "substitutions");
+
+    if (present("skillEdits") && check.object(raw.skillEdits, "skillEdits")) {
       for (const [skill, edits] of Object.entries(raw.skillEdits)) {
         if (!check.object(edits, `skillEdits.${skill}`)) continue;
         if (edits.sections !== undefined) {
@@ -74,7 +135,7 @@ export class TransformConfig {
       }
     }
 
-    if (check.array(raw.forbiddenPatterns, "forbiddenPatterns")) {
+    if (present("forbiddenPatterns") && check.array(raw.forbiddenPatterns, "forbiddenPatterns")) {
       raw.forbiddenPatterns.forEach((entry, index) => {
         const where = `forbiddenPatterns[${index}]`;
         if (!check.object(entry, where)) return;
@@ -82,6 +143,8 @@ export class TransformConfig {
           tryRegExp(check, entry.pattern, entry.flags, where);
         }
         check.string(entry.reason, `${where}.reason`);
+        if (entry.paths !== undefined) check.stringArray(entry.paths, `${where}.paths`);
+        if (entry.inherit !== undefined && typeof entry.inherit !== "boolean") check.fail(`${where}.inherit must be a boolean`);
       });
     }
     check.throwIfAny(source);
@@ -127,11 +190,15 @@ export class TransformConfig {
     ]);
   }
 
-  /** @returns {{ regex: RegExp, reason: string }[]} Non-global regexes, safe for repeated `test()`. */
+  /**
+   * @returns {{ regex: RegExp, reason: string, paths?: readonly string[] }[]}
+   *   Non-global regexes, safe for repeated `test()`.
+   */
   forbiddenRegexes() {
-    return this.data.forbiddenPatterns.map(({ pattern, flags = "", reason }) => ({
+    return this.data.forbiddenPatterns.map(({ pattern, flags = "", reason, paths }) => ({
       regex: new RegExp(pattern, flags.replaceAll("g", "").replaceAll("y", "")),
       reason,
+      ...(paths === undefined ? {} : { paths }),
     }));
   }
 }

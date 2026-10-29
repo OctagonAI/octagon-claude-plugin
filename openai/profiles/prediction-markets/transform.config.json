@@ -1,0 +1,150 @@
+{
+  "extends": "../../transform.config.json",
+  "includeSkills": [
+    "prediction-markets-analysis"
+  ],
+  "excludeSkills": [],
+  "skillEdits": {
+    "prediction-markets-analysis": {
+      "sections": [
+        {
+          "heading": "## Prerequisites",
+          "body": "This skill uses the Octagon tools. If they are unavailable, ask the user to connect Octagon from the plugin's connection settings, then retry. Never ask the user to paste passwords, access tokens, or other credentials into the conversation.\n\nPresent results as research and analysis. Do not recommend placing trades or bets, how much to invest, or how to allocate funds."
+        },
+        {
+          "heading": "### Sports Matchup",
+          "body": null
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "heading": "## Recommendation Framework",
+          "body": null
+        }
+      ],
+      "substitutions": [
+        {
+          "file": "SKILL.md",
+          "find": "identify mispricings, surface price drivers, and provide actionable trading insights.",
+          "replace": "compare market and model probabilities, surface price drivers, and explain what is moving the market."
+        },
+        {
+          "file": "SKILL.md",
+          "find": "Compare crowd consensus against model-derived probability to find trading opportunities.",
+          "replace": "Compare crowd consensus against model-derived probability to find where they diverge."
+        },
+        {
+          "file": "SKILL.md",
+          "find": "### Pre-Trade Research\nResearch key drivers behind a prediction market price before placing a trade.",
+          "replace": "### Driver Research\nResearch the key drivers behind a prediction market price."
+        },
+        {
+          "file": "SKILL.md",
+          "find": "Check volume and open interest before sizing positions",
+          "replace": "Check volume and open interest to judge how reliable the price is"
+        },
+        {
+          "file": "SKILL.md",
+          "find": "`:refresh` before trading",
+          "replace": "`:refresh` when you need the latest data"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| **Mispricing Signal** | Direction and magnitude of potential opportunity |",
+          "replace": "| **Mispricing Signal** | Direction and size of the gap between market and model |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Signal | Market Price vs. Model | Action |",
+          "replace": "| Signal | Market Price vs. Model | Interpretation |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Consider selling/shorting |",
+          "replace": "| Market implies a higher probability than the model |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Consider buying |",
+          "replace": "| Market implies a lower probability than the model |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| No clear edge |",
+          "replace": "| No meaningful divergence |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Liquidity | Trading Implication |",
+          "replace": "| Liquidity | Price Reliability |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Easy entry/exit, minimal slippage |",
+          "replace": "| Price is a reliable signal |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Active but inefficient |",
+          "replace": "| Signal is noisy |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Can trade, size limited |",
+          "replace": "| Thin market; treat the price with caution |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Difficult to execute, avoid large positions |",
+          "replace": "| Price may be stale or easily moved |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "| Execution risk high |",
+          "replace": "| Price may not reflect consensus |"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "- Need latest contract details for execution",
+          "replace": "- Need the latest contract details"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "**Ignoring liquidity**: Can't profit if you can't exit",
+          "replace": "**Ignoring liquidity**: Thin markets produce unreliable prices"
+        },
+        {
+          "file": "references/interpreting-results.md",
+          "find": "**Position sizing errors**: Even high-edge trades can lose",
+          "replace": "**Treating probabilities as certainties**: Even large divergences can resolve either way"
+        },
+        {
+          "file": "SKILL.md",
+          "find": "## Recommendation\n**Slight Sell** on Hold contract. Model sees 4% overpricing. Consider waiting for CPI data before positioning.\n",
+          "replace": "## Mispricing\nMarket implies 4 points more than the model on Hold. Confidence: moderate. Next catalyst: CPI release, which could move either estimate.\n"
+        }
+      ]
+    }
+  },
+  "forbiddenPatterns": [
+    {
+      "pattern": "\\b(?:place|placing|make|making) (?:a )?(?:bet|wager)s?\\b",
+      "flags": "i",
+      "reason": "bet placement is out of scope"
+    },
+    {
+      "pattern": "\\b(?:buy|sell|short|long) (?:yes|no)\\b",
+      "flags": "i",
+      "reason": "no side recommendations"
+    },
+    {
+      "pattern": "\\b(?:entry|exit) (?:point|price|timing)s?\\b|\\bstake size\\b|\\bpayout\\b",
+      "flags": "i",
+      "reason": "trade-execution vocabulary; findings stop at the analysis"
+    },
+    {
+      "pattern": "\\b(?:slight|strong|weak) (?:sell|buy)\\b|before positioning",
+      "flags": "i",
+      "reason": "example output must not recommend a side or timing"
+    }
+  ]
+}

@@ -14,7 +14,13 @@ import { PackageView } from "./validation/PackageView.mjs";
 /** @typedef {import("./validation/Validator.mjs").Validator} Validator */
 /** @typedef {import("./validation/Validator.mjs").ValidationReport} ValidationReport */
 
-export const REPORT_FILE = "build-report.json";
+/**
+ * @param {string} pluginName
+ * @returns {string} Report file name, distinct per plugin so profiles don't overwrite each other.
+ */
+export function reportFileName(pluginName) {
+  return `${pluginName}.build-report.json`;
+}
 
 /**
  * @typedef {{
@@ -102,7 +108,7 @@ export class BuildPipeline {
       archive,
       validation,
     };
-    await this.#writer.writeArtifactJson(REPORT_FILE, result);
+    await this.#writer.writeArtifactJson(reportFileName(this.#config.data.name), result);
     return result;
   }
 }
