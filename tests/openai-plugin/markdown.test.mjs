@@ -71,3 +71,27 @@ test("fences follow the CommonMark close rule", () => {
   const indented = "- item\n\n   ```\n   ## inside list fence\n   ```\n";
   assert.equal(replaceSection(indented, "## inside list fence", null).count, 0, "fences may be indented up to three spaces");
 });
+
+test("fences nested in list items keep their container-relative indentation", () => {
+  const nestedList = [
+    "## Keep",
+    "1. Step one",
+    "   - detail",
+    "      ```json",
+    "      ## not a heading",
+    "      [not a link](ignored.md)",
+    "      ```",
+    "## Drop",
+    "gone",
+    "",
+  ].join("\n");
+  const { text, count } = replaceSection(nestedList, "## Drop", null);
+  assert.equal(count, 1);
+  assert.match(text, /## not a heading/, "a six-space fence inside a list is still a fence");
+  assert.doesNotMatch(text, /gone/);
+  assert.deepEqual(relativeLinks(nestedList), []);
+
+  const farCloser = "  ```\ninside\n        ```\n## still inside\n  ```\n## after\n";
+  assert.equal(replaceSection(farCloser, "## still inside", null).count, 0, "a closer indented 6 more than the opener does not close");
+  assert.equal(replaceSection(farCloser, "## after", null).count, 1);
+});
