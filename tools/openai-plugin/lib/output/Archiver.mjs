@@ -74,6 +74,10 @@ function run(command, args, { cwd, input } = {}) {
     child.on("error", error =>
       reject(new PackagingError(`Could not run "${command}": ${error.message}`, { cause: error })),
     );
+    // If the child exits before reading its input, the write fails with EPIPE.
+    // That is reported through the exit code below, so the stream error itself
+    // must not surface as an uncaught exception.
+    child.stdin.on("error", () => {});
     child.on("close", code =>
       code === 0
         ? resolve(stdout)
