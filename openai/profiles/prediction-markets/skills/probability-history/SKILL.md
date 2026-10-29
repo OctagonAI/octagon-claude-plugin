@@ -9,14 +9,14 @@ Turn a market's price history into an explanation: when the probability moved, b
 
 ## Inputs
 
-- An event ticker, or a Kalshi market link (the ticker is the last path segment of the URL).
+- An event ticker, or an event-specific Kalshi market link. The ticker is the event-specific segment of the URL, such as `kxfeddecision-26jun` in `…/kxfeddecision/fed-meeting/kxfeddecision-26jun`. A link that ends at the series page (`…/fed-meeting`) has no event ticker: ask the user which event they mean, or fetch the agent's report for the link and take the ticker from it.
 - A window. Default to the last 30 days when the user does not say.
 
 ## Workflow
 
 1. Call `prediction_markets_history` with the event ticker and the window (`captured_from`, `captured_to`). Page with `cursor` when the response is truncated. Set `include_analysis` to true when the user wants more than the probability series.
 2. Compute from the series: start and end probability, net change, the largest moves (by size), and any regime change, meaning a sustained shift rather than a spike that reverted.
-3. For each large move, identify the explanation: a data release, announcement, ruling, poll, or news event on or just before that date. Use `octagon-prediction-markets-agent` with the market link when the history alone does not explain a move.
+3. For each large move, identify the explanation: a data release, announcement, ruling, poll, or news event on or just before that date. When the history alone does not explain a move, call `octagon-prediction-markets-agent` with the market link and `cache: true`; generate a new report (`cache: false`) only after telling the user it takes minutes and uses report credits and getting their agreement.
 4. Present the analysis in the structure below.
 
 ## Output structure

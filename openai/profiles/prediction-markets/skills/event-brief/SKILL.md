@@ -14,8 +14,8 @@ Deliver a one-page brief that an analyst could forward: what the market measures
 
 ## Workflow
 
-1. Call `octagon-prediction-markets-agent` with the market link. Use the cached report first. If none exists, tell the user that generating a report takes several minutes and uses report credits, and ask before calling with `cache: false`.
-2. If the user wants recent movement in context, add `prediction_markets_history` for the event ticker (the last path segment of the market URL) and fold the trend into the brief.
+1. Call `octagon-prediction-markets-agent` with the market link and `cache: true`, which returns a cached report only and never generates one. If no cached report exists, tell the user that generating a report takes several minutes and uses report credits, and call again with `cache: false` only after they agree.
+2. If the user wants recent movement in context, add `prediction_markets_history` for the event ticker and fold the trend into the brief. The event ticker is the event-specific segment of a market URL, such as `kxfeddecision-26jun` in `…/kxfeddecision/fed-meeting/kxfeddecision-26jun`. A link that ends at the series page (`…/fed-meeting`) has no event ticker: ask the user which event they mean, or take the ticker from the agent's report.
 3. Write the brief in the structure below. Every driver, base rate, and catalyst carries a source.
 
 ## Brief structure

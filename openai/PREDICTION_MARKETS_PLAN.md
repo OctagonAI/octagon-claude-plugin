@@ -28,7 +28,7 @@ Rule: **no prediction-market content remains in the public-markets listing, and 
 
 ### 0.1 Changes to the published plugin's package (`openai/`, default profile)
 
-All config and overlay-skill edits; no code. Ship them in PR #1 before its upload, or as the first follow-up.
+All config and overlay-skill edits; no code. They are merged with PR #1 but **uploaded to the live listing only after the prediction-markets plugin is published** (§6, step 8). Until then the published plugin keeps its current prediction-market workflow, so users are never pointed at a plugin they cannot install.
 
 | Where | Today | Change |
 |---|---|---|
@@ -515,14 +515,15 @@ Items 2–4 are website PRs in `octagonai.co` and can start before the plugin is
 
 | Step | What | Gate |
 |---|---|---|
-| 0 | §0.1 edits to the public-markets package, shipped with PR #1's upload to the live listing (§0.3) | The published plugin contains no prediction-market content; its P4 case is now a public-markets case |
+| 0 | §0.1 edits to the public-markets package merged (PR #2); the live listing is **not** updated yet | The re-oriented package builds clean and waits for step 8 |
 | 1 | Server PR (§3) | `bun test` green; `/mcp` and `/deep-research/mcp` tool lists unchanged; merged and deployed |
 | 2 | §2 decision in the portal (start a draft, look at the challenge base offered) | Origin chosen |
 | 3 | Packaging PR (§4) with the profile content | `test:openai` green for both profiles; default profile output byte-identical to the §0.1 build; `validate --profile prediction-markets --online` 0 errors |
 | 4 | Infra per §2 (Option A: Render service + CNAME; Option B: website file) | `/.well-known/openai-apps-challenge` serves the token on the chosen base |
 | 5 | Auth sanity: DCR + token exchange against the new resource URL from a scratch client | Login works for the new path |
 | 6 | ChatGPT dev-mode run of the 8 cases, demo video, set `demo_recording_url` | All cases behave as specified |
-| 7 | Upload, scan, review details, Ken submits | Portal shows 0 issues |
+| 7 | Upload the prediction-markets plugin, scan, review details, Ken submits, approval, publish | The prediction-markets listing is live and installable |
+| 8 | Upload the re-oriented public-markets package as the live listing's next version (§0.3) | Users following the referral land on a published plugin |
 
 No commits or deploys happen without explicit go-ahead. Both PRs are authored by the human owner, without tool attribution.
 

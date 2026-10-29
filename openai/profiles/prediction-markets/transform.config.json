@@ -116,6 +116,11 @@
           "file": "references/interpreting-results.md",
           "find": "**Position sizing errors**: Even high-edge trades can lose",
           "replace": "**Treating probabilities as certainties**: Even large divergences can resolve either way"
+        },
+        {
+          "file": "SKILL.md",
+          "find": "## Recommendation\n**Slight Sell** on Hold contract. Model sees 4% overpricing. Consider waiting for CPI data before positioning.\n",
+          "replace": "## Mispricing\nMarket implies 4 points more than the model on Hold. Confidence: moderate. Next catalyst: CPI release, which could move either estimate.\n"
         }
       ]
     }
@@ -135,6 +140,11 @@
       "pattern": "\\b(?:entry|exit) (?:point|price|timing)s?\\b|\\bstake size\\b|\\bpayout\\b",
       "flags": "i",
       "reason": "trade-execution vocabulary; findings stop at the analysis"
+    },
+    {
+      "pattern": "\\b(?:slight|strong|weak) (?:sell|buy)\\b|before positioning",
+      "flags": "i",
+      "reason": "example output must not recommend a side or timing"
     }
   ]
 }

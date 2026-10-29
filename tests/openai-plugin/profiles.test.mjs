@@ -157,6 +157,9 @@ test("the prediction-markets profile builds a valid, reproducible, prediction-on
   const skill = await readFile(path.join(first.stagingDir, "skills/prediction-markets-analysis/SKILL.md"), "utf8");
   assert.doesNotMatch(skill, /Pre-Trade|placing a trade/);
   assert.match(skill, /### Driver Research/);
+  // The fenced example response used to end with a sell recommendation.
+  assert.doesNotMatch(skill, /## Recommendation|Slight Sell|before positioning/);
+  assert.match(skill, /## Mispricing\nMarket implies 4 points more than the model/);
 });
 
 test("the public-markets package carries no prediction-market content in its own skills", async t => {
