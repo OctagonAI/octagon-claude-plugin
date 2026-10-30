@@ -1,4 +1,5 @@
 // @ts-check
+import { ConfigError } from "../errors.mjs";
 import { deepFreeze } from "../util/object.mjs";
 import { Checker, readJsonFile } from "./validate.mjs";
 
@@ -21,7 +22,20 @@ export const ASSET_PREFIX = "./assets/";
  *   onboardingSkill?: string,
  *   review?: Record<string, unknown>,
  *   publication?: Record<string, unknown>,
+ *   grok?: GrokConfigData,
  * }} PluginConfigData
+ *
+ * @typedef {{
+ *   keywords: string[],
+ *   domains: string[],
+ *   category?: string,
+ *   catalogDescription?: string,
+ *   oauthUrl: string,
+ *   readmeIntro: string,
+ *   scopeNote: string,
+ *   smokeTests: { prompt: string, expect: string }[],
+ * }} GrokConfigData The Grok Build marketplace block: brand-scoped discovery
+ *   terms, the catalog's browse text, and the reviewer-facing README copy.
  */
 
 /**
@@ -93,7 +107,48 @@ export class PluginConfig {
     for (const key of ["review", "publication"]) {
       if (raw[key] !== undefined) check.object(raw[key], key);
     }
+    if (raw.grok !== undefined) PluginConfig.#checkGrok(raw.grok, check);
     check.throwIfAny(source);
+  }
+
+  /**
+   * @param {unknown} grok
+   * @param {Checker} check
+   */
+  static #checkGrok(grok, check) {
+    if (!check.object(grok, "grok")) return;
+    if (check.stringArray(grok.keywords, "grok.keywords") && grok.keywords.length === 0) {
+      check.fail("grok.keywords must list at least one keyword");
+    }
+    if (check.stringArray(grok.domains, "grok.domains") && grok.domains.length === 0) {
+      check.fail("grok.domains must list at least one domain");
+    }
+    check.optionalString(grok.category, "grok.category");
+    check.optionalString(grok.catalogDescription, "grok.catalogDescription");
+    for (const key of ["oauthUrl", "readmeIntro", "scopeNote"]) check.string(grok[key], `grok.${key}`);
+    if (typeof grok.oauthUrl === "string" && !grok.oauthUrl.startsWith("https://")) {
+      check.fail("grok.oauthUrl must be an https:// URL");
+    }
+    if (check.array(grok.smokeTests, "grok.smokeTests")) {
+      if (grok.smokeTests.length === 0) check.fail("grok.smokeTests must list at least one prompt");
+      grok.smokeTests.forEach((item, index) => {
+        if (check.object(item, `grok.smokeTests[${index}]`)) {
+          check.string(item.prompt, `grok.smokeTests[${index}].prompt`);
+          check.string(item.expect, `grok.smokeTests[${index}].expect`);
+        }
+      });
+    }
+  }
+
+  /**
+   * @returns {Readonly<GrokConfigData>}
+   * @throws {ConfigError} when the config has no `grok` block.
+   */
+  grok() {
+    if (!this.data.grok) {
+      throw new ConfigError(`plugin "${this.data.name}"`, ['a "grok" block is required to build the Grok target']);
+    }
+    return this.data.grok;
   }
 
   /** @returns {string[]} Asset paths (relative to `openai/`) referenced by the listing. */

@@ -1,7 +1,6 @@
 // @ts-check
-import { rm } from "node:fs/promises";
 import path from "node:path";
-import { MANIFEST_PATH, MCP_CONFIG_PATH } from "./manifest/ManifestBuilder.mjs";
+import { OpenAITarget } from "./target/OpenAITarget.mjs";
 import { PackageView } from "./validation/PackageView.mjs";
 
 /** @typedef {import("./catalog/SkillCatalog.mjs").SkillCatalog} SkillCatalog */
@@ -11,20 +10,25 @@ import { PackageView } from "./validation/PackageView.mjs";
 /** @typedef {import("./output/Archiver.mjs").Archiver} Archiver */
 /** @typedef {import("./output/Archiver.mjs").ArchiveInfo} ArchiveInfo */
 /** @typedef {import("./output/PackageWriter.mjs").PackageWriter} PackageWriter */
+/** @typedef {import("./target/Target.mjs").Target} Target */
+/** @typedef {import("./target/Target.mjs").TargetId} TargetId */
 /** @typedef {import("./validation/Validator.mjs").Validator} Validator */
 /** @typedef {import("./validation/Validator.mjs").ValidationReport} ValidationReport */
 
 /**
  * @param {string} pluginName
- * @returns {string} Report file name, distinct per plugin so profiles don't overwrite each other.
+ * @param {TargetId} [target]
+ * @returns {string} Report file name, distinct per plugin and target so builds don't overwrite each other.
+ *   The OpenAI name is unchanged from before targets existed.
  */
-export function reportFileName(pluginName) {
-  return `${pluginName}.build-report.json`;
+export function reportFileName(pluginName, target = "openai") {
+  return target === "openai" ? `${pluginName}.build-report.json` : `${pluginName}.${target}.build-report.json`;
 }
 
 /**
  * @typedef {{
  *   ok: boolean,
+ *   target: TargetId,
  *   plugin: { name: string, version: string },
  *   stagingDir: string,
  *   catalog: Omit<CatalogResult, "skills"> & { count: number },
@@ -35,38 +39,42 @@ export function reportFileName(pluginName) {
 
 /**
  * Orchestrates one build:
- *   catalog → manifest → stage → validate package → zip → validate archive → report.
+ *   catalog → target files → skills → assets → validate package → target artifact → report.
  *
- * Collaborators are injected, so each step can be replaced in tests. If package
- * validation reports an error, no archive is produced.
+ * Collaborators are injected, so each step can be replaced in tests. The
+ * target decides what the package looks like beyond its skills: the OpenAI
+ * target writes the Codex manifest and zips; the Grok target writes the Grok
+ * manifest and README and leaves a directory. If package validation reports an
+ * error, no artifact is produced.
  */
 export class BuildPipeline {
   /** @type {PluginConfig} */ #config;
   /** @type {SkillCatalog} */ #catalog;
-  /** @type {ManifestBuilder} */ #manifest;
+  /** @type {Target} */ #target;
   /** @type {PackageWriter} */ #writer;
   /** @type {Validator} */ #validator;
-  /** @type {Archiver} */ #archiver;
   /** @type {string} */ #assetsRoot;
 
   /**
    * @param {{
    *   config: PluginConfig,
    *   catalog: SkillCatalog,
-   *   manifest: ManifestBuilder,
    *   writer: PackageWriter,
    *   validator: Validator,
-   *   archiver: Archiver,
    *   assetsRoot: string,
+   *   target?: Target,
+   *   manifest?: ManifestBuilder,
+   *   archiver?: Archiver,
    * }} deps `assetsRoot` is the directory that listing asset paths are relative to.
+   *   `target` defaults to the OpenAI target; `manifest` and `archiver` are the
+   *   pre-target way of configuring it and are honored when `target` is omitted.
    */
-  constructor({ config, catalog, manifest, writer, validator, archiver, assetsRoot }) {
+  constructor({ config, catalog, writer, validator, assetsRoot, target, manifest, archiver }) {
     this.#config = config;
     this.#catalog = catalog;
-    this.#manifest = manifest;
+    this.#target = target ?? new OpenAITarget({ manifest, archiver });
     this.#writer = writer;
     this.#validator = validator;
-    this.#archiver = archiver;
     this.#assetsRoot = assetsRoot;
   }
 
@@ -75,40 +83,34 @@ export class BuildPipeline {
     const { skills, ...catalog } = await this.#catalog.build();
 
     await this.#writer.reset();
-    await this.#writer.writeJson(MANIFEST_PATH, this.#manifest.manifest());
-    await this.#writer.writeJson(MCP_CONFIG_PATH, this.#manifest.mcpConfig());
+    await this.#target.emit({ writer: this.#writer, config: this.#config, skills, assetsRoot: this.#assetsRoot });
     for (const skill of skills) await this.#writer.writeSkill(skill);
-    for (const asset of this.#config.assetPaths()) {
+    for (const asset of this.#target.assetPaths(this.#config)) {
       await this.#writer.copyFile(path.join(this.#assetsRoot, asset), asset);
     }
     const files = await this.#writer.seal();
 
-    const pkg = await PackageView.load(this.#writer.stagingDir);
-    let validation = await this.#validator.run({ pkg }, "package");
-
-    /** @type {ArchiveInfo | null} */
-    let archive = null;
-    const { name, version } = this.#config.data;
-    const zipPath = this.#writer.artifactPath(`${name}-openai-${version}.zip`);
-    if (validation.ok) {
-      archive = await this.#archiver.create(this.#writer.stagingDir, files, zipPath);
-      validation = validation.merge(await this.#validator.run({ pkg, archive }, "archive"));
-    } else {
-      // A ZIP from an earlier successful build must not outlive a failed one,
-      // or `validate` and a careless upload would pick up stale output.
-      await rm(zipPath, { force: true });
-    }
+    const pkg = await PackageView.load(this.#writer.stagingDir, { manifestPath: this.#target.manifestPath });
+    const packageValidation = await this.#validator.run({ pkg }, "package");
+    const { archive, validation } = await this.#target.finalize({
+      writer: this.#writer,
+      files,
+      pkg,
+      validator: this.#validator,
+      validation: packageValidation,
+    });
 
     /** @type {BuildResult} */
     const result = {
       ok: validation.ok,
+      target: this.#target.id,
       plugin: { name: this.#config.data.name, version: this.#config.data.version },
       stagingDir: this.#writer.stagingDir,
       catalog: { ...catalog, count: skills.length },
       archive,
       validation,
     };
-    await this.#writer.writeArtifactJson(reportFileName(this.#config.data.name), result);
+    await this.#writer.writeArtifactJson(reportFileName(this.#config.data.name, this.#target.id), result);
     return result;
   }
 }

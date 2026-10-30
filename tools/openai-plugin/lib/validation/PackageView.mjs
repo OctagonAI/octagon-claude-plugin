@@ -47,9 +47,10 @@ export class PackageView {
 
   /**
    * @param {string} root
+   * @param {{ manifestPath?: string }} [options] Where the target writes its manifest; the Codex path by default.
    * @returns {Promise<PackageView>}
    */
-  static async load(root) {
+  static async load(root, { manifestPath = MANIFEST_PATH } = {}) {
     const files = existsSync(root) ? await listFiles(root) : [];
     const skills = await Promise.all(
       files
@@ -67,7 +68,7 @@ export class PackageView {
     return new PackageView({
       root,
       files,
-      manifest: await readJson(root, MANIFEST_PATH),
+      manifest: await readJson(root, manifestPath),
       mcp: await readJson(root, MCP_CONFIG_PATH),
       skills,
     });

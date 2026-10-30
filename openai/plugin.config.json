@@ -26,6 +26,39 @@
       "prediction_markets_history"
     ]
   },
+  "grok": {
+    "keywords": [
+      "octagon",
+      "octagon ai",
+      "octagon research",
+      "octagon sec filings",
+      "octagon earnings calls"
+    ],
+    "domains": [
+      "octagonai.co",
+      "www.octagonai.co",
+      "docs.octagonagents.com"
+    ],
+    "category": "finance",
+    "catalogDescription": "Octagon AI research on public companies (MCP server + skills). Cited answers from SEC filings (10-K, 10-Q, 8-K, S-1, proxies), ten years of earnings call transcripts, financial statements and ratios, stock prices, analyst estimates, and price targets. Requires a free Octagon account; sign in with OAuth on first use.",
+    "oauthUrl": "https://login.octagonai.co",
+    "readmeIntro": "Built for investment professionals who want the record behind a number: ask about a filing, an earnings call, a financial statement, a price series, or an analyst estimate, and the answer comes back with its source. Octagon is a research tool. It does not place trades, move money, or give personalized investment advice.",
+    "scopeNote": "Research on public companies only. The plugin cannot execute trades, connect to a brokerage, or hold funds, and it does not give personalized investment advice. Prediction-market research is a separate plugin, `octagon-prediction-markets`.",
+    "smokeTests": [
+      {
+        "prompt": "Summarize the risk factors in Apple's latest 10-K.",
+        "expect": "a summary of the Risk Factors section with the filing date and a link to the filing"
+      },
+      {
+        "prompt": "What guidance did NVIDIA give on last quarter's earnings call?",
+        "expect": "the guidance statements from the transcript, attributed to the speaker, with the call date"
+      },
+      {
+        "prompt": "Compare Apple's and Microsoft's revenue growth over the last three fiscal years.",
+        "expect": "a side-by-side table by fiscal year with units and the statements it was built from"
+      }
+    ]
+  },
   "interface": {
     "displayName": "Octagon AI",
     "shortDescription": "Cited stock & market research",
