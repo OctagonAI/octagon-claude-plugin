@@ -142,10 +142,12 @@ test("the prediction-markets profile builds a valid, reproducible, prediction-on
   assert.equal(first.ok, true, first.validation.errors.map(String).join("\n"));
   assert.equal(first.archive?.sha256, second.archive?.sha256);
   assert.equal(first.plugin.name, "octagon-prediction-markets");
-  assert.equal(first.catalog.count, 6);
-  assert.deepEqual(first.catalog.transformed, ["prediction-markets-analysis"]);
-  assert.deepEqual(first.catalog.added, ["event-brief", "get-started", "mispricing-analysis", "probability-history"]);
-  assert.deepEqual(first.catalog.overridden, ["octagon-status"]);
+  assert.equal(first.catalog.count, 7);
+  // The catalog's prediction-markets skill is overlaid, not transformed: its
+  // upstream copy lags the product (Kalshi only, "120+ markets", no Trust Score).
+  assert.deepEqual(first.catalog.transformed, []);
+  assert.deepEqual(first.catalog.added, ["event-brief", "get-started", "mispricing-analysis", "probability-history", "trust-score"]);
+  assert.deepEqual(first.catalog.overridden, ["octagon-status", "prediction-markets-analysis"]);
 
   const manifest = JSON.parse(await readFile(path.join(first.stagingDir, ".codex-plugin/plugin.json"), "utf8"));
   assert.equal(manifest.interface.displayName, "Octagon Prediction Markets");
@@ -153,13 +155,17 @@ test("the prediction-markets profile builds a valid, reproducible, prediction-on
   assert.deepEqual(Object.keys(mcp.mcpServers), ["octagon-predictions"]);
   assert.match(mcp.mcpServers["octagon-predictions"].url, /\/prediction-markets\/mcp$/);
 
-  // The compliance edits moved out of the base config must still apply here.
+  // Coverage claims match the product as verified against production: both
+  // venues, the Trust Score, and the scale; none of the upstream skill's stale copy.
   const skill = await readFile(path.join(first.stagingDir, "skills/prediction-markets-analysis/SKILL.md"), "utf8");
-  assert.doesNotMatch(skill, /Pre-Trade|placing a trade/);
-  assert.match(skill, /### Driver Research/);
-  // The fenced example response used to end with a sell recommendation.
-  assert.doesNotMatch(skill, /## Recommendation|Slight Sell|before positioning/);
-  assert.match(skill, /## Mispricing\nMarket implies 4 points more than the model/);
+  assert.match(skill, /Kalshi and Polymarket/);
+  assert.match(skill, /Trust Score/);
+  assert.match(skill, /130,000/);
+  assert.match(skill, /Sports/);
+  assert.doesNotMatch(skill, /coming soon|120\+|Slight Sell|before positioning|Pre-Trade/i);
+  const manifest2 = JSON.parse(await readFile(path.join(first.stagingDir, ".codex-plugin/plugin.json"), "utf8"));
+  assert.match(manifest2.interface.longDescription, /Kalshi and Polymarket/);
+  assert.ok(manifest2.interface.capabilities.some(c => /Trust Score/.test(c)));
 });
 
 test("the public-markets package carries no prediction-market content in its own skills", async t => {

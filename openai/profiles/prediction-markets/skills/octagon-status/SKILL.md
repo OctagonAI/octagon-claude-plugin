@@ -22,8 +22,8 @@ Check which Octagon tools are available, then make one lightweight call, such as
 
 When connected, summarize the available tools:
 
-- `octagon-prediction-markets-agent`: cited research reports on a prediction-market event
-- `prediction_markets_history`: a market's probability history over a chosen window
+- `octagon-prediction-markets-agent`: cited research reports, Trust Scores, market discovery, and history for Kalshi and Polymarket markets
+- `prediction_markets_history`: a Kalshi event's probability history over a chosen window
 
 Then suggest a first request, or follow the `get-started` skill.
 

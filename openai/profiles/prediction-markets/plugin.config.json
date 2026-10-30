@@ -1,7 +1,7 @@
 {
   "name": "octagon-prediction-markets",
   "version": "1.0.0",
-  "description": "Cited research on prediction markets: event odds, what moves them, probability history, and where the market-implied probability diverges from an independent model estimate.",
+  "description": "Cited research on Kalshi and Polymarket prediction markets: event odds, what moves them, probability history, Trust Scores, and where the market-implied probability diverges from an independent model estimate.",
   "author": {
     "name": "Octagon AI",
     "email": "contact@octagonai.co",
@@ -9,23 +9,37 @@
   },
   "homepage": "https://www.octagonai.co/",
   "license": "MIT",
-  "keywords": ["prediction-markets", "kalshi", "odds", "event-probabilities", "forecasting", "mispricing", "research"],
+  "keywords": [
+    "prediction-markets",
+    "kalshi",
+    "polymarket",
+    "odds",
+    "event-probabilities",
+    "trust-score",
+    "forecasting",
+    "mispricing",
+    "research"
+  ],
   "mcp": {
     "serverName": "octagon-predictions",
     "url": "https://mcp.octagonai.co/prediction-markets/mcp",
-    "tools": ["octagon-prediction-markets-agent", "prediction_markets_history"]
+    "tools": [
+      "octagon-prediction-markets-agent",
+      "prediction_markets_history"
+    ]
   },
   "interface": {
     "displayName": "Octagon Prediction Markets",
     "shortDescription": "Odds, drivers & mispricings",
-    "longDescription": "Octagon Prediction Markets turns Kalshi prediction markets into a research dataset: current odds, what moved them, and where the market-implied probability diverges from an independent model estimate.\n\nBuilt for analysts, economists, strategists, policy and risk teams, and journalists who treat event probabilities as data.\n\nGive it a market and it returns a cited analyst brief:\n- What resolves the event, and when\n- The current market-implied probability, with its timestamp\n- How that probability has moved over time, and the drivers and catalysts behind each move\n- How similar events have resolved before\n- Whether the market is mispriced relative to the model, with the size of the gap and the confidence behind it\n\nCovers Kalshi markets across economics, politics, science and technology, climate, and entertainment.\n\nOctagon is a research tool. It does not place, route, or recommend bets or trades, hold funds, or connect to any trading account, and it does not give personalized financial advice. Requires an Octagon account (sign up at octagonai.co). Generating new reports requires a plan that includes report generation; cached reports are available on all plans.",
+    "longDescription": "Octagon Prediction Markets turns Kalshi and Polymarket prediction markets into a research dataset: current odds, what moved them, where the market-implied probability diverges from an independent model estimate, and how much each market's price can be trusted.\n\nBuilt for analysts, economists, strategists, policy and risk teams, and journalists who treat event probabilities as data.\n\nGive it a market and it returns a cited analyst brief:\n- What resolves the event, and when\n- The current market-implied probability, with its timestamp\n- How that probability has moved over time, and the drivers and catalysts behind each move\n- How similar events have resolved before\n- Whether the market is mispriced relative to the model, with the size of the gap and the confidence behind it\n- The market's Octagon Trust Score, 0 to 100, with the reasons behind it\n\nAsk for a topic and it finds the markets that exist for it, on either venue, and shows where the model disagrees with the price.\n\nCovers more than 130,000 active events across Kalshi and Polymarket, in sports, crypto, climate, elections, finance, commodities, politics, culture, economics, and science and technology.\n\nOctagon is a research tool. It does not place, route, or recommend bets or trades, hold funds, or connect to any trading account, and it does not give personalized financial advice. Requires an Octagon account (sign up at octagonai.co). Generating new reports requires a plan that includes report generation; cached reports are available on all plans.",
     "developerName": "Octagon AI",
     "category": "Finance",
     "capabilities": [
       "Brief a prediction-market event",
       "Analyze odds history",
       "Identify mispricings between market and model probabilities",
-      "Surface drivers and catalysts with sources"
+      "Check a market's Trust Score",
+      "Find markets on a topic across Kalshi and Polymarket"
     ],
     "websiteURL": "https://www.octagonai.co/reports/chatgpt-integration/?utm_source=openai_directory&utm_medium=plugin&utm_campaign=prediction-markets",
     "supportURL": "https://www.octagonai.co/contact/",
@@ -33,8 +47,8 @@
     "termsOfServiceURL": "https://www.octagonai.co/terms-of-service/",
     "defaultPrompt": [
       "Write an event brief for the next Fed rate decision market.",
-      "How have the odds on a rate cut moved this month, and why?",
-      "Is this Kalshi market mispriced relative to the model? <paste a market link>"
+      "What is the Trust Score for this market, and what drives it? <paste a link>",
+      "Is this market mispriced relative to the model? <paste a Kalshi or Polymarket link>"
     ],
     "brandColor": "#7A68AE",
     "brandColorDark": "#9E8DC3",
@@ -58,16 +72,16 @@
           "expected_behavior": "Summarizes the 30-day probability path, identifies the two largest moves with dates and magnitudes, and attributes each to a dated event or data release with a source."
         },
         {
-          "description": "Mispricing analysis for a given market",
-          "prompt": "Is this Kalshi market mispriced relative to the model, and by how much? https://kalshi.com/markets/kxfeddecision/fed-meeting",
+          "description": "Mispricing analysis for a Polymarket market",
+          "prompt": "Is this Polymarket market mispriced relative to the model, and by how much? https://polymarket.com/event/fed-decision-in-march-2027",
           "tools_triggered": "octagon-prediction-markets-agent",
           "expected_behavior": "Reports the market-implied and model probabilities, the size and direction of the gap, the confidence behind each estimate, and how gaps of this size have resolved on similar markets. No instruction to act on the gap."
         },
         {
-          "description": "What changed this week",
-          "prompt": "What changed this week on the Fed rate decision market?",
-          "tools_triggered": "prediction_markets_history, octagon-prediction-markets-agent",
-          "expected_behavior": "Gives the week-over-week change in probability, the events behind it with sources, and any change in the catalyst calendar."
+          "description": "Trust Score with its breakdown",
+          "prompt": "What is the Trust Score for this Kalshi market, and what drives it? https://kalshi.com/markets/kxfeddecision/fed-meeting/kxfeddecision-26dec",
+          "tools_triggered": "octagon-prediction-markets-agent",
+          "expected_behavior": "Returns the market's 0–100 Trust Score and label with its timestamp, the Integrity pillars and Trade quality components, and the specific screen or cap behind the verdict. Framed as how much weight the price deserves, not as a reason to trade."
         },
         {
           "description": "Market without a cached report",
@@ -95,7 +109,9 @@
     "commerce_description": "Octagon Prediction Markets does not sell products or process payments in ChatGPT."
   },
   "publication": {
-    "countries": ["US"],
-    "release_notes": "Initial release: cited research on prediction-market events, including event briefs, probability history, drivers and catalysts, and market-versus-model mispricing analysis."
+    "countries": [
+      "US"
+    ],
+    "release_notes": "Initial release: cited research on Kalshi and Polymarket prediction markets, including event briefs, probability history, drivers and catalysts, market-versus-model mispricing analysis, Trust Scores, and market discovery across both venues."
   }
 }
