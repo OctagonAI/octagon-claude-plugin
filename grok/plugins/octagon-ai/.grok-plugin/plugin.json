@@ -1,0 +1,21 @@
+{
+  "name": "octagon-ai",
+  "version": "1.0.0",
+  "description": "Cited AI research on public companies: SEC filings, earnings call transcripts, financial statements, market data, and analyst estimates.",
+  "author": {
+    "name": "Octagon AI",
+    "email": "contact@octagonai.co",
+    "url": "https://www.octagonai.co/"
+  },
+  "homepage": "https://www.octagonai.co/",
+  "license": "MIT",
+  "keywords": [
+    "octagon",
+    "octagon ai",
+    "octagon research",
+    "octagon sec filings",
+    "octagon earnings calls"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}

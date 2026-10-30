@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "octagon": {
+      "type": "http",
+      "url": "https://mcp.octagonai.co/mcp"
+    }
+  }
+}
