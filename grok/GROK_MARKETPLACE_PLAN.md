@@ -210,19 +210,34 @@ group and swaps the second.
 
 ```
 target/
-├── Target.mjs               # interface: id, manifestPath, emit(writer, ctx), artifacts(), rules()
+├── Target.mjs               # interface: id, manifestPath, checkConfig(config), emit(ctx), assetPaths(config), rules(opts), finalize(ctx)
 ├── OpenAITarget.mjs         # wraps today's ManifestBuilder + Archiver; behavior unchanged
 └── GrokTarget.mjs           # GrokManifestBuilder + GrokReadmeBuilder; no archive
 ```
 
 - `Target.emit({ writer, config, skills, assetsRoot })` writes the
   target-specific files into the staging dir. `BuildPipeline` calls
-  `target.emit` where it writes the manifest and MCP config today; the skill and
-  asset loops stay where they are. `BuildPipeline` keeps its constructor
-  signature by defaulting `target` to `OpenAITarget` when not injected.
-- `OpenAITarget.artifacts()` returns the ZIP step; `GrokTarget.artifacts()`
-  returns nothing (a directory is the artifact).
-- `Target.rules({ knownTools, forbiddenText, online })` contributes
+  `target.emit` where it writes the manifest and MCP config today; the skill
+  loop stays where it is, and the asset loop copies what
+  `target.assetPaths(config)` returns (the listing images for OpenAI, nothing
+  for Grok, whose icon is written by `emit`). `BuildPipeline` keeps its
+  constructor signature by defaulting `target` to `OpenAITarget` when not
+  injected.
+- `Target.manifestPath` is threaded into `PackageView.load(root, { manifestPath })`
+  so validation reads the manifest the selected target wrote
+  (`.grok-plugin/plugin.json` for Grok) instead of the fixed Codex path.
+- `PackageWriter` takes a `stagingRoot` (the target id), so Grok builds stage
+  to `out/grok/<name>/` and never share a tree with `out/openai/<name>/`.
+- Archive handling lives behind the target: `Target.finalize({ writer, files,
+  pkg, validator, validation })` runs after package validation.
+  `OpenAITarget.finalize` zips on success and removes a stale ZIP on failure
+  (today's behavior, moved); `GrokTarget` inherits the default, which produces
+  no archive and runs no archive-scope rules. The `validate` command likewise
+  only inspects a ZIP for the OpenAI target.
+- `Target.checkConfig(config)` validates the parts of the config only that
+  target reads, before anything is built (Grok: the `grok` block exists, every
+  keyword carries the brand, every domain is Octagon-owned).
+- `Target.rules({ knownTools, forbiddenText, online, mcpUrl })` contributes
   target-specific validation rules; shared rules (`SkillRule`, `UrlRule`,
   `ForbiddenTextRule`, `SecretScanRule`, `LinkIntegrityRule`, `ImageRule`) run
   for both. `ManifestShapeRule`, `ReviewCasesRule`, `ListingTextRule`,
@@ -254,8 +269,8 @@ snippet the tool prints; `smokeTests` feed the README.
 |---|---|
 | `GrokManifestRule` | `.grok-plugin/plugin.json` exists; `name` matches `^[a-z0-9](?:[a-z0-9-]{0,62}[a-z0-9])?$` and equals `config.name`; `skills` and `mcpServers` paths resolve inside the package; only documented fields present |
 | `McpConfigRule` | `.mcp.json` has exactly one server, `type: "http"`, `https://` URL equal to `config.mcp.url`; no `command`, `args`, or `env` keys (no local executables) |
-| `ComponentScopeRule` | No `hooks/`, `commands/`, `agents/`, `.lsp.json` in the package |
-| `BrandKeywordRule` | Every keyword contains `octagon`; every domain is one Octagon owns (allow-list in the rule); a generic-term deny-list (`finance`, `stocks`, `api`, `mcp`, `kalshi`, `polymarket`, …) fails the build with the reviewer's reason quoted |
+| `ComponentScopeRule` | No `hooks/`, `commands/`, `agents/`, `.lsp.json`, or other platforms' manifests; no executable file anywhere in the package, including skill companion files (`.sh`, `.py`, `.js`, `.mjs`, `.ts`, binaries); outside `skills/` only the manifest, `.mcp.json`, `README.md`, `LICENSE`, and the icon are allowed |
+| `BrandKeywordRule` | Every keyword contains `octagon`; a generic-term deny-list (`finance`, `stocks`, `api`, `mcp`, `kalshi`, `polymarket`, …) fails the build with the reviewer's reason quoted. Domains never reach the package, so `GrokTarget.checkConfig` checks them against an owned-host allow-list before the build |
 | `ReadmeDeclarationRule` | README names the MCP URL, the OAuth host, the word "OAuth", and the license |
 | `LicenseRule` | `LICENSE` present and byte-identical to the repo's |
 
@@ -271,9 +286,12 @@ directories are produced by a separate, narrowly-scoped step:
   `output/RepoSync.mjs`) only ever writes under `grok/plugins/<config.name>/`,
   canonicalizes both ends, removes files that are no longer staged, and refuses
   to run if the build report says validation failed.
-- `sync --check` diffs instead of writing and exits non-zero on drift. CI runs
-  it for both profiles so a skill edit without a regenerated package cannot
-  merge (mirrors xAI's `generate-plugin-index.py --check`).
+- `sync` always builds and validates first, so it never depends on a stale
+  `out/`; `sync --check` then diffs the fresh staging tree against the committed
+  directory instead of writing, and exits non-zero on drift. CI runs it for
+  both profiles from a clean checkout (no `out/` needed) so a skill edit
+  without a regenerated package cannot merge (mirrors xAI's
+  `generate-plugin-index.py --check`).
 - `PackageWriter`'s `protectedPaths` keep covering `grok/` (it is a top-level
   source entry); `RepoSync` is the one component allowed in, and only there.
 
@@ -403,7 +421,7 @@ changed). Never a second entry.
 | License | MIT (plugin); hosted service under Octagon's terms | same |
 | Network | `https://mcp.octagonai.co/mcp`; OAuth at `https://login.octagonai.co` | `https://mcp.octagonai.co/prediction-markets/mcp`; same OAuth |
 | Credentials | Browser OAuth; Octagon account (free tier available); no keys, env vars, or files read | same |
-| Tools exposed | `octagon-agent`, `octagon-deep-research-agent` (+ the two prediction-market tools, read-only) | `octagon-prediction-markets-agent`, `prediction_markets_history` |
+| Tools exposed | `octagon-agent`, `octagon-deep-research-agent`. The `/mcp` endpoint also serves the two prediction-market tools (read-only); the package's skills never call them. Same server surface as the live OpenAI listing; see §11 for the server-side option | `octagon-prediction-markets-agent`, `prediction_markets_history` |
 | Data flow | Prompts and tool arguments to Octagon; cited results back; no plugin-side telemetry | same |
 | Writes / side effects | None. Research only; cannot trade, move money, or link accounts | None. Cannot place or route wagers |
 | Test status | Fill from §8 with date and Grok Build version | same |
@@ -480,3 +498,4 @@ turnaround that xAI does not promise a time for.
 | The repo root is also installable and could confuse a reviewer | `grok/README.md` and the PR body state that the root is the Claude plugin and the marketplace entries point at `grok/plugins/*` by design |
 | `category: finance` has no precedent | Free-text field; if asked, fall back to omitting it (optional) |
 | Generated READMEs read as boilerplate | Generated from the profile's own copy and skill descriptions; the prediction-markets README carries the research-only disclaimer verbatim |
+| The `octagon-ai` server endpoint (`/mcp`) also lists the prediction-market tools | Accepted for launch: it is the same endpoint and tool list the live OpenAI listing uses, the tools are read-only research tools, the package ships no skill that calls them, and the README declares the full tool list. A client-side filter does not exist in `.mcp.json`. The clean fix is server-side: a `/public-markets/mcp` toolset in `octagon-remote-mcp` (the `ToolSet` value object already backs `/deep-research/mcp` and `/prediction-markets/mcp`); once it exists, switch `openai/plugin.config.json#mcp.url` for both OpenAI and Grok packages in one release |
