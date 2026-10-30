@@ -325,16 +325,15 @@
 
 ### Methodology
 
-- All analysis based on SEC EDGAR filings
-- Primary source: Company 10-K, 10-Q, 8-K, DEF 14A
-- Page references provided for all material findings
+- Primary source: SEC EDGAR filings (10-K, 10-Q, 8-K, DEF 14A), with page or item references for all material findings
+- Non-SEC sources, where used (press releases, earnings call transcripts, third-party analysis), are cited by provider and date and labeled as non-SEC
 - Analysis conducted using Octagon
 
 ---
 
 ## Disclosures
 
-This due diligence report is based solely on publicly available SEC filings. It does not constitute legal, investment, or tax advice. The analysis is subject to limitations inherent in public disclosures. Additional due diligence may be required for material transactions.
+This due diligence report is based primarily on publicly available SEC filings; any non-SEC source is identified in its citation. It does not constitute legal, investment, or tax advice. The analysis is subject to limitations inherent in public disclosures. Additional due diligence may be required for material transactions.
 
 ---
 

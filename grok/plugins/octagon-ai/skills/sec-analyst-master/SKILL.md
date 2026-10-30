@@ -242,7 +242,14 @@ Compare risk factor disclosures between TSLA and RIVN
 3. Earnings call transcripts
 4. Third-party analysis where SEC data insufficient
 
-All findings must cite specific filing, date, and page number.
+Cite every finding by source type:
+
+- SEC filing: form type, filing date, and page or item number
+- Company press release: title and publication date
+- Earnings call transcript: call date and speaker
+- Third-party analysis: provider and publication date, marked as non-SEC
+
+Findings from non-SEC sources are labeled as such wherever they appear.
 
 ## Compliance
 
