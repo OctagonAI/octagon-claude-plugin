@@ -12,6 +12,14 @@ const LOCAL_KEYS = ["command", "args", "env", "cwd"];
  * stated reason for marketplace rejection.
  */
 export class GrokMcpConfigRule extends Rule {
+  /** @type {string | undefined} */ #expectedUrl;
+
+  /** @param {{ expectedUrl?: string }} [options] The server URL the profile config declares. */
+  constructor({ expectedUrl } = {}) {
+    super();
+    this.#expectedUrl = expectedUrl;
+  }
+
   /** @param {import("../../Rule.mjs").ValidationContext} context */
   check({ pkg }) {
     const at = { path: MCP_CONFIG_PATH };
@@ -28,6 +36,8 @@ export class GrokMcpConfigRule extends Rule {
     if (server.type !== "http") findings.push(this.error(`server "${name}" must declare type "http"`, at));
     if (typeof server.url !== "string" || !server.url.startsWith("https://")) {
       findings.push(this.error(`server "${name}" must have an https:// url`, at));
+    } else if (this.#expectedUrl !== undefined && server.url !== this.#expectedUrl) {
+      findings.push(this.error(`server "${name}" url ${server.url} differs from the configured ${this.#expectedUrl}`, at));
     }
     for (const key of LOCAL_KEYS) {
       if (key in server) findings.push(this.error(`server "${name}" must not set "${key}"; only a remote HTTP server ships`, at));

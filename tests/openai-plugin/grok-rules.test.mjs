@@ -132,6 +132,12 @@ test("GrokMcpConfigRule: one remote HTTPS server, nothing local", async t => {
     const findings = await rule.check({ pkg });
     assert.ok(findings.some(finding => expected.test(finding.message)), `${JSON.stringify(mcp)} → ${findings.map(String)}`);
   }
+
+  const strict = new GrokMcpConfigRule({ expectedUrl: MCP_URL });
+  const { pkg: matching } = await makePackage(t);
+  assert.deepEqual(await strict.check({ pkg: matching }), []);
+  const { pkg: other } = await makePackage(t, { mcp: { mcpServers: { acme: { type: "http", url: "https://mcp.acme.example/other" } } } });
+  assert.match((await strict.check({ pkg: other }))[0].message, /differs from the configured/);
 });
 
 test("GrokComponentScopeRule: skills and the server only, no executables", async t => {

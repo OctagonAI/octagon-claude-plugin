@@ -75,9 +75,14 @@ export async function createBuild({ repoRoot, outRoot, online = false, profile: 
     PluginConfig.load(profile.pluginConfig),
     TransformConfig.load(profile.transformConfig),
   ]);
-  if (target.id === "grok") config.grok();
+  target.checkConfig(config);
 
-  const ruleOptions = { knownTools: config.data.mcp.tools, forbiddenText: transforms.forbiddenRegexes(), online };
+  const ruleOptions = {
+    knownTools: config.data.mcp.tools,
+    forbiddenText: transforms.forbiddenRegexes(),
+    online,
+    mcpUrl: config.data.mcp.url,
+  };
   // The OpenAI target keeps the original rule order; other targets get the
   // shared rules followed by their own.
   const rules = target.id === "openai" ? createRules(ruleOptions) : [...createSharedRules(ruleOptions), ...target.rules(ruleOptions)];

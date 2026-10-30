@@ -8,6 +8,7 @@ import { ConfigError } from "../../tools/openai-plugin/lib/errors.mjs";
 import { GROK_MANIFEST_PATH, GrokManifestBuilder } from "../../tools/openai-plugin/lib/manifest/GrokManifestBuilder.mjs";
 import { GrokReadmeBuilder } from "../../tools/openai-plugin/lib/manifest/GrokReadmeBuilder.mjs";
 import { SkillDocument } from "../../tools/openai-plugin/lib/skill/SkillDocument.mjs";
+import { GrokTarget, OWNED_DOMAINS } from "../../tools/openai-plugin/lib/target/GrokTarget.mjs";
 import { hashTree } from "../../tools/openai-plugin/lib/util/fs.mjs";
 import { REPO_ROOT, skillText, tempDir } from "./helpers.mjs";
 
@@ -161,6 +162,19 @@ test("the OpenAI build is unchanged by the target abstraction", async t => {
   assert.ok(implicit.stagingDir.endsWith(path.join("openai", "octagon-ai")), "OpenAI staging stays under out/openai/");
 });
 
-test("createBuild rejects unknown targets and a Grok build without a grok block", async t => {
+test("createBuild rejects unknown targets", async t => {
   await assert.rejects(createBuild({ repoRoot: REPO_ROOT, outRoot: await tempDir(t), target: /** @type {any} */ ("cursor") }), ConfigError);
+});
+
+test("GrokTarget.checkConfig requires the grok block, brand keywords, and owned domains", () => {
+  const target = new GrokTarget({ licenseFile: path.join(REPO_ROOT, "LICENSE") });
+  const base = grokConfigData();
+  const octagon = { ...base.grok, keywords: ["octagon", "octagon research"], domains: ["octagonai.co", "docs.octagonagents.com"] };
+
+  assert.doesNotThrow(() => target.checkConfig(new PluginConfig({ ...base, grok: octagon })));
+  const { grok, ...withoutGrok } = base;
+  assert.throws(() => target.checkConfig(new PluginConfig(withoutGrok)), ConfigError);
+  assert.throws(() => target.checkConfig(new PluginConfig({ ...base, grok: { ...octagon, keywords: ["octagon", "finance"] } })), /must contain "octagon"/);
+  assert.throws(() => target.checkConfig(new PluginConfig({ ...base, grok: { ...octagon, domains: ["octagonai.co", "kalshi.com"] } })), /not an Octagon-owned host/);
+  assert.ok(OWNED_DOMAINS.includes("octagonai.co"));
 });

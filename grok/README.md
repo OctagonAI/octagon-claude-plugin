@@ -28,9 +28,9 @@ npm run entry:grok                 # print both marketplace.json entries with th
 On top of the shared rules (skill front matter, relative links, forbidden wording, secret scan), the Grok target enforces what the marketplace reviewers look for:
 
 - `.grok-plugin/plugin.json` carries only documented fields, a valid name and version, a license, a homepage, and `./skills/` + `./.mcp.json`.
-- `.mcp.json` declares exactly one server, `type: "http"`, over HTTPS, with no `command`, `args`, or `env`.
+- `.mcp.json` declares exactly one server, `type: "http"`, over HTTPS, at the URL the profile config declares, with no `command`, `args`, or `env`.
 - The package ships skills and that server only: no hooks, commands, agents, LSP servers, or executable files.
-- Every keyword contains `octagon` and none is a generic term; the catalog's plugin suggestion keys off these.
+- Every keyword contains `octagon` and none is a generic term, and every catalog domain is an Octagon-owned host; the catalog's plugin suggestion keys off these.
 - `README.md` names the MCP endpoint, the OAuth model, every skill, and the license.
 - `LICENSE` is byte-identical to the repository's.
 

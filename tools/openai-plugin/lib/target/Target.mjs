@@ -14,7 +14,7 @@
  * @typedef {{ writer: PackageWriter, config: PluginConfig, skills: readonly SkillDocument[], assetsRoot: string }} EmitContext
  * @typedef {{ writer: PackageWriter, files: readonly string[], pkg: PackageView, validator: Validator, validation: ValidationReport }} FinalizeContext
  * @typedef {{ archive: ArchiveInfo | null, validation: ValidationReport }} FinalizeResult
- * @typedef {{ knownTools: readonly string[], forbiddenText: readonly import("../validation/rules/ForbiddenTextRule.mjs").ForbiddenText[], online?: boolean }} RuleOptions
+ * @typedef {{ knownTools: readonly string[], forbiddenText: readonly import("../validation/rules/ForbiddenTextRule.mjs").ForbiddenText[], online?: boolean, mcpUrl?: string }} RuleOptions
  */
 
 /**
@@ -38,6 +38,15 @@ export class Target {
   get manifestPath() {
     throw new Error("Target.manifestPath is not implemented");
   }
+
+  /**
+   * Checks the parts of the config only this target reads, before anything
+   * is built. The default accepts every config.
+   *
+   * @param {PluginConfig} _config
+   * @throws {import("../errors.mjs").ConfigError}
+   */
+  checkConfig(_config) {}
 
   /**
    * Writes the target-specific files into the staging directory.

@@ -9,8 +9,23 @@ import {
   GrokManifestBuilder,
 } from "../manifest/GrokManifestBuilder.mjs";
 import { GrokReadmeBuilder } from "../manifest/GrokReadmeBuilder.mjs";
-import { createGrokRules } from "../validation/rules/grok/index.mjs";
+import { ConfigError } from "../errors.mjs";
+import { BRAND, createGrokRules } from "../validation/rules/grok/index.mjs";
 import { Target } from "./Target.mjs";
+
+/**
+ * Hosts Octagon owns. Catalog `domains` trigger the plugin suggestion when a
+ * user pastes a matching URL, so only these may be declared.
+ */
+export const OWNED_DOMAINS = Object.freeze([
+  "octagonai.co",
+  "www.octagonai.co",
+  "docs.octagonai.co",
+  "app.octagonai.co",
+  "mcp.octagonai.co",
+  "docs.octagonagents.com",
+  "octagonagents.com",
+]);
 
 /**
  * The Grok Build marketplace package: a plugin directory with the native
@@ -35,6 +50,28 @@ export class GrokTarget extends Target {
     return GROK_MANIFEST_PATH;
   }
 
+  /**
+   * The `grok` block must exist, every keyword must carry the brand, and every
+   * domain must be one Octagon owns. Keywords are re-checked on the shipped
+   * manifest by `BrandKeywordRule`; domains only appear in the catalog entry,
+   * so this is their one check.
+   *
+   * @param {import("../config/PluginConfig.mjs").PluginConfig} config
+   */
+  checkConfig(config) {
+    const grok = config.grok();
+    const problems = [];
+    for (const keyword of grok.keywords) {
+      if (!keyword.toLowerCase().includes(BRAND)) problems.push(`grok.keywords: "${keyword}" must contain "${BRAND}"`);
+    }
+    for (const domain of grok.domains) {
+      if (!OWNED_DOMAINS.includes(domain.toLowerCase())) {
+        problems.push(`grok.domains: "${domain}" is not an Octagon-owned host (${OWNED_DOMAINS.join(", ")})`);
+      }
+    }
+    if (problems.length > 0) throw new ConfigError(`plugin "${config.data.name}"`, problems);
+  }
+
   /** @param {import("./Target.mjs").EmitContext} context */
   async emit({ writer, config, skills, assetsRoot }) {
     const manifest = new GrokManifestBuilder(config);
@@ -48,8 +85,8 @@ export class GrokTarget extends Target {
     }
   }
 
-  /** @param {import("./Target.mjs").RuleOptions} _options */
-  rules(_options) {
-    return createGrokRules({ licenseFile: this.#licenseFile });
+  /** @param {import("./Target.mjs").RuleOptions} options */
+  rules({ mcpUrl }) {
+    return createGrokRules({ licenseFile: this.#licenseFile, mcpUrl });
   }
 }
