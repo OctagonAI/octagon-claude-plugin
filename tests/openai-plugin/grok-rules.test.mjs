@@ -169,6 +169,13 @@ test("BrandKeywordRule: every keyword carries the brand and none is generic", as
   const { pkg: clean } = await makePackage(t);
   assert.deepEqual(await rule.check({ pkg: clean }), []);
 
+  // The deny-list matches whole normalized keywords, so a branded compound
+  // that contains a generic term ("acme kalshi") is fine; the bare term is not.
+  const { pkg: compounds } = await makePackage(t, {
+    manifest: { ...validManifest(), keywords: ["acme kalshi", "Acme Polymarket", " acme finance "] },
+  });
+  assert.deepEqual(await rule.check({ pkg: compounds }), []);
+
   const { pkg } = await makePackage(t, {
     manifest: { ...validManifest(), keywords: ["acme", "finance", "Acme", "kalshi", "widgets", "ACME "] },
   });
