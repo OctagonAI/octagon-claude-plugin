@@ -260,8 +260,12 @@ One new optional block in each `plugin.config.json`, validated by
 }
 ```
 
-`keywords`/`domains`/`category` feed both the manifest and the catalog-entry
-snippet the tool prints; `smokeTests` feed the README.
+The fields split by destination, and a test pins each output: `keywords`
+go into both the plugin manifest and the catalog entry (the manifest's
+`keywords` is a documented Grok field); `domains`, `category`, and
+`catalogDescription` go into the catalog entry only, since the manifest has
+no such fields and the tool writes documented fields only; `oauthUrl`,
+`readmeIntro`, `scopeNote`, and `smokeTests` feed the README.
 
 ### 4.3 Grok-specific rules (`validation/rules/grok/`)
 
@@ -270,7 +274,7 @@ snippet the tool prints; `smokeTests` feed the README.
 | `GrokManifestRule` | `.grok-plugin/plugin.json` exists; `name` matches `^[a-z0-9](?:[a-z0-9-]{0,62}[a-z0-9])?$` and equals `config.name`; `skills` and `mcpServers` paths resolve inside the package; only documented fields present |
 | `McpConfigRule` | `.mcp.json` has exactly one server, `type: "http"`, `https://` URL equal to `config.mcp.url`; no `command`, `args`, or `env` keys (no local executables) |
 | `ComponentScopeRule` | No `hooks/`, `commands/`, `agents/`, `.lsp.json`, or other platforms' manifests; no executable file anywhere in the package, including skill companion files (`.sh`, `.py`, `.js`, `.mjs`, `.ts`, binaries); outside `skills/` only the manifest, `.mcp.json`, `README.md`, `LICENSE`, and the icon are allowed |
-| `BrandKeywordRule` | Every keyword contains `octagon`; a generic-term deny-list (`finance`, `stocks`, `api`, `mcp`, `kalshi`, `polymarket`, …) fails the build with the reviewer's reason quoted. Domains never reach the package, so `GrokTarget.checkConfig` checks them against an owned-host allow-list before the build |
+| `BrandKeywordRule` | Every keyword contains `octagon`; a generic-term deny-list (`finance`, `stocks`, `api`, `mcp`, `kalshi`, `polymarket`, …) fails the build with the reviewer's reason quoted. Deny-list matching is exact on the trimmed, lower-cased keyword, never substring, so the branded compounds `octagon kalshi` and `octagon polymarket` pass while bare `kalshi` fails; tests cover both. Domains never reach the package, so `GrokTarget.checkConfig` checks them against an owned-host allow-list before the build |
 | `ReadmeDeclarationRule` | README names the MCP URL, the OAuth host, the word "OAuth", and the license |
 | `LicenseRule` | `LICENSE` present and byte-identical to the repo's |
 
