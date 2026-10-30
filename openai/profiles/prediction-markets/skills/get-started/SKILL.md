@@ -1,18 +1,25 @@
 ---
 name: get-started
-description: Introduce Octagon Prediction Markets, explain what prediction-market data is and how to connect, and suggest first requests. Use when the user is new to the plugin, asks what it can do with prediction markets or Kalshi odds, or needs help connecting their Octagon account.
+description: Introduce Octagon Prediction Markets, explain what prediction-market data is and how to connect, and suggest first requests. Use when the user is new to the plugin, asks what it can do with prediction markets, Kalshi, or Polymarket, or needs help connecting their Octagon account.
 ---
 
 # Get Started with Octagon Prediction Markets
 
-Octagon Prediction Markets treats a prediction market as a dataset: the probability the crowd currently assigns to a real-world event, how that probability has moved, and why. Use this skill to orient a new user and get them to a first useful answer quickly.
+Octagon Prediction Markets treats a prediction market as a dataset: the probability the crowd currently assigns to a real-world event, how that probability has moved, why, and how much the market itself can be trusted. Use this skill to orient a new user and get them to a first useful answer quickly.
 
 ## What the plugin does
 
 - **Event briefs**: what resolves a market and when, the current market-implied probability, the drivers and catalysts behind it, and how similar events resolved before. See `event-brief`.
 - **Probability history**: how the odds moved over a period, the largest moves, and what explains each one. See `probability-history`.
 - **Mispricing analysis**: where the market-implied probability diverges from an independent model estimate, by how much, and with what confidence. See `mispricing-analysis`.
-- **Coverage**: Kalshi markets across economics, politics, science and technology, climate, and entertainment. The agent takes a Kalshi market link as input.
+- **Trust Score**: a 0–100 score of whether a market can be rigged and whether its price can be trusted, with the reasons. See `trust-score`.
+- **Market discovery**: find the markets that exist on a topic, on either venue, and screen them by where the model disagrees with the price.
+
+## Coverage
+
+- **Venues**: Kalshi and Polymarket.
+- **Scale**: more than 130,000 active events across the two venues.
+- **Categories**: Sports, Crypto, Climate, Elections, Finance, Commodities, Politics, Culture, Economics, Tech & Science, and Mentions.
 
 ## Who it is for
 
@@ -31,15 +38,16 @@ Offer two or three of these, adapted to what the user mentioned:
 
 - "Write an event brief for the next Fed rate decision market."
 - "How have the odds on a rate cut moved this month, and why?"
-- "Is this Kalshi market mispriced relative to the model? <market link>"
-- "What changed this week on <market>?"
+- "Is this market mispriced relative to the model? <Kalshi or Polymarket link>"
+- "What is the Trust Score for this market, and what drives it?"
+- "Which markets exist on the World Cup final, and which does the model disagree with?"
 
 ## How to answer
 
 - Report probabilities as the market's current belief, with a timestamp, never as a price to act on.
 - Cite sources for every driver, catalyst, and historical comparison.
-- When a request names an event but not a market, ask for the market link or offer to look it up.
-- For broad or multi-step requests, start with `event-brief` and add `probability-history` or `mispricing-analysis` as needed.
+- When a request names an event but not a market, ask the agent to find candidate markets and confirm which one the user means.
+- For broad or multi-step requests, start with `event-brief` and add `probability-history`, `mispricing-analysis`, or `trust-score` as needed.
 
 ## What the plugin does not do
 

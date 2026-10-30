@@ -106,7 +106,7 @@ Everything user-facing follows one frame: **a prediction market is a dataset of 
 | Questions | What does the market believe will happen, how confident is it, what moved that belief, where and by how much does it diverge from an independent estimate (a potential mispricing), how have similar events resolved before | Which side to take, how much to stake, when to enter or exit, expected payout or profit |
 | Outputs | Event briefs, driver and catalyst analysis, probability-history analysis, mispricing analysis (market vs model, with uncertainty and track record), calibration and base-rate context, cited sources | Trade recommendations, position sizing, a mispricing turned into an instruction to act |
 | Users | Research analysts, economists, strategists, policy and risk teams, journalists, forecasters | Bettors looking for picks |
-| Platforms | Kalshi today (the agent's input is a market link); Polymarket when the agent supports it | Any order placement, account linking to a trading venue, or balance access |
+| Platforms | Kalshi and Polymarket (a market link, Kalshi ticker, or Polymarket event slug); more than 130,000 active events across both, in 11 categories led by Sports; every report carries a 0–100 Trust Score (verified against production on 2026-10-30) | Any order placement, account linking to a trading venue, or balance access |
 
 Vocabulary rules, enforced by the forbidden-text guard (§4.5):
 
@@ -532,6 +532,6 @@ No commits or deploys happen without explicit go-ahead. Both PRs are authored by
 ## 7. Later options (not in v1)
 
 - **Free tier without sign-in.** `prediction_markets_cache` already serves cached reports to public-key callers. OpenAI supports tools declaring both `noauth` and `oauth2` security schemes with `_meta["mcp/www_authenticate"]` on the upgrade path, so cached reports could work before login and fresh reports after. Needs per-tool security schemes and a token-aware handler; a separate PR.
-- **Polymarket.** When the agent supports it, the skill and listing text update through the profile config only.
+- **Coverage drift.** Venue, category, and event-count claims live only in the profile's skills and `plugin.config.json`; the catalog's `prediction-markets-analysis` skill is overlaid rather than transformed because its upstream copy (Kalshi only, "120+ markets", no Trust Score) lags the product. Re-verify those figures against production before each new version.
 - **Analyst exports.** A `weekly-digest` skill (a table of tracked markets with current probability, week-over-week change, and the top driver per market) fits the frame and needs no server work; it's a candidate for 1.1 once reviewers have seen v1.
 - **Same `ToolSet` for the stdio server.** `octagon-mcp-server` could expose a `--toolset` flag using the same presets, for parity. Optional.
