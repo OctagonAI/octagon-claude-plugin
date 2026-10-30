@@ -73,13 +73,13 @@
         },
         {
           "description": "Mispricing analysis for a Polymarket market",
-          "prompt": "Is this Polymarket market mispriced relative to the model, and by how much? https://polymarket.com/event/fed-decision-in-december",
+          "prompt": "Is this Polymarket market mispriced relative to the model, and by how much? https://polymarket.com/event/fed-decision-in-march-2027",
           "tools_triggered": "octagon-prediction-markets-agent",
           "expected_behavior": "Reports the market-implied and model probabilities, the size and direction of the gap, the confidence behind each estimate, and how gaps of this size have resolved on similar markets. No instruction to act on the gap."
         },
         {
           "description": "Trust Score with its breakdown",
-          "prompt": "What is the Trust Score for the Fed rate decision market on Kalshi, and what drives it?",
+          "prompt": "What is the Trust Score for this Kalshi market, and what drives it? https://kalshi.com/markets/kxfeddecision/fed-meeting/kxfeddecision-26dec",
           "tools_triggered": "octagon-prediction-markets-agent",
           "expected_behavior": "Returns the market's 0–100 Trust Score and label with its timestamp, the Integrity pillars and Trade quality components, and the specific screen or cap behind the verdict. Framed as how much weight the price deserves, not as a reason to trade."
         },

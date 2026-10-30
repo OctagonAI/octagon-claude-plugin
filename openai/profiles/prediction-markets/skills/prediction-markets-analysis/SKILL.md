@@ -30,7 +30,7 @@ Use the Octagon prediction-markets agent to research one market, or to find the 
 
 1. **Resolve the market.** If the user gives a link or ticker, use it exactly. If they describe an event in words, ask the agent to search for candidate markets (it can list and filter markets by topic, category, and venue), then confirm which one they mean.
 2. **Fetch the report.** Call `octagon-prediction-markets-agent` with the market reference and `cache: true`. This returns the cached report only and never generates one.
-3. **Generate only with consent.** If no cached report exists, tell the user that generating one takes several minutes and uses report credits, and call again with `cache: false` only after they agree.
+3. **Generate only with consent.** If no cached report exists, or the user asks for a fresh report over the cached one (cached probabilities may be old; check the timestamp), tell the user that generating one takes several minutes and uses report credits, and call again with `cache: false` only after they agree.
 4. **Add history when asked.** For a Kalshi event, `prediction_markets_history` returns the probability series for an event ticker. For a Polymarket event, ask the agent for the event's history.
 5. **Present the findings** in the report's structure, keeping every source.
 

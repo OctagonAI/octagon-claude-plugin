@@ -22,7 +22,7 @@ The Octagon Trust Index gives every covered market a Trust Score from 0 to 100. 
 ## Workflow
 
 1. Get the market reference: a Kalshi or Polymarket link, a Kalshi ticker, or a Polymarket event slug. If the user describes an event in words, ask the agent to find candidate markets first.
-2. Call `octagon-prediction-markets-agent` and ask for the market's Trust Score with its breakdown. The agent reads the scorecard behind the market's report; a cached report already includes the headline score and label.
+2. Call `octagon-prediction-markets-agent` with `cache: true` and ask for the market's Trust Score with its breakdown. The agent reads the scorecard behind the market's report; a cached report already includes the headline score and label. If no cached report exists, tell the user that generating one takes several minutes and uses report credits, and call again with `cache: false` only after they agree.
 3. Present the score, its label, the axis and pillar scores, and the specific screen or cap behind the verdict. Name the timestamp.
 
 ## Output structure

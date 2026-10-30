@@ -46,7 +46,7 @@ Offer two or three of these, adapted to what the user mentioned:
 
 - Report probabilities as the market's current belief, with a timestamp, never as a price to act on.
 - Cite sources for every driver, catalyst, and historical comparison.
-- When a request names an event but not a market, ask the agent to find candidate markets and confirm which one the user means.
+- When a request names an event but not a market, ask the agent to find candidate markets. Confirm which one the user means only when the analysis needs a single market (a brief, a history, a mispricing read, a Trust Score); a discovery request ("which markets exist on…") is answered with the list.
 - For broad or multi-step requests, start with `event-brief` and add `probability-history`, `mispricing-analysis`, or `trust-score` as needed.
 
 ## What the plugin does not do

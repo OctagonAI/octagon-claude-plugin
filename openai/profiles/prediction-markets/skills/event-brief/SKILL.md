@@ -14,7 +14,7 @@ Deliver a one-page brief that an analyst could forward: what the market measures
 
 ## Workflow
 
-1. Call `octagon-prediction-markets-agent` with the market link and `cache: true`, which returns a cached report only and never generates one. If no cached report exists, tell the user that generating a report takes several minutes and uses report credits, and call again with `cache: false` only after they agree.
+1. Call `octagon-prediction-markets-agent` with the market reference the user gave (link, Kalshi ticker, or Polymarket event slug) and `cache: true`, which returns a cached report only and never generates one. If no cached report exists, tell the user that generating a report takes several minutes and uses report credits, and call again with `cache: false` only after they agree. If the user asks for a fresh report when a cached one exists, give the same cost note and refresh with `cache: false` once they agree.
 2. If the user wants recent movement in context, fold the trend into the brief. For a Kalshi event, `prediction_markets_history` takes the event ticker, the event-specific segment of the market URL such as `kxfeddecision-26jun` in `…/kxfeddecision/fed-meeting/kxfeddecision-26jun`; a link that ends at the series page (`…/fed-meeting`) has no event ticker, so ask which event the user means or take the ticker from the agent's report. For a Polymarket event, ask the agent for the event's history.
 3. Write the brief in the structure below. Every driver, base rate, and catalyst carries a source.
 

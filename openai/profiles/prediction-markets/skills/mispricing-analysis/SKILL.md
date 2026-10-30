@@ -13,7 +13,7 @@ Report where the market-implied probability and the model's probability disagree
 
 ## Workflow
 
-1. Call `octagon-prediction-markets-agent` with the market link and `cache: true`, which returns a cached report only. If none exists, explain that generating one takes minutes and uses report credits, and call again with `cache: false` only after the user agrees.
+1. Call `octagon-prediction-markets-agent` with the market reference the user gave (link, Kalshi ticker, or Polymarket event slug) and `cache: true`, which returns a cached report only. If none exists, explain that generating one takes minutes and uses report credits, and call again with `cache: false` only after the user agrees. The same applies when the user wants a fresh report over a cached one: state the cost, then refresh once they agree.
 2. From the report, extract the market-implied probability (with timestamp), the model probability, and the reasoning the model gives.
 3. If the user asks whether the gap is new, get the event's history: `prediction_markets_history` for a Kalshi event ticker (the event-specific URL segment, such as `kxfeddecision-26jun`; a series-page link has none, so ask or take it from the report), or ask the agent for a Polymarket event's history, and compare the latest available gap with recent levels. Describe it as today's gap only when the probability timestamps show it was captured today; a cached report may be older.
 4. Present the analysis in the structure below.
