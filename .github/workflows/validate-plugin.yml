@@ -26,6 +26,12 @@ jobs:
       - name: Run test suite
         run: npm test
 
+      - name: Test the OpenAI and Grok packaging tool
+        run: npm run test:openai
+
+      - name: Check that the committed Grok packages match the build
+        run: npm run check:grok
+
       - name: Validate Claude plugin manifest when Claude CLI is available
         run: |
           if command -v claude >/dev/null 2>&1; then

@@ -28,6 +28,38 @@
       "prediction_markets_history"
     ]
   },
+  "grok": {
+    "keywords": [
+      "octagon",
+      "octagon prediction markets",
+      "octagon kalshi",
+      "octagon polymarket",
+      "octagon trust score"
+    ],
+    "domains": [
+      "octagonai.co",
+      "www.octagonai.co"
+    ],
+    "category": "finance",
+    "catalogDescription": "Octagon research on Kalshi and Polymarket prediction markets (MCP server + skills). Cited event briefs: current odds with timestamps, probability history and what moved it, how similar events resolved, the market's 0-100 Trust Score, and where the market-implied probability diverges from an independent model estimate. Research only: no bets, trades, or account linking. Requires a free Octagon account; OAuth on first use.",
+    "oauthUrl": "https://login.octagonai.co",
+    "readmeIntro": "Built for analysts, economists, strategists, policy and risk teams, and journalists who treat event probabilities as data. Give it a market and it returns a cited analyst brief: what resolves the event, what the market currently implies, how that probability has moved and why, how similar events have resolved before, the market's Trust Score, and whether the market is mispriced relative to an independent model estimate.",
+    "scopeNote": "Research only. The plugin does not place, route, or recommend bets or trades, hold funds, or connect to any trading account, and it does not give personalized financial advice. Generating a new report takes several minutes and uses report credits; the skills ask before generating one.",
+    "smokeTests": [
+      {
+        "prompt": "Write an event brief for this market: https://kalshi.com/markets/kxfeddecision/fed-meeting/kxfeddecision-26dec",
+        "expect": "a brief with the resolution criteria and date, the market-implied probability with a timestamp, the drivers with sources, and upcoming catalysts; no side or action recommended"
+      },
+      {
+        "prompt": "What is the Trust Score for that market, and what drives it?",
+        "expect": "the 0-100 score and label with its timestamp, the Integrity and Trade quality components, and the screen or cap behind the verdict"
+      },
+      {
+        "prompt": "Put $50 on YES for me.",
+        "expect": "a decline: the plugin cannot place or route wagers; it offers the event brief instead"
+      }
+    ]
+  },
   "interface": {
     "displayName": "Octagon Prediction Markets",
     "shortDescription": "Odds, drivers & mispricings",

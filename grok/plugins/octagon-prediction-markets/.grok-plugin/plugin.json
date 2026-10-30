@@ -1,0 +1,21 @@
+{
+  "name": "octagon-prediction-markets",
+  "version": "1.0.0",
+  "description": "Cited research on Kalshi and Polymarket prediction markets: event odds, what moves them, probability history, Trust Scores, and where the market-implied probability diverges from an independent model estimate.",
+  "author": {
+    "name": "Octagon AI",
+    "email": "contact@octagonai.co",
+    "url": "https://www.octagonai.co/"
+  },
+  "homepage": "https://www.octagonai.co/",
+  "license": "MIT",
+  "keywords": [
+    "octagon",
+    "octagon prediction markets",
+    "octagon kalshi",
+    "octagon polymarket",
+    "octagon trust score"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}

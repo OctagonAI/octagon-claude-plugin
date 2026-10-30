@@ -219,13 +219,15 @@ Contribution:
 Key Insight: Majority of growth from expansion
 ```
 
-### Investment vs. Return Tracking
+### Investment vs. Revenue Tracking
 
-| Period | Expansion Investment | Expansion Revenue | ROI |
-|--------|---------------------|-------------------|-----|
-| Year 1 | $500M | $200M | -60% |
-| Year 2 | $300M | $500M | +67% |
-| Year 3 | $200M | $800M | +300% |
+| Period | Expansion Investment | Expansion Revenue | Revenue / Investment |
+|--------|---------------------|-------------------|----------------------|
+| Year 1 | $500M | $200M | 0.4x |
+| Year 2 | $300M | $500M | 1.7x |
+| Year 3 | $200M | $800M | 4.0x |
+
+Revenue-to-investment is a payback indicator, not ROI: revenue is not return. Compute ROI from incremental operating profit or free cash flow attributable to the expansion, net of the investment, when the company discloses enough to do so.
 
 ## Next Steps After Analysis
 

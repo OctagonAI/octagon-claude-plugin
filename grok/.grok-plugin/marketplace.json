@@ -1,0 +1,33 @@
+{
+  "name": "octagon-local",
+  "description": "Octagon plugins from a local checkout, for testing before the xAI catalog entries exist",
+  "owner": {
+    "name": "Octagon AI"
+  },
+  "plugins": [
+    {
+      "name": "octagon-ai",
+      "description": "Octagon AI research on public companies (MCP server + skills).",
+      "category": "finance",
+      "source": {
+        "type": "local",
+        "path": "./plugins/octagon-ai"
+      },
+      "homepage": "https://www.octagonai.co/",
+      "keywords": ["octagon", "octagon ai"],
+      "domains": ["octagonai.co"]
+    },
+    {
+      "name": "octagon-prediction-markets",
+      "description": "Octagon research on Kalshi and Polymarket prediction markets (MCP server + skills).",
+      "category": "finance",
+      "source": {
+        "type": "local",
+        "path": "./plugins/octagon-prediction-markets"
+      },
+      "homepage": "https://www.octagonai.co/",
+      "keywords": ["octagon", "octagon prediction markets"],
+      "domains": ["octagonai.co"]
+    }
+  ]
+}

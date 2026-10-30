@@ -48,7 +48,12 @@
     "lint": "echo \"No linting configured\"",
     "format": "echo \"No formatting configured\"",
     "prepare": "npm run build",
-    "release": "npm run validate:all && npm publish"
+    "release": "npm run validate:all && npm publish",
+    "build:grok": "node tools/openai-plugin/cli.mjs build --target grok",
+    "build:grok:predictions": "node tools/openai-plugin/cli.mjs build --target grok --profile prediction-markets",
+    "sync:grok": "node tools/openai-plugin/cli.mjs sync --target grok && node tools/openai-plugin/cli.mjs sync --target grok --profile prediction-markets",
+    "check:grok": "node tools/openai-plugin/cli.mjs sync --target grok --check && node tools/openai-plugin/cli.mjs sync --target grok --check --profile prediction-markets",
+    "entry:grok": "node tools/openai-plugin/cli.mjs entry --target grok && node tools/openai-plugin/cli.mjs entry --target grok --profile prediction-markets"
   },
   "keywords": [
     "mcp",

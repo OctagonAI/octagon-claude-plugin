@@ -12,8 +12,9 @@ export const FIXED_MTIME = new Date("2000-01-01T00:00:00Z");
 /**
  * The only component that writes to disk.
  *
- * All writes are confined to `<outRoot>/openai/<pluginName>/` (the staging
- * directory) and `<outRoot>` itself (archives and reports). The constructor
+ * All writes are confined to `<outRoot>/<stagingRoot>/<pluginName>/` (the
+ * staging directory; `stagingRoot` is the target id, `openai` by default) and
+ * `<outRoot>` itself (archives and reports). The constructor
  * refuses an `outRoot` that overlaps a protected path in either direction, and
  * one that contains an enclosing root such as the repository itself. A bad
  * `--out` argument therefore can never wipe, overwrite, or add to source files.
@@ -28,10 +29,12 @@ export class PackageWriter {
    *   pluginName: string,
    *   protectedPaths: readonly string[],
    *   enclosingRoots?: readonly string[],
+   *   stagingRoot?: string,
    * }} options `protectedPaths` must be neither inside nor around the output.
    *   `enclosingRoots` (e.g. the repository) may hold the output but must not be inside it.
+   *   `stagingRoot` is the subdirectory of `outRoot` that holds staged packages.
    */
-  constructor({ outRoot, pluginName, protectedPaths, enclosingRoots = [] }) {
+  constructor({ outRoot, pluginName, protectedPaths, enclosingRoots = [], stagingRoot = "openai" }) {
     // Compare canonical paths: a symlink anywhere in the output ancestry could
     // otherwise point the staging directory at protected source content.
     const resolved = canonicalize(outRoot);
@@ -51,8 +54,11 @@ export class PackageWriter {
     if (!/^[a-z0-9][a-z0-9-]*$/.test(pluginName)) {
       throw new OutputError(`Unsafe plugin name for a directory: ${pluginName}`);
     }
+    if (!/^[a-z0-9][a-z0-9-]*$/.test(stagingRoot)) {
+      throw new OutputError(`Unsafe staging root for a directory: ${stagingRoot}`);
+    }
     this.outRoot = resolved;
-    this.stagingDir = path.join(resolved, "openai", pluginName);
+    this.stagingDir = path.join(resolved, stagingRoot, pluginName);
     Object.freeze(this);
   }
 

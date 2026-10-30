@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "octagon-predictions": {
+      "type": "http",
+      "url": "https://mcp.octagonai.co/prediction-markets/mcp"
+    }
+  }
+}

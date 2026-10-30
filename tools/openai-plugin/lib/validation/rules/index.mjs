@@ -13,14 +13,53 @@ import { SkillRule } from "./SkillRule.mjs";
 import { UrlRule } from "./UrlRule.mjs";
 
 /**
- * The full rule set. New checks are added here as new `Rule` subclasses;
- * existing rules don't need to change.
- *
- * @param {{
+ * @typedef {{
  *   knownTools: readonly string[],
- *   forbiddenText: readonly { regex: RegExp, reason: string }[],
+ *   forbiddenText: readonly import("./ForbiddenTextRule.mjs").ForbiddenText[],
  *   online?: boolean,
- * }} options
+ * }} RuleOptions
+ */
+
+/**
+ * Rules about the skills and text that every target ships, whatever its
+ * manifest format.
+ *
+ * @param {Pick<RuleOptions, "forbiddenText">} options
+ * @returns {import("../Rule.mjs").Rule[]}
+ */
+export function createSharedRules({ forbiddenText }) {
+  return [
+    new SkillRule(),
+    new LinkIntegrityRule(),
+    new ForbiddenContentRule(),
+    new ForbiddenTextRule(forbiddenText),
+    new SecretScanRule(),
+  ];
+}
+
+/**
+ * Rules about the OpenAI directory's manifest, listing, review cases, and ZIP.
+ *
+ * @param {Pick<RuleOptions, "knownTools" | "online">} options
+ * @returns {import("../Rule.mjs").Rule[]}
+ */
+export function createOpenAIRules({ knownTools, online = false }) {
+  return [
+    new ManifestShapeRule(),
+    new ListingTextRule(),
+    new UrlRule({ online }),
+    new ImageRule(),
+    new BrandColorRule(),
+    new ReviewCasesRule({ knownTools }),
+    new ArchiveShapeRule(),
+  ];
+}
+
+/**
+ * The full OpenAI rule set, in the order it has always run. New checks are
+ * added to one of the two groups above; existing rules don't need to change.
+ *
+ * @param {RuleOptions} options
  * @returns {import("../Rule.mjs").Rule[]}
  */
 export function createRules({ knownTools, forbiddenText, online = false }) {

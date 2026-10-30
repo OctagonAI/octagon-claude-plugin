@@ -23,6 +23,8 @@ npm run test:openai                   # unit and end-to-end tests for the packag
 
 Any profile can be built with `node tools/openai-plugin/cli.mjs build --profile <name>`.
 
+The same profiles also build the Grok Build marketplace packages with `--target grok`; see [../grok/README.md](../grok/README.md). Those are committed under `grok/plugins/` rather than zipped.
+
 The build writes only to `out/` (gitignored): the staged package in `out/openai/<plugin-name>/`, the ZIP, and `<plugin-name>.build-report.json`. It exits non-zero on any validation error and does not produce a ZIP in that case.
 
 To type-check the tooling with the repository's TypeScript:

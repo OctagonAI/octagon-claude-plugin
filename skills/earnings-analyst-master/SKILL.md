@@ -257,4 +257,4 @@ Compare guidance across AAPL, MSFT, GOOGL from latest earnings calls
 
 ## Compliance
 
-All data sourced from Octagon Claude plugin. Timestamp all earnings data with call date. Note any forward-looking statement disclaimers.
+All transcript and financial data sourced from the Octagon Claude plugin. Where a skill adds web-search context (for example, consensus estimates), label each external value with its provider and publication date, keep it in a separate section from transcript data, and never present it as a company-reported figure. Timestamp all earnings data with call date. Note any forward-looking statement disclaimers.
