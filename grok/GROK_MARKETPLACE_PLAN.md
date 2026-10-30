@@ -254,13 +254,17 @@ One new optional block in each `plugin.config.json`, validated by
   "keywords": ["octagon", "octagon ai", "octagon research", "octagon sec filings", "octagon earnings"],
   "domains": ["octagonai.co", "www.octagonai.co", "docs.octagonagents.com"],
   "category": "finance",
+  "catalogDescription": "Octagon AI research on public companies (MCP server + skills). ...",
+  "oauthUrl": "https://login.octagonai.co",
+  "readmeIntro": "Built for investment professionals who want the record behind a number ...",
+  "scopeNote": "Research on public companies only. ...",
   "smokeTests": [
     { "prompt": "Summarize the risk factors in Apple's latest 10-K.", "expect": "Cited summary with the filing date" }
   ]
 }
 ```
 
-The fields split by destination, and a test pins each output: `keywords`
+`catalogDescription` is the catalog entry's `description` (the browse text); when it is absent the entry falls back to the plugin's `description`, and a test asserts the generated entry carries `description` either way. The fields split by destination, and a test pins each output: `keywords`
 go into both the plugin manifest and the catalog entry (the manifest's
 `keywords` is a documented Grok field); `domains`, `category`, and
 `catalogDescription` go into the catalog entry only, since the manifest has
