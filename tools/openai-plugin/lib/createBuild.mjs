@@ -10,6 +10,7 @@ import { ConfigError } from "./errors.mjs";
 import { PackageWriter } from "./output/PackageWriter.mjs";
 import { RepoSync } from "./output/RepoSync.mjs";
 import { SkillRepository } from "./source/SkillRepository.mjs";
+import { GeminiTarget } from "./target/GeminiTarget.mjs";
 import { GrokTarget } from "./target/GrokTarget.mjs";
 import { OpenAITarget } from "./target/OpenAITarget.mjs";
 import { createRules, createSharedRules } from "./validation/rules/index.mjs";
@@ -17,6 +18,10 @@ import { Validator } from "./validation/Validator.mjs";
 
 /** @typedef {import("./target/Target.mjs").Target} Target */
 /** @typedef {import("./target/Target.mjs").TargetId} TargetId */
+
+/** The repository every generated package is produced from. */
+export const SOURCE_REPOSITORY = "https://github.com/OctagonAI/octagon-claude-plugin";
+export const TARGET_IDS = Object.freeze(/** @type {const} */ (["openai", "grok", "gemini"]));
 
 /** Repository layout the tool reads from. Everything here is read-only. */
 export function layout(/** @type {string} */ repoRoot) {
@@ -54,8 +59,10 @@ function createTarget(id, paths) {
       return new OpenAITarget();
     case "grok":
       return new GrokTarget({ licenseFile: paths.licenseFile });
+    case "gemini":
+      return new GeminiTarget({ licenseFile: paths.licenseFile });
     default:
-      throw new ConfigError(`target "${id}"`, ['targets are "openai" and "grok"']);
+      throw new ConfigError(`target "${id}"`, [`targets are ${TARGET_IDS.map(name => `"${name}"`).join(", ")}`]);
   }
 }
 
@@ -77,11 +84,15 @@ export async function createBuild({ repoRoot, outRoot, online = false, profile: 
   ]);
   target.checkConfig(config);
 
+  /** @type {import("./target/Target.mjs").RuleOptions} */
   const ruleOptions = {
     knownTools: config.data.mcp.tools,
     forbiddenText: transforms.forbiddenRegexes(),
     online,
     mcpUrl: config.data.mcp.url,
+    pluginName: config.data.name,
+    tools: config.data.mcp.tools,
+    includeTools: config.data.gemini?.includeTools,
   };
   // The OpenAI target keeps the original rule order; other targets get the
   // shared rules followed by their own.
@@ -112,7 +123,7 @@ export async function createBuild({ repoRoot, outRoot, online = false, profile: 
     assetsRoot: profile.assets,
   });
 
-  const sync = target.id === "grok" ? new RepoSync({ repoRoot: paths.repoRoot, pluginName: config.data.name }) : null;
+  const sync = target.repoDir ? new RepoSync({ repoRoot: paths.repoRoot, pluginName: config.data.name, repoDir: target.repoDir }) : null;
 
   return { pipeline, validator, writer, config, transforms, paths, profile, target, sync };
 }

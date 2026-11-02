@@ -5,30 +5,33 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
-import { createBuild } from "./lib/createBuild.mjs";
+import { SOURCE_REPOSITORY, TARGET_IDS, createBuild } from "./lib/createBuild.mjs";
 import { PackagingError } from "./lib/errors.mjs";
+import { GeminiManifestBuilder } from "./lib/manifest/GeminiManifestBuilder.mjs";
 import { GROK_PLUGINS_DIR, GrokManifestBuilder } from "./lib/manifest/GrokManifestBuilder.mjs";
 import { Archiver } from "./lib/output/Archiver.mjs";
 import { PackageView } from "./lib/validation/PackageView.mjs";
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
-const REPO_URL = "https://github.com/OctagonAI/octagon-claude-plugin.git";
-const COMMANDS = ["build", "validate", "sync", "entry"];
+const REPO_URL = `${SOURCE_REPOSITORY}.git`;
+const COMMANDS = ["build", "validate", "sync", "entry", "about"];
 
 const USAGE = `Usage: node tools/openai-plugin/cli.mjs <command> [options]
 
 Commands:
   build      Build and validate the plugin package into out/ (OpenAI: also zip it)
   validate   Re-validate the existing build in out/ without rebuilding
-  sync       Grok only: copy the validated build into grok/plugins/<name>/ (--check: report drift instead)
+  sync       Grok, Gemini: build, then copy the validated package into its committed
+             directory (grok/plugins/<name>/, gemini/extensions/<name>/); --check reports drift instead
   entry      Grok only: print the marketplace.json entry for the current HEAD commit
+  about      Gemini only: print the mirror repository's About settings (description, homepage, topic)
 
 Options:
-  --target NAME   Package format: openai (default) or grok
+  --target NAME   Package format: openai (default), grok, or gemini
   --profile NAME  Build the plugin under openai/profiles/NAME (default: openai/ itself)
   --online        Also check that every public URL answers 2xx
   --out DIR       Output directory (default: out/)
-  --check         With sync: exit non-zero if grok/plugins/<name>/ differs from the build
+  --check         With sync: exit non-zero if the committed directory differs from the build
   --help          Show this message`;
 
 /** @param {import("./lib/validation/Validator.mjs").ValidationReport} validation */
@@ -62,11 +65,11 @@ async function main() {
     console.log(USAGE);
     return values.help ? 0 : 2;
   }
-  if (values.target !== "openai" && values.target !== "grok") {
-    console.error(`Unknown target "${values.target}"; use openai or grok.`);
+  if (!TARGET_IDS.includes(/** @type {any} */ (values.target))) {
+    console.error(`Unknown target "${values.target}"; use ${TARGET_IDS.join(", ")}.`);
     return 2;
   }
-  const target = /** @type {"openai" | "grok"} */ (values.target);
+  const target = /** @type {import("./lib/target/Target.mjs").TargetId} */ (values.target);
 
   const outRoot = values.out ? path.resolve(values.out) : undefined;
   const build = await createBuild({ repoRoot: REPO_ROOT, outRoot, online: values.online, profile: values.profile, target });
@@ -86,7 +89,7 @@ async function main() {
   }
 
   if (command === "entry") {
-    if (!build.sync) return grokOnly(command);
+    if (target !== "grok") return onlyFor(command, "grok");
     const entry = new GrokManifestBuilder(build.config).catalogEntry({
       repoUrl: REPO_URL,
       sha: headSha(),
@@ -96,8 +99,17 @@ async function main() {
     return 0;
   }
 
+  if (command === "about") {
+    if (target !== "gemini") return onlyFor(command, "gemini");
+    console.log(JSON.stringify(new GeminiManifestBuilder(build.config).aboutSettings(), null, 2));
+    return 0;
+  }
+
   if (command === "sync") {
-    if (!build.sync) return grokOnly(command);
+    if (!build.sync) {
+      console.error(`"sync" applies to targets with a committed directory (grok, gemini); --target ${target} produces an archive.`);
+      return 2;
+    }
     const result = await build.pipeline.run();
     printFindings(result.validation);
     if (!result.ok) return 1;
@@ -106,7 +118,7 @@ async function main() {
       const drift = await build.sync.check(result.stagingDir);
       for (const { kind, path: file } of drift) console.error(`${kind.padEnd(7)} ${relative}/${file}`);
       if (drift.length > 0) {
-        console.error(`${relative}/ is out of date (${drift.length} file(s)); run: npm run sync:grok`);
+        console.error(`${relative}/ is out of date (${drift.length} file(s)); run: npm run sync:${target}`);
         return 1;
       }
       console.log(`${relative}/ matches the build`);
@@ -133,9 +145,12 @@ async function main() {
   return validation.ok ? 0 : 1;
 }
 
-/** @param {string} command */
-function grokOnly(command) {
-  console.error(`"${command}" applies to the grok target only; pass --target grok.`);
+/**
+ * @param {string} command
+ * @param {string} target
+ */
+function onlyFor(command, target) {
+  console.error(`"${command}" applies to the ${target} target only; pass --target ${target}.`);
   return 2;
 }
 

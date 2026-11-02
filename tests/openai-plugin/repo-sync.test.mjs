@@ -41,6 +41,17 @@ test("sync copies the staged package under grok/plugins/<name>/ and removes stal
   assert.deepEqual(await sync.check(staging), []);
 });
 
+test("repoDir selects another committed directory and is validated", async t => {
+  const { repo, staging } = await fixture(t);
+  const sync = new RepoSync({ repoRoot: repo, pluginName: "acme", repoDir: "gemini/extensions" });
+  assert.equal(sync.targetDir, path.join(canonicalize(repo), "gemini", "extensions", "acme"));
+  await sync.sync(staging, { ok: true });
+  assert.deepEqual(await listFiles(sync.targetDir), [".grok-plugin/plugin.json", ".mcp.json", "skills/start/SKILL.md"]);
+  for (const repoDir of ["../outside", "/abs", "gemini//x", "Gemini/extensions", ""]) {
+    assert.throws(() => new RepoSync({ repoRoot: repo, pluginName: "acme", repoDir }), OutputError, repoDir);
+  }
+});
+
 test("check reports added, changed, and removed files without writing", async t => {
   const { staging, sync } = await fixture(t);
   await sync.sync(staging, { ok: true });

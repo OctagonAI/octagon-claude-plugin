@@ -1,0 +1,135 @@
+name: Publish Gemini CLI extensions
+
+# Mirrors each generated extension under gemini/extensions/<name>/ to its own
+# public repository (the unit the Gemini CLI extension gallery indexes), tags
+# v<version> when that version has no tag yet, and publishes a GitHub Release
+# with the manifest at the archive root. The mirrors are never edited by hand.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "gemini/extensions/**"
+      - ".github/workflows/publish-gemini-extensions.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-gemini-extensions
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        extension:
+          - name: octagon-ai
+            profile: ""
+          - name: octagon-prediction-markets
+            profile: prediction-markets
+    steps:
+      - name: Check out the source repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Refuse to publish a stale extension
+        run: |
+          if [ -n "${{ matrix.extension.profile }}" ]; then
+            node tools/openai-plugin/cli.mjs sync --target gemini --check --profile "${{ matrix.extension.profile }}"
+          else
+            node tools/openai-plugin/cli.mjs sync --target gemini --check
+          fi
+
+      - name: Read the extension's version and mirror settings
+        id: meta
+        run: |
+          dir="gemini/extensions/${{ matrix.extension.name }}"
+          version=$(node -p "require('./$dir/gemini-extension.json').version")
+          if [ -n "${{ matrix.extension.profile }}" ]; then
+            about=$(node tools/openai-plugin/cli.mjs about --target gemini --profile "${{ matrix.extension.profile }}")
+          else
+            about=$(node tools/openai-plugin/cli.mjs about --target gemini)
+          fi
+          repo=$(node -p "new URL(JSON.parse(process.argv[1]).repository).pathname.slice(1)" "$about")
+          {
+            echo "dir=$dir"
+            echo "version=$version"
+            echo "repo=$repo"
+            echo "description=$(node -p "JSON.parse(process.argv[1]).description" "$about")"
+            echo "homepage=$(node -p "JSON.parse(process.argv[1]).homepage" "$about")"
+            echo "topics=$(node -p "JSON.parse(process.argv[1]).topics.join(',')" "$about")"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Mint a token for the mirror repository
+        id: token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.GEMINI_MIRROR_APP_ID }}
+          private-key: ${{ secrets.GEMINI_MIRROR_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ steps.meta.outputs.repo }}
+
+      - name: Check out the mirror repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.meta.outputs.repo }}
+          token: ${{ steps.token.outputs.token }}
+          path: mirror
+          fetch-depth: 0
+
+      - name: Replace the mirror's contents with the generated extension
+        run: |
+          rsync -a --delete --exclude .git "${{ steps.meta.outputs.dir }}/" mirror/
+          cd mirror
+          git config user.name "octagon-release-bot"
+          git config user.email "release-bot@octagonai.co"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No content change."
+          else
+            git commit -m "Release ${{ steps.meta.outputs.version }} (octagon-claude-plugin@${GITHUB_SHA::7})"
+            git push origin HEAD:main
+          fi
+
+      - name: Tag and release the version, if not yet released
+        env:
+          GH_TOKEN: ${{ steps.token.outputs.token }}
+        run: |
+          cd mirror
+          tag="v${{ steps.meta.outputs.version }}"
+          if git ls-remote --tags origin "refs/tags/$tag" | grep -q "$tag"; then
+            echo "$tag already exists; nothing to release."
+            exit 0
+          fi
+          git tag -a "$tag" -m "Release ${{ steps.meta.outputs.version }}"
+          git push origin "$tag"
+          (cd .. && rm -f extension.zip && cd "${{ steps.meta.outputs.dir }}" && zip -X -D -q -r ../../../extension.zip .)
+          gh release create "$tag" ../extension.zip \
+            --repo "${{ steps.meta.outputs.repo }}" \
+            --title "${{ matrix.extension.name }} ${{ steps.meta.outputs.version }}" \
+            --notes "Generated from OctagonAI/octagon-claude-plugin@${GITHUB_SHA}. Install: gemini extensions install https://github.com/${{ steps.meta.outputs.repo }}"
+
+      - name: Assert the mirror's About settings and gallery topic
+        env:
+          GH_TOKEN: ${{ steps.token.outputs.token }}
+        run: |
+          gh api --method PATCH "repos/${{ steps.meta.outputs.repo }}" \
+            -f description="${{ steps.meta.outputs.description }}" \
+            -f homepage="${{ steps.meta.outputs.homepage }}" \
+            -F has_wiki=false > /dev/null
+          gh api --method PUT "repos/${{ steps.meta.outputs.repo }}/topics" \
+            -H "Accept: application/vnd.github+json" \
+            --input <(node -p "JSON.stringify({ names: '${{ steps.meta.outputs.topics }}'.split(',') })") > /dev/null
+          echo "Mirror ${{ steps.meta.outputs.repo }} is at ${{ steps.meta.outputs.version }}."
