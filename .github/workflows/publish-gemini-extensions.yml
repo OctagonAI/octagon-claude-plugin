@@ -14,12 +14,13 @@ name: Publish Gemini CLI extensions
 # (write) for the About description, homepage, and topics. The token is
 # requested with exactly those permissions.
 
+# Every push to main runs: a push that leaves the extensions unchanged is a
+# cheap no-op (no diff, tag exists), and it guarantees the newest commit is
+# always the one that publishes, so the freshness guard below never strands
+# a stale mirror behind an unrelated commit.
 on:
   push:
     branches: [main]
-    paths:
-      - "gemini/extensions/**"
-      - ".github/workflows/publish-gemini-extensions.yml"
   workflow_dispatch:
 
 permissions:

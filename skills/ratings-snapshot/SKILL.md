@@ -123,7 +123,7 @@ Different profiles:
 
 ### Debt-to-Equity
 - Ratio: Total Debt / Shareholders' Equity
-- A lower ratio means less financial risk, so it earns a higher score
+- With positive shareholders' equity, a lower ratio generally indicates less financial risk and earns a higher score; treat nonpositive equity separately, because a negative ratio does not indicate lower leverage
 - Industry norms vary significantly; compare within the sector
 
 ### P/E (Price-to-Earnings)

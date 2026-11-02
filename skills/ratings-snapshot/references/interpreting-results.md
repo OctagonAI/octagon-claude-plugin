@@ -70,8 +70,8 @@ Low D/E score (1):
 - Overall: A or B
 - ROE: 4-5
 - ROA: 4-5
-- D/E: 3-5 (low leverage)
-- P/E: 2-4 (a middling valuation score: the market pays up for quality)
+- D/E: 3-5 (moderate to low leverage)
+- P/E: 2-3 (a middling valuation score: the market pays up for quality)
 
 ### "Deep Value"
 - Overall: C or D
@@ -85,7 +85,7 @@ Low D/E score (1):
 - Overall: B
 - ROE: 4-5
 - ROA: 3-5
-- D/E: 3-5 (low leverage)
+- D/E: 3-5 (moderate to low leverage)
 - P/E: 3
 - P/B: 2-3
 
