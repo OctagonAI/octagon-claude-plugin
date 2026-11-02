@@ -85,7 +85,24 @@ jobs:
             echo "topics=$(node -p "JSON.parse(process.argv[1]).topics.join(',')" "$about")"
           } >> "$GITHUB_OUTPUT"
 
+      # A rerun of an older workflow must not push older content over a newer
+      # mirror: Git-clone installs follow the mirror's HEAD. Only the commit
+      # that is currently at the tip of main may publish.
+      - name: Skip the run unless it is the current tip of main
+        id: fresh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tip=$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)
+          if [ "$tip" = "$GITHUB_SHA" ]; then
+            echo "current=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "current=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Skipping: $GITHUB_SHA is not the tip of main ($tip); rerun from the latest commit instead."
+          fi
+
       - name: Mint a token for the mirror repository
+        if: steps.fresh.outputs.current == 'true'
         id: token
         uses: actions/create-github-app-token@v1
         with:
@@ -97,6 +114,7 @@ jobs:
           permission-administration: write
 
       - name: Check out the mirror repository
+        if: steps.fresh.outputs.current == 'true'
         uses: actions/checkout@v4
         with:
           repository: ${{ steps.meta.outputs.repo }}
@@ -105,6 +123,7 @@ jobs:
           fetch-depth: 0
 
       - name: Replace the mirror's contents with the generated extension
+        if: steps.fresh.outputs.current == 'true'
         env:
           DIR: ${{ steps.meta.outputs.dir }}
           VERSION: ${{ steps.meta.outputs.version }}
@@ -122,6 +141,7 @@ jobs:
           fi
 
       - name: Ensure the version is tagged, released, and carries its asset
+        if: steps.fresh.outputs.current == 'true'
         env:
           GH_TOKEN: ${{ steps.token.outputs.token }}
           REPO: ${{ steps.meta.outputs.repo }}
@@ -159,6 +179,7 @@ jobs:
           fi
 
       - name: Assert the mirror's About settings and gallery topic
+        if: steps.fresh.outputs.current == 'true'
         env:
           GH_TOKEN: ${{ steps.token.outputs.token }}
           REPO: ${{ steps.meta.outputs.repo }}

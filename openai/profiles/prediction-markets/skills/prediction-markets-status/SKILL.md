@@ -25,7 +25,7 @@ When connected, summarize the available tools:
 - `octagon-prediction-markets-agent`: cited research reports, Trust Scores, market discovery, and history for Kalshi and Polymarket markets
 - `prediction_markets_history`: a Kalshi event's probability history over a chosen window
 
-Then suggest a first request, or follow the `get-started` skill.
+Then suggest a first request, or follow the `prediction-markets-get-started` skill.
 
 ## Step 3: When something is wrong
 

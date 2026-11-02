@@ -122,18 +122,18 @@ Different profiles:
 - Lower for asset-heavy industries
 
 ### Debt-to-Equity
-- Total Debt / Shareholders' Equity
-- Lower = less financial risk
-- Industry norms vary significantly
+- Ratio: Total Debt / Shareholders' Equity
+- A lower ratio means less financial risk, so it earns a higher score
+- Industry norms vary significantly; compare within the sector
 
 ### P/E (Price-to-Earnings)
-- Stock Price / Earnings Per Share
-- Lower may indicate value
+- Ratio: Stock Price / Earnings Per Share
+- A lower ratio may indicate value, so it earns a higher score
 - Compare to growth rate (PEG)
 
 ### P/B (Price-to-Book)
-- Market Cap / Book Value
-- Lower may indicate value
+- Ratio: Market Cap / Book Value
+- A lower ratio may indicate value, so it earns a higher score
 - Less relevant for asset-light companies
 
 ## Follow-up Queries
