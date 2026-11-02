@@ -1,5 +1,5 @@
 ---
-name: octagon-status
+name: prediction-markets-status
 description: Check whether Octagon is connected and summarize the prediction-market tools that are currently available. Use when the user asks whether the plugin is working, what it can do right now, or why requests are failing.
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: get-started
+name: prediction-markets-get-started
 description: Introduce Octagon Prediction Markets, explain what prediction-market data is and how to connect, and suggest first requests. Use when the user is new to the plugin, asks what it can do with prediction markets, Kalshi, or Polymarket, or needs help connecting their Octagon account.
 ---
 
@@ -11,7 +11,7 @@ Octagon Prediction Markets treats a prediction market as a dataset: the probabil
 
 - **Event briefs**: what resolves a market and when, the current market-implied probability, the drivers and catalysts behind it, and how similar events resolved before. See `event-brief`.
 - **Probability history**: how the odds moved over a period, the largest moves, and what explains each one. See `probability-history`.
-- **Mispricing analysis**: where the market-implied probability diverges from an independent model estimate, by how much, and with what confidence. See `mispricing-analysis`.
+- **Mispricing analysis**: where the market-implied probability diverges from Octagon's research-adjusted model estimate, by how much, and with what confidence. See `mispricing-analysis`.
 - **Trust Score**: a 0–100 score of whether a market can be rigged and whether its price can be trusted, with the reasons. See `trust-score`.
 - **Market discovery**: find the markets that exist on a topic, on either venue, and screen them by where the model disagrees with the price.
 

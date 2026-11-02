@@ -19,7 +19,7 @@ Use the Octagon prediction-markets agent to research one market, or to find the 
 | Section | Content |
 |---------|---------|
 | Market overview | Title, venue, resolution criteria and date, current market-implied probability with timestamp |
-| Market vs. model | Octagon's independent probability next to the market's, and the size and direction of the gap |
+| Market vs. model | Octagon's research-adjusted model probability next to the market's, the size and direction of the gap, and the provenance of the estimate (`model_probability_source` and `evidence_grade`, when the report carries them) |
 | Price drivers | The factors behind the current probability, each with a source |
 | Catalysts | Dated upcoming events that could move the probability |
 | Resolution history | How similar events resolved before, as base-rate context |

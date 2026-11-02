@@ -146,8 +146,8 @@ test("the prediction-markets profile builds a valid, reproducible, prediction-on
   // The catalog's prediction-markets skill is overlaid, not transformed: its
   // upstream copy lags the product (Kalshi only, "120+ markets", no Trust Score).
   assert.deepEqual(first.catalog.transformed, []);
-  assert.deepEqual(first.catalog.added, ["event-brief", "get-started", "mispricing-analysis", "probability-history", "trust-score"]);
-  assert.deepEqual(first.catalog.overridden, ["octagon-status", "prediction-markets-analysis"]);
+  assert.deepEqual(first.catalog.added, ["event-brief", "mispricing-analysis", "prediction-markets-get-started", "prediction-markets-status", "probability-history", "trust-score"]);
+  assert.deepEqual(first.catalog.overridden, ["prediction-markets-analysis"]);
 
   const manifest = JSON.parse(await readFile(path.join(first.stagingDir, ".codex-plugin/plugin.json"), "utf8"));
   assert.equal(manifest.interface.displayName, "Octagon Prediction Markets");

@@ -87,8 +87,8 @@ Use ratings for initial filtering:
 ### Identify Strengths and Weaknesses
 Component analysis reveals:
 - High ROE + High ROA = Efficient operator
-- Low D/E = Conservative financing
-- Low P/E + Low P/B = Value candidate
+- High D/E score = Lower leverage (the score rises as leverage falls); a low D/E score flags heavy leverage, so check the underlying debt ratio before calling financing conservative
+- High P/E + High P/B scores = Attractive valuation on those metrics; low scores flag an expensive valuation
 - High DCF = Potentially undervalued
 
 ### Peer Comparison

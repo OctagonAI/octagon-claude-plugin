@@ -41,16 +41,16 @@ High ROE (5) + High ROA (5):
 - Pricing power or cost advantages
 
 ### Value Profile
-Low P/E (1-2) + Low P/B (1-2):
-- Trading at discount to earnings/assets
-- May be undervalued
-- Or may have issues depressing valuation
+Low P/E score (1-2) + Low P/B score (1-2):
+- Scores run from unattractive (1) to attractive (5), so low scores mean the stock is priced richly on earnings and assets
+- May be a quality premium, or an overvalued name
+- Confirm with the raw multiples when the tool returns them
 
 ### Leverage Profile
-Low D/E (1):
-- Could mean conservative (good)
-- Or could mean underleveraged (opportunity)
-- Context matters
+Low D/E score (1):
+- A weak leverage assessment: the score rises as leverage falls, so 1 flags heavy debt relative to equity
+- Inspect the underlying debt-to-equity ratio and the sector norm before drawing a company-specific conclusion
+- Capital-intensive sectors carry structurally higher ratios; the score alone does not say whether the debt is a problem
 
 ### Growth vs Value Balance
 - High profitability + Low valuation = Potential opportunity

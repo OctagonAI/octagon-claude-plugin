@@ -9,7 +9,7 @@ Turn a market's price history into an explanation: when the probability moved, b
 
 ## Inputs
 
-- A Kalshi event ticker or event-specific Kalshi link, or a Polymarket event link or slug. For Kalshi, the ticker is the event-specific segment of the URL, such as `kxfeddecision-26jun` in `…/kxfeddecision/fed-meeting/kxfeddecision-26jun`; a link that ends at the series page (`…/fed-meeting`) has no event ticker, so ask which event the user means or take the ticker from the agent's report.
+- A Kalshi event ticker or event-specific Kalshi link, or a Polymarket event link or slug. For Kalshi, the ticker is the event-specific segment of the URL, such as `kxfeddecision-26jun` in `…/kxfeddecision/fed-meeting/kxfeddecision-26jun`; a link that ends at the series page (`…/fed-meeting`) has no event ticker, so ask which event the user means or take the ticker from the agent's report. A market deeplink ends in a market ticker instead, which is the event ticker plus an outcome suffix (`kxoaianth-40-oai` → `KXOAIANTH-40`): strip the suffix, or take the event ticker from the agent's report, and keep the selected outcome for the analysis.
 - A window. Default to the last 30 days when the user does not say.
 
 ## Workflow

@@ -49,7 +49,7 @@ On top of the shared rules (skill front matter, relative links, neutral wording,
 
 Gemini CLI detects updates from the latest GitHub Release tag, so a change ships to Release installs only when `version` in the profile's `plugin.config.json` changes. One version number per plugin covers OpenAI, Grok, and Gemini.
 
-The workflow authenticates with a GitHub App installed on the two mirror repositories only (`GEMINI_MIRROR_APP_ID`, `GEMINI_MIRROR_APP_PRIVATE_KEY` in this repository's secrets). It runs nothing from the mirrors.
+The workflow authenticates with a GitHub App installed on the two mirror repositories only, with **Contents: write** (push, tag, release) and **Administration: write** (About description, homepage, topics); the token is requested with exactly those two permissions. Its ID and private key are `GEMINI_MIRROR_APP_ID` and `GEMINI_MIRROR_APP_PRIVATE_KEY` in this repository's secrets. Every step is idempotent, so a rerun repairs a partial publish. It runs nothing from the mirrors.
 
 ## Testing locally
 

@@ -155,7 +155,7 @@ gemini/extensions/octagon-prediction-markets/      (committed, generated)
 {
   "name": "octagon-prediction-markets",
   "version": "1.0.0",
-  "description": "Cited research on Kalshi and Polymarket prediction markets: event odds, what moves them, probability history, Trust Scores, and where the market-implied probability diverges from an independent model estimate.",
+  "description": "Cited research on Kalshi and Polymarket prediction markets: event odds, what moves them, probability history, Trust Scores, and where the market-implied probability diverges from Octagon's research-adjusted model estimate.",
   "contextFileName": "GEMINI.md",
   "mcpServers": {
     "octagon-predictions": {
@@ -354,8 +354,9 @@ Trigger: push to `main` touching `gemini/extensions/**` (and
 
 1. `npm ci && npm run check:gemini` (refuses to publish drift).
 2. Read `version` from the generated manifest.
-3. Check out the mirror with a GitHub App token (`contents: write` on the two
-   mirrors only; stored as `GEMINI_MIRROR_APP_ID` / `GEMINI_MIRROR_APP_KEY`).
+3. Check out the mirror with a GitHub App token (`contents: write` plus
+   `administration: write` for the About description and topics, on the two
+   mirrors only; stored as `GEMINI_MIRROR_APP_ID` / `GEMINI_MIRROR_APP_PRIVATE_KEY`).
 4. Replace the mirror's working tree with `gemini/extensions/<name>/` (rsync
    `--delete`, keeping `.git`), commit
    `Release <version> (octagon-claude-plugin@<short-sha>)` when there is a
@@ -405,7 +406,7 @@ version number per plugin across OpenAI, Grok, and Gemini.
 | Field | octagon-ai | octagon-prediction-markets |
 |---|---|---|
 | `name` | `octagon-ai` | `octagon-prediction-markets` |
-| `description` (manifest, gallery card) | Cited research on public companies: SEC filings, earnings call transcripts, financial statements, market data, and analyst estimates. | Cited research on Kalshi and Polymarket prediction markets: event odds, what moves them, probability history, Trust Scores, and where the market-implied probability diverges from an independent model estimate. |
+| `description` (manifest, gallery card) | Cited research on public companies: SEC filings, earnings call transcripts, financial statements, market data, and analyst estimates. | Cited research on Kalshi and Polymarket prediction markets: event odds, what moves them, probability history, Trust Scores, and where the market-implied probability diverges from Octagon's research-adjusted model estimate. |
 | Repo About | §5.1 | §5.1 |
 | Skills | 68 | 7 |
 | Server | `octagon` → `/mcp`, `includeTools` public tools | `octagon-predictions` → `/prediction-markets/mcp` |
