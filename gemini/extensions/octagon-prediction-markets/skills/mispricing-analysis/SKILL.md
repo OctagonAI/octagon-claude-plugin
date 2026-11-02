@@ -25,9 +25,9 @@ Report where the market-implied probability and the model's probability disagree
 
 ## Output structure
 
-1. **The two probabilities**: market-implied and model, side by side, with the timestamp of each, and the model's source and evidence grade. Omit the model probability for `unmodeled`, `out_of_scope`, and `determined` rows.
+1. **The two probabilities**: market-implied and model, side by side, with the timestamp of each. Include the model's source and evidence grade when the report carries them; otherwise state that its provenance is unknown. Omit the model probability for `unmodeled`, `out_of_scope`, and `determined` rows.
 2. **The mispricing**: size in probability points and direction ("the market implies 14 points more than the model on YES"). Only for `recalibrated` rows, or for rows with no source field (with the provenance caveat); `ladder_model` rows get a relative-rung observation instead; for `market_baseline` say that the model tracks the price and no gap is claimed.
-3. **Why they disagree**: the sources or factors the model weighs differently from the crowd, with citations, and the provenance of the estimate (source and evidence grade) so the reader knows whether the gap reflects evidence or the anchor.
+3. **Why they disagree**: the sources or factors the model weighs differently from the crowd, with citations, and the provenance of the estimate when its source and evidence grade are present, so the reader knows whether the gap reflects evidence or the anchor; otherwise state that its provenance is unknown.
 4. **Confidence**: how certain each estimate is. Note the market's volume and open interest, its Trust Score and label (a low score means the price deserves less weight as evidence), and the model's stated confidence or track record on this market type.
 5. **Historical context**: how gaps of this size on similar markets have tended to resolve, when the report provides it.
 6. **What would close the gap**: the developments that would move the market toward the model, or the model toward the market.
