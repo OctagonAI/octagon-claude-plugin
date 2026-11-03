@@ -1,6 +1,6 @@
 {
   "name": "octagon-prediction-markets",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Cited research on Kalshi and Polymarket prediction markets: event odds, what moves them, probability history, Trust Scores, and where the market-implied probability diverges from Octagon's research-adjusted model estimate.",
   "contextFileName": "GEMINI.md",
   "mcpServers": {
