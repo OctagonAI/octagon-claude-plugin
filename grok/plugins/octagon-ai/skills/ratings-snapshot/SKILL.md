@@ -87,8 +87,8 @@ Use ratings for initial filtering:
 ### Identify Strengths and Weaknesses
 Component analysis reveals:
 - High ROE + High ROA = Efficient operator
-- Low D/E = Conservative financing
-- Low P/E + Low P/B = Value candidate
+- High D/E score = Lower leverage (the score rises as leverage falls); a low D/E score flags heavy leverage, so check the underlying debt ratio before calling financing conservative
+- High P/E + High P/B scores = Attractive valuation on those metrics; low scores flag an expensive valuation
 - High DCF = Potentially undervalued
 
 ### Peer Comparison
@@ -100,8 +100,8 @@ Compare ratings across competitors:
 ### Value vs Quality Trade-off
 Different profiles:
 - High profitability + High valuation = Quality premium
-- Low profitability + Low valuation = Value trap risk
-- High profitability + Low valuation = Potential opportunity
+- Low profitability + Low raw P/E/P/B multiples (high valuation scores) = Value trap risk
+- High profitability + Low raw P/E/P/B multiples (high valuation scores) = Potential opportunity
 
 ## Component Deep Dives
 
@@ -121,18 +121,18 @@ Different profiles:
 - Lower for asset-heavy industries
 
 ### Debt-to-Equity
-- Total Debt / Shareholders' Equity
-- Lower = less financial risk
-- Industry norms vary significantly
+- Ratio: Total Debt / Shareholders' Equity
+- With positive shareholders' equity, a lower ratio generally indicates less financial risk and earns a higher score; treat nonpositive equity separately, because a negative ratio does not indicate lower leverage
+- Industry norms vary significantly; compare within the sector
 
 ### P/E (Price-to-Earnings)
-- Stock Price / Earnings Per Share
-- Lower may indicate value
+- Ratio: Stock Price / Earnings Per Share
+- A lower ratio may indicate value, so it earns a higher score
 - Compare to growth rate (PEG)
 
 ### P/B (Price-to-Book)
-- Market Cap / Book Value
-- Lower may indicate value
+- Ratio: Market Cap / Book Value
+- A lower ratio may indicate value, so it earns a higher score
 - Less relevant for asset-light companies
 
 ## Follow-up Queries

@@ -53,7 +53,12 @@
     "build:grok:predictions": "node tools/openai-plugin/cli.mjs build --target grok --profile prediction-markets",
     "sync:grok": "node tools/openai-plugin/cli.mjs sync --target grok && node tools/openai-plugin/cli.mjs sync --target grok --profile prediction-markets",
     "check:grok": "node tools/openai-plugin/cli.mjs sync --target grok --check && node tools/openai-plugin/cli.mjs sync --target grok --check --profile prediction-markets",
-    "entry:grok": "node tools/openai-plugin/cli.mjs entry --target grok && node tools/openai-plugin/cli.mjs entry --target grok --profile prediction-markets"
+    "entry:grok": "node tools/openai-plugin/cli.mjs entry --target grok && node tools/openai-plugin/cli.mjs entry --target grok --profile prediction-markets",
+    "build:gemini": "node tools/openai-plugin/cli.mjs build --target gemini",
+    "build:gemini:predictions": "node tools/openai-plugin/cli.mjs build --target gemini --profile prediction-markets",
+    "sync:gemini": "node tools/openai-plugin/cli.mjs sync --target gemini && node tools/openai-plugin/cli.mjs sync --target gemini --profile prediction-markets",
+    "check:gemini": "node tools/openai-plugin/cli.mjs sync --target gemini --check && node tools/openai-plugin/cli.mjs sync --target gemini --check --profile prediction-markets",
+    "about:gemini": "node tools/openai-plugin/cli.mjs about --target gemini && node tools/openai-plugin/cli.mjs about --target gemini --profile prediction-markets"
   },
   "keywords": [
     "mcp",

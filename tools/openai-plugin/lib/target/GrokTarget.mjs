@@ -5,6 +5,7 @@ import {
   GROK_ICON_PATH,
   GROK_LICENSE_PATH,
   GROK_MANIFEST_PATH,
+  GROK_PLUGINS_DIR,
   GROK_README_PATH,
   GrokManifestBuilder,
 } from "../manifest/GrokManifestBuilder.mjs";
@@ -48,6 +49,10 @@ export class GrokTarget extends Target {
 
   get manifestPath() {
     return GROK_MANIFEST_PATH;
+  }
+
+  get repoDir() {
+    return GROK_PLUGINS_DIR;
   }
 
   /**

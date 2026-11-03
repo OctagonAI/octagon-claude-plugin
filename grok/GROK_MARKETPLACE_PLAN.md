@@ -138,7 +138,7 @@ Only fields Grok documents, so there is nothing for a reviewer to ask about:
 {
   "name": "octagon-prediction-markets",
   "version": "1.0.0",
-  "description": "Cited research on Kalshi and Polymarket prediction markets: event odds, what moves them, probability history, Trust Scores, and where the market-implied probability diverges from an independent model estimate.",
+  "description": "Cited research on Kalshi and Polymarket prediction markets: event odds, what moves them, probability history, Trust Scores, and where the market-implied probability diverges from Octagon's research-adjusted model estimate.",
   "author": { "name": "Octagon AI", "email": "contact@octagonai.co", "url": "https://www.octagonai.co/" },
   "homepage": "https://www.octagonai.co/",
   "repository": "https://github.com/OctagonAI/octagon-claude-plugin",
@@ -363,7 +363,7 @@ only if we want npm consumers to get it; default: not included.
 ```json
 {
   "name": "octagon-prediction-markets",
-  "description": "Octagon research on Kalshi and Polymarket prediction markets (MCP server + skills). Cited event briefs: current odds with timestamps, probability history and what moved it, how similar events resolved, the market's 0–100 Trust Score, and where the market-implied probability diverges from an independent model estimate. Research only: no bets, trades, or account linking. Requires a free Octagon account; OAuth on first use.",
+  "description": "Octagon research on Kalshi and Polymarket prediction markets (MCP server + skills). Cited event briefs: current odds with timestamps, probability history and what moved it, how similar events resolved, the market's 0–100 Trust Score, and where the market-implied probability diverges from Octagon's research-adjusted model estimate. Research only: no bets, trades, or account linking. Requires a free Octagon account; OAuth on first use.",
   "category": "finance",
   "source": {
     "source": "url",

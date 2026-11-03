@@ -8,13 +8,22 @@
 /** @typedef {import("../validation/Validator.mjs").Validator} Validator */
 /** @typedef {import("../validation/Validator.mjs").ValidationReport} ValidationReport */
 /** @typedef {import("../validation/PackageView.mjs").PackageView} PackageView */
-/** @typedef {"openai" | "grok"} TargetId */
+/** @typedef {"openai" | "grok" | "gemini"} TargetId */
 
 /**
  * @typedef {{ writer: PackageWriter, config: PluginConfig, skills: readonly SkillDocument[], assetsRoot: string }} EmitContext
  * @typedef {{ writer: PackageWriter, files: readonly string[], pkg: PackageView, validator: Validator, validation: ValidationReport }} FinalizeContext
  * @typedef {{ archive: ArchiveInfo | null, validation: ValidationReport }} FinalizeResult
- * @typedef {{ knownTools: readonly string[], forbiddenText: readonly import("../validation/rules/ForbiddenTextRule.mjs").ForbiddenText[], online?: boolean, mcpUrl?: string }} RuleOptions
+ * @typedef {{
+ *   knownTools: readonly string[],
+ *   forbiddenText: readonly import("../validation/rules/ForbiddenTextRule.mjs").ForbiddenText[],
+ *   online?: boolean,
+ *   mcpUrl?: string,
+ *   pluginName?: string,
+ *   tools?: readonly string[],
+ *   includeTools?: readonly string[],
+ * }} RuleOptions `tools` is every tool the configured server serves;
+ *   `includeTools` the client-side allow-list, when the target supports one.
  */
 
 /**
@@ -37,6 +46,16 @@ export class Target {
   /** @returns {string} Package-relative path of the manifest this target writes. */
   get manifestPath() {
     throw new Error("Target.manifestPath is not implemented");
+  }
+
+  /**
+   * @returns {string | null} Repository directory (POSIX, relative to the
+   *   root) under which this target's packages are committed, one
+   *   subdirectory per plugin; `null` when the target produces an archive
+   *   instead and nothing is committed.
+   */
+  get repoDir() {
+    return null;
   }
 
   /**

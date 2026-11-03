@@ -40,17 +40,24 @@ High ROE (5) + High ROA (5):
 - Strong competitive position
 - Pricing power or cost advantages
 
-### Value Profile
-Low P/E (1-2) + Low P/B (1-2):
-- Trading at discount to earnings/assets
-- May be undervalued
-- Or may have issues depressing valuation
+### Valuation Profile
+Valuation scores run from unattractive (1) to attractive (5): a high P/E or P/B score means the stock is priced cheaply on that metric, a low score means it is priced richly.
+
+High P/E score (4-5) + High P/B score (4-5):
+- Trading at a discount to earnings and assets
+- May be undervalued, or may have issues depressing the valuation
+
+Low P/E score (1-2) + Low P/B score (1-2):
+- Priced richly on earnings and assets
+- May be a quality premium, or an overvalued name
+
+Confirm with the raw multiples when the tool returns them.
 
 ### Leverage Profile
-Low D/E (1):
-- Could mean conservative (good)
-- Or could mean underleveraged (opportunity)
-- Context matters
+Low D/E score (1):
+- A weak leverage assessment: the score rises as leverage falls, so 1 flags heavy debt relative to equity
+- Inspect the underlying debt-to-equity ratio and the sector norm before drawing a company-specific conclusion
+- Capital-intensive sectors carry structurally higher ratios; the score alone does not say whether the debt is a problem
 
 ### Growth vs Value Balance
 - High profitability + Low valuation = Potential opportunity
@@ -63,22 +70,22 @@ Low D/E (1):
 - Overall: A or B
 - ROE: 4-5
 - ROA: 4-5
-- D/E: 1-3
-- P/E: 2-4 (may pay up for quality)
+- D/E: 3-5 (moderate to low leverage)
+- P/E: 2-3 (a middling valuation score: the market pays up for quality)
 
 ### "Deep Value"
 - Overall: C or D
 - ROE: 1-3
 - ROA: 1-3
 - D/E: varies
-- P/E: 1-2
-- P/B: 1-2
+- P/E: 4-5 (cheap on earnings)
+- P/B: 4-5 (cheap on book value)
 
 ### "Quality at Fair Price"
 - Overall: B
 - ROE: 4-5
 - ROA: 3-5
-- D/E: 1-3
+- D/E: 3-5 (moderate to low leverage)
 - P/E: 3
 - P/B: 2-3
 
@@ -87,15 +94,15 @@ Low D/E (1):
 - ROE: 4-5
 - ROA: 3-4
 - D/E: 2-4
-- P/E: 4-5 (expensive on earnings)
+- P/E: 1-2 (expensive on earnings)
 - DCF: 2-3 (priced for growth)
 
 ## Red Flags
 
 ### Concerning Combinations
-1. **Low ROE + Low ROA + High D/E**: Struggling with leverage
+1. **Low ROE + Low ROA + Low D/E score**: Weak returns carrying heavy leverage
 2. **Declining overall rating**: Deteriorating fundamentals
-3. **Low DCF + High P/E + High P/B**: Potentially overvalued
+3. **Low DCF + Low P/E score + Low P/B score**: Potentially overvalued on every valuation measure
 4. **All low scores**: Multiple fundamental concerns
 
 ## Using for Screening
@@ -104,12 +111,12 @@ Low D/E (1):
 Start with:
 - Overall Rating >= B
 - ROE >= 3
-- D/E <= 3
+- D/E >= 3 (moderate or low leverage)
 
 ### Value Screen
 Focus on:
-- P/E <= 2
-- P/B <= 2
+- P/E >= 4 (cheap on earnings)
+- P/B >= 4 (cheap on book value)
 - DCF >= 3
 
 ### Quality Screen

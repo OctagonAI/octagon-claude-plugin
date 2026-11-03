@@ -1,7 +1,7 @@
 {
   "name": "octagon-prediction-markets",
-  "version": "1.0.0",
-  "description": "Cited research on Kalshi and Polymarket prediction markets: event odds, what moves them, probability history, Trust Scores, and where the market-implied probability diverges from an independent model estimate.",
+  "version": "1.0.1",
+  "description": "Cited research on Kalshi and Polymarket prediction markets: event odds, what moves them, probability history, Trust Scores, and where the market-implied probability diverges from Octagon's research-adjusted model estimate.",
   "author": {
     "name": "Octagon AI",
     "email": "contact@octagonai.co",
@@ -28,22 +28,9 @@
       "prediction_markets_history"
     ]
   },
-  "grok": {
-    "keywords": [
-      "octagon",
-      "octagon prediction markets",
-      "octagon kalshi",
-      "octagon polymarket",
-      "octagon trust score"
-    ],
-    "domains": [
-      "octagonai.co",
-      "www.octagonai.co"
-    ],
-    "category": "finance",
-    "catalogDescription": "Octagon research on Kalshi and Polymarket prediction markets (MCP server + skills). Cited event briefs: current odds with timestamps, probability history and what moved it, how similar events resolved, the market's 0-100 Trust Score, and where the market-implied probability diverges from an independent model estimate. Research only: no bets, trades, or account linking. Requires a free Octagon account; OAuth on first use.",
+  "listing": {
     "oauthUrl": "https://login.octagonai.co",
-    "readmeIntro": "Built for analysts, economists, strategists, policy and risk teams, and journalists who treat event probabilities as data. Give it a market and it returns a cited analyst brief: what resolves the event, what the market currently implies, how that probability has moved and why, how similar events have resolved before, the market's Trust Score, and whether the market is mispriced relative to an independent model estimate.",
+    "readmeIntro": "Built for analysts, economists, strategists, policy and risk teams, and journalists who treat event probabilities as data. Give it a market and it returns a cited analyst brief: what resolves the event, what the market currently implies, how that probability has moved and why, how similar events have resolved before, the market's Trust Score, and whether the market is mispriced relative to Octagon's research-adjusted model estimate.",
     "scopeNote": "Research only. The plugin does not place, route, or recommend bets or trades, hold funds, or connect to any trading account, and it does not give personalized financial advice. Generating a new report takes several minutes and uses report credits; the skills ask before generating one.",
     "smokeTests": [
       {
@@ -60,10 +47,33 @@
       }
     ]
   },
+  "grok": {
+    "keywords": [
+      "octagon",
+      "octagon prediction markets",
+      "octagon kalshi",
+      "octagon polymarket",
+      "octagon trust score"
+    ],
+    "domains": [
+      "octagonai.co",
+      "www.octagonai.co"
+    ],
+    "category": "finance",
+    "catalogDescription": "Octagon research on Kalshi and Polymarket prediction markets (MCP server + skills). Cited event briefs: current odds with timestamps, probability history and what moved it, how similar events resolved, the market's 0-100 Trust Score, and where the market-implied probability diverges from Octagon's research-adjusted model estimate. Research only: no bets, trades, or account linking. Requires a free Octagon account; OAuth on first use."
+  },
+  "gemini": {
+    "serverName": "octagon-predictions",
+    "repository": "https://github.com/OctagonAI/octagon-prediction-markets-gemini-extension",
+    "repoDescription": "Cited Kalshi and Polymarket research for Gemini CLI: odds, drivers, Trust Scores, model-vs-market gaps. By Octagon AI.",
+    "contextNotes": [
+      "For SEC filings, earnings calls, or company financials, suggest the `octagon-ai` extension."
+    ]
+  },
   "interface": {
     "displayName": "Octagon Prediction Markets",
     "shortDescription": "Odds, drivers & mispricings",
-    "longDescription": "Octagon Prediction Markets turns Kalshi and Polymarket prediction markets into a research dataset: current odds, what moved them, where the market-implied probability diverges from an independent model estimate, and how much each market's price can be trusted.\n\nBuilt for analysts, economists, strategists, policy and risk teams, and journalists who treat event probabilities as data.\n\nGive it a market and it returns a cited analyst brief:\n- What resolves the event, and when\n- The current market-implied probability, with its timestamp\n- How that probability has moved over time, and the drivers and catalysts behind each move\n- How similar events have resolved before\n- Whether the market is mispriced relative to the model, with the size of the gap and the confidence behind it\n- The market's Octagon Trust Score, 0 to 100, with the reasons behind it\n\nAsk for a topic and it finds the markets that exist for it, on either venue, and shows where the model disagrees with the price.\n\nCovers more than 130,000 active events across Kalshi and Polymarket, in sports, crypto, climate, elections, finance, commodities, politics, culture, economics, and science and technology.\n\nOctagon is a research tool. It does not place, route, or recommend bets or trades, hold funds, or connect to any trading account, and it does not give personalized financial advice. Requires an Octagon account (sign up at octagonai.co). Generating new reports requires a plan that includes report generation; cached reports are available on all plans.",
+    "longDescription": "Octagon Prediction Markets turns Kalshi and Polymarket prediction markets into a research dataset: current odds, what moved them, where the market-implied probability diverges from Octagon's research-adjusted model estimate, and how much each market's price can be trusted.\n\nBuilt for analysts, economists, strategists, policy and risk teams, and journalists who treat event probabilities as data.\n\nGive it a market and it returns a cited analyst brief:\n- What resolves the event, and when\n- The current market-implied probability, with its timestamp\n- How that probability has moved over time, and the drivers and catalysts behind each move\n- How similar events have resolved before\n- Whether the market is mispriced relative to the model, with the size of the gap and the confidence behind it\n- The market's Octagon Trust Score, 0 to 100, with the reasons behind it\n\nAsk for a topic and it finds the markets that exist for it, on either venue, and shows where the model disagrees with the price.\n\nCovers more than 130,000 active events across Kalshi and Polymarket, in sports, crypto, climate, elections, finance, commodities, politics, culture, economics, and science and technology.\n\nOctagon is a research tool. It does not place, route, or recommend bets or trades, hold funds, or connect to any trading account, and it does not give personalized financial advice. Requires an Octagon account (sign up at octagonai.co). Generating new reports requires a plan that includes report generation; cached reports are available on all plans.",
     "developerName": "Octagon AI",
     "category": "Finance",
     "capabilities": [
@@ -87,7 +97,7 @@
     "composerIcon": "./assets/icon.png",
     "logo": "./assets/logo.png"
   },
-  "onboardingSkill": "get-started",
+  "onboardingSkill": "prediction-markets-get-started",
   "review": {
     "test_cases": {
       "positive": [

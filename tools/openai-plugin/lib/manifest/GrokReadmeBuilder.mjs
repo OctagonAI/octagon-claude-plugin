@@ -1,5 +1,6 @@
 // @ts-check
 import { GROK_PLUGINS_DIR } from "./GrokManifestBuilder.mjs";
+import { licenseAndSupportLines, skillsTable, smokeTestLines, sortedSkills } from "./readmeSections.mjs";
 
 /** @typedef {import("../config/PluginConfig.mjs").PluginConfig} PluginConfig */
 /** @typedef {import("../skill/SkillDocument.mjs").SkillDocument} SkillDocument */
@@ -29,7 +30,7 @@ export class GrokReadmeBuilder {
     const grok = this.#config.grok();
     const listing = /** @type {Record<string, unknown>} */ (config.interface);
     const title = typeof listing.displayName === "string" ? listing.displayName : config.name;
-    const sorted = [...skills].sort((a, b) => a.name.localeCompare(b.name));
+    const sorted = sortedSkills(skills);
     const oauthHost = new URL(grok.oauthUrl).host;
     const mcpHost = new URL(config.mcp.url).host;
 
@@ -87,13 +88,11 @@ export class GrokReadmeBuilder {
       "",
       "## Try it",
       "",
-      ...grok.smokeTests.flatMap(({ prompt, expect }) => [`- \`${prompt}\``, `  Expected: ${expect}`]),
+      ...smokeTestLines(grok.smokeTests),
       "",
       "## Skills",
       "",
-      "| Skill | What it does |",
-      "|---|---|",
-      ...sorted.map(skill => `| \`${skill.name}\` | ${oneLine(skill.description)} |`),
+      ...skillsTable(sorted),
       "",
       "## Scope",
       "",
@@ -101,33 +100,11 @@ export class GrokReadmeBuilder {
       "",
       "## License and support",
       "",
-      `- License: ${config.license ?? "see LICENSE"} (see \`LICENSE\`).`,
-      `- Homepage: ${config.homepage ?? ""}`,
-      `- Support: ${stringField(listing, "supportURL")}`,
-      `- Privacy policy: ${stringField(listing, "privacyPolicyURL")}`,
-      `- Terms of service: ${stringField(listing, "termsOfServiceURL")}`,
+      ...licenseAndSupportLines(config, listing),
       "",
       "This directory is generated from the plugin's config and skill catalog by the packaging tool in this repository; edit the sources, not these files.",
       "",
     ];
     return lines.join("\n");
   }
-}
-
-/**
- * @param {string} text
- * @returns {string}
- */
-function oneLine(text) {
-  return text.replace(/\s+/g, " ").replace(/\|/g, "\\|").trim();
-}
-
-/**
- * @param {Record<string, unknown>} object
- * @param {string} key
- * @returns {string}
- */
-function stringField(object, key) {
-  const value = object[key];
-  return typeof value === "string" ? value : "";
 }

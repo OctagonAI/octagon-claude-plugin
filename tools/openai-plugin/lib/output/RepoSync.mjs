@@ -6,7 +6,7 @@ import { OutputError } from "../errors.mjs";
 import { GROK_PLUGINS_DIR } from "../manifest/GrokManifestBuilder.mjs";
 import { canonicalize, isWithin, listFiles } from "../util/fs.mjs";
 
-/** The one place under the repository that generated Grok packages may occupy. */
+/** The default place under the repository that generated packages may occupy (the Grok target's). */
 export const SYNC_ROOT = GROK_PLUGINS_DIR.split("/").join(path.sep);
 
 /**
@@ -15,28 +15,36 @@ export const SYNC_ROOT = GROK_PLUGINS_DIR.split("/").join(path.sep);
  */
 
 /**
- * Copies a validated Grok staging directory into the repository so the
- * marketplace can reference it by commit.
+ * Copies a validated staging directory into the repository so a marketplace
+ * can reference it by commit (Grok) or a mirror can be published from it (Gemini).
  *
  * This is the only component allowed to write into the source tree, and it
- * may only write under `grok/plugins/<pluginName>/`. Both ends are
- * canonicalized, the destination may not be a symlink, the staging directory
- * may not be inside the destination, and a build whose validation failed is
- * refused outright. `check()` reports drift without writing, for CI.
+ * may only write under `<repoDir>/<pluginName>/`, where `repoDir` is the
+ * target's committed directory (`grok/plugins`, `gemini/extensions`). Both
+ * ends are canonicalized, the destination may not be a symlink, the staging
+ * directory may not be inside the destination, and a build whose validation
+ * failed is refused outright. `check()` reports drift without writing, for CI.
  */
 export class RepoSync {
   /** @type {string} */ repoRoot;
   /** @type {string} */ targetDir;
 
-  /** @param {{ repoRoot: string, pluginName: string }} options */
-  constructor({ repoRoot, pluginName }) {
+  /**
+   * @param {{ repoRoot: string, pluginName: string, repoDir?: string }} options
+   *   `repoDir` is POSIX and relative to the repository root; it defaults to the Grok directory.
+   */
+  constructor({ repoRoot, pluginName, repoDir = GROK_PLUGINS_DIR }) {
     if (!/^[a-z0-9][a-z0-9-]*$/.test(pluginName)) {
       throw new OutputError(`Unsafe plugin name for a directory: ${pluginName}`);
     }
+    if (!/^[a-z0-9][a-z0-9-]*(?:\/[a-z0-9][a-z0-9-]*)*$/.test(repoDir)) {
+      throw new OutputError(`Unsafe repository directory for sync: ${repoDir}`);
+    }
+    const syncRoot = repoDir.split("/").join(path.sep);
     this.repoRoot = canonicalize(repoRoot);
-    const target = canonicalize(path.join(this.repoRoot, SYNC_ROOT, pluginName));
-    if (!isWithin(path.join(this.repoRoot, SYNC_ROOT), target) || path.basename(target) !== pluginName) {
-      throw new OutputError(`Sync target ${target} is outside ${SYNC_ROOT}`);
+    const target = canonicalize(path.join(this.repoRoot, syncRoot, pluginName));
+    if (!isWithin(path.join(this.repoRoot, syncRoot), target) || path.basename(target) !== pluginName) {
+      throw new OutputError(`Sync target ${target} is outside ${syncRoot}`);
     }
     this.targetDir = target;
     Object.freeze(this);
