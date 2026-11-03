@@ -7,6 +7,19 @@ import { Checker, readJsonFile } from "./validate.mjs";
 export const IMAGE_FIELDS = Object.freeze(["logo", "logoDark", "composerIcon", "composerIconDark"]);
 export const ASSET_PREFIX = "./assets/";
 
+/**
+ * @param {string} value
+ * @returns {boolean} True when `new URL(value)` accepts it; builders call that later.
+ */
+function parses(value) {
+  try {
+    new URL(value);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 /** The listing fields that used to live under `grok` and now live under `listing`. */
 const LISTING_FIELDS = Object.freeze(["oauthUrl", "readmeIntro", "scopeNote", "smokeTests"]);
 
@@ -111,7 +124,7 @@ export class PluginConfig {
 
     if (check.object(raw.mcp, "mcp")) {
       check.string(raw.mcp.serverName, "mcp.serverName");
-      check.string(raw.mcp.url, "mcp.url");
+      if (check.string(raw.mcp.url, "mcp.url") && !parses(raw.mcp.url)) check.fail("mcp.url must be a valid URL");
       check.stringArray(raw.mcp.tools, "mcp.tools");
     }
 
@@ -148,8 +161,9 @@ export class PluginConfig {
     for (const key of ["oauthUrl", "readmeIntro", "scopeNote"]) {
       if (required || block[key] !== undefined) check.string(block[key], `${where}.${key}`);
     }
-    if (typeof block.oauthUrl === "string" && !block.oauthUrl.startsWith("https://")) {
-      check.fail(`${where}.oauthUrl must be an https:// URL`);
+    if (typeof block.oauthUrl === "string") {
+      if (!block.oauthUrl.startsWith("https://")) check.fail(`${where}.oauthUrl must be an https:// URL`);
+      else if (!parses(block.oauthUrl)) check.fail(`${where}.oauthUrl must be a valid URL`);
     }
     if (!required && block.smokeTests === undefined) return;
     if (check.array(block.smokeTests, `${where}.smokeTests`)) {

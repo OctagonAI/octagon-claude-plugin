@@ -19,7 +19,7 @@ Use the Octagon prediction-markets agent to research one market, or to find the 
 | Section | Content |
 |---------|---------|
 | Market overview | Title, venue, resolution criteria and date, current market-implied probability with timestamp |
-| Market vs. model | Octagon's research-adjusted model probability next to the market's, the size and direction of the gap, and the provenance of the estimate (`model_probability_source` and `evidence_grade`, when the report carries them). A gap is claimed only for `recalibrated` rows; `market_baseline` means the model tracks the price; `unmodeled`, `out_of_scope`, and `determined` rows get the market probability only |
+| Market vs. model | Octagon's research-adjusted model probability next to the market's, the size and direction of the gap, and the provenance of the estimate (`model_probability_source` and `evidence_grade`, when the report carries them). A gap is claimed for `recalibrated` rows; older rows without `model_probability_source` may show one gap, with the estimate's provenance labeled unknown; `market_baseline` means the model tracks the price; `unmodeled`, `out_of_scope`, and `determined` rows get the market probability only |
 | Price drivers | The factors behind the current probability, each with a source |
 | Catalysts | Dated upcoming events that could move the probability |
 | Resolution history | How similar events resolved before, as base-rate context |

@@ -134,6 +134,13 @@ jobs:
           git config user.name "octagon-release-bot"
           git config user.email "release-bot@octagonai.co"
           git add -A
+          # Same-version content changes are refused: the tag and the release asset
+          # for v$VERSION would keep the old content while main moved on.
+          if git rev-parse -q --verify "refs/tags/v$VERSION" > /dev/null \
+            && ! git diff --cached --quiet "refs/tags/v$VERSION" --; then
+            echo "::error::Contents changed but v$VERSION is already tagged. Bump the version in plugin.config.json and sync again."
+            exit 1
+          fi
           if git diff --cached --quiet; then
             echo "No content change."
           else

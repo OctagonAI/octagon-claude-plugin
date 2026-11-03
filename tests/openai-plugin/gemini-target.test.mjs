@@ -85,8 +85,10 @@ test("the listing block is read from `listing`, or from legacy `grok` fields, an
   // A grok block alone must carry them.
   assert.throws(() => PluginConfig.check({ ...withoutListing, grok: { keywords: ["acme"], domains: ["acme.example"] } }, "test"), ConfigError);
 
+  assert.throws(() => PluginConfig.check(configData({ mcp: { serverName: "acme", url: "https://bad url", tools: ["search"] } }), "test"), /mcp\.url must be a valid URL/);
   for (const bad of [
     { ...listing, oauthUrl: "http://insecure" },
+    { ...listing, oauthUrl: "https://bad host name" },
     { ...listing, smokeTests: [] },
     { ...listing, readmeIntro: "" },
   ]) {

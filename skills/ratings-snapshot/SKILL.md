@@ -101,8 +101,8 @@ Compare ratings across competitors:
 ### Value vs Quality Trade-off
 Different profiles:
 - High profitability + High valuation = Quality premium
-- Low profitability + Low valuation = Value trap risk
-- High profitability + Low valuation = Potential opportunity
+- Low profitability + Low raw P/E/P/B multiples (high valuation scores) = Value trap risk
+- High profitability + Low raw P/E/P/B multiples (high valuation scores) = Potential opportunity
 
 ## Component Deep Dives
 
