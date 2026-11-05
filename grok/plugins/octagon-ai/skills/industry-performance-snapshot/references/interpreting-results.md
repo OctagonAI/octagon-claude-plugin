@@ -209,7 +209,7 @@ If S&P 500 returned +0.5% and Biotech +7.89%:
 
 ## Practical Application
 
-### Trading Signals
+### Price Signals
 
 | Finding | Consideration |
 |---------|---------------|

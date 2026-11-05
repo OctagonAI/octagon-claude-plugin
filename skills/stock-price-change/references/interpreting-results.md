@@ -16,7 +16,7 @@ The octagon-agent returns price change statistics across multiple timeframes:
 | 3 Years | 79.03% |
 | 5 Years | 100.02% |
 | 10 Years | 1,043.14% |
-| All-Time High | 210,270.08% |
+| Return Since Inception | 210,270.08% |
 
 ## Understanding Each Period
 
@@ -100,7 +100,7 @@ The octagon-agent returns price change statistics across multiple timeframes:
 | Use | Long-term performance |
 | Context | Secular trend |
 
-### All-Time High
+### Return Since Inception
 
 | Aspect | Description |
 |--------|-------------|
@@ -228,7 +228,7 @@ Annualized = (1 + Total Return)^(1/Years) - 1
 
 ### Distance from ATH
 
-If ATH gain is 210,270% from inception, calculate distance from current ATH:
+The return-since-inception figure is a cumulative return, not an all-time-high price. When an all-time-high price is available, compute the distance from it:
 
 ```
 % from ATH = (ATH Price - Current) / ATH Price × 100%

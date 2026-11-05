@@ -10,8 +10,7 @@ Developed by Edward Altman in 1968 to predict bankruptcy probability within 2 ye
 | Z-Score | Zone | Probability | Action |
 |---------|------|-------------|--------|
 | > 3.0 | Safe | Very low bankruptcy risk | Standard investment analysis |
-| 2.7 - 3.0 | Caution | Low risk but monitor | Watch for deterioration |
-| 1.8 - 2.7 | Grey | Moderate risk | Deep dive required |
+| 1.8 - 3.0 | Grey | Moderate risk | Monitor and deep dive |
 | < 1.8 | Distress | High bankruptcy risk | Avoid or distressed investing |
 
 ### Formula Components
@@ -44,9 +43,8 @@ Developed by Joseph Piotroski in 2000 for value stock screening.
 | Score | Quality | Interpretation |
 |-------|---------|----------------|
 | 8-9 | Strong | High-quality value candidate |
-| 6-7 | Moderate | Acceptable, monitor closely |
-| 4-5 | Weak | Potential value trap |
-| 0-3 | Poor | Avoid, serious concerns |
+| 5-7 | Moderate | Average financial health, monitor |
+| 0-4 | Weak | Poor financial health, serious concerns |
 
 ### Nine Criteria (1 point each)
 
@@ -84,14 +82,14 @@ Best for:
 
 ### Matrix Approach
 
-| | High Piotroski (7+) | Low Piotroski (<5) |
+| | High Piotroski (8-9) | Low Piotroski (0-4) |
 |---|---|---|
 | **High Z-Score (>3)** | Strong Buy consideration | Monitor operating trends |
 | **Low Z-Score (<1.8)** | Leverage concern, investigate | Avoid or distressed only |
 
 ### Investment Implications
 
-**Strong Health (Z>3, P>7):**
+**Strong Health (Z>3, P 8-9):**
 - Low risk profile
 - Quality company
 - May command premium valuation

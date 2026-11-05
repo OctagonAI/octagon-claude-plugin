@@ -34,7 +34,7 @@
       "version": "1.0.2",
       "shortDescription": "Event odds research",
       "description": "Cited research on Kalshi and Polymarket prediction markets: event odds, what moves them, probability history, Trust Scores, and where the market-implied probability diverges from Octagon's research-adjusted model estimate.",
-      "cliDescription": "Cited research on Kalshi and Polymarket markets: odds, drivers, probability history, Trust Scores, mispricing vs Octagon's model. Research only, no bets. Free Octagon account; OAuth on first use.",
+      "cliDescription": "Cited research on Kalshi and Polymarket markets: odds, drivers, probability history, Trust Scores, mispricing vs Octagon's model. Research only, no bets. Generating a new report takes several minutes and uses report credits. Free Octagon account; OAuth on first use.",
       "homepage": "https://www.octagonai.co/",
       "keywords": [
         "prediction-markets",

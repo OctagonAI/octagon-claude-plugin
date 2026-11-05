@@ -155,7 +155,7 @@
       },
       "financial-analyst-master": {
         "displayName": "Equity research analyst",
-        "description": "Comprehensive equity research analyst skill that orchestrates all Octagon financial analysis skills. Use when conducting full company analysis, writing initiation of coverage reports, performing due diligence, or creating investment recommendations with quantitative support inside Octagon."
+        "description": "Comprehensive equity research analyst skill that orchestrates all Octagon financial analysis skills. Use when conducting full company analysis, writing initiation of coverage reports, performing due diligence, or building valuation and scenario analysis with quantitative support inside Octagon."
       },
       "financial-growth": {
         "displayName": "Financial growth metrics",

@@ -179,7 +179,7 @@ What is the 52-week high and low for AMZN?
 | Focus | Use Case |
 |-------|----------|
 | Recent Performance | Current momentum |
-| Trading Signals | Entry/exit timing |
+| Trend Signals | Momentum and reversals |
 | News Impact | Event analysis |
 | Volatility | Risk assessment |
 

@@ -14,7 +14,7 @@ Turn a market's price history into an explanation: when the probability moved, b
 
 ## Workflow
 
-1. For a Kalshi event, call `prediction_markets_history` with the event ticker and the window (`captured_from`, `captured_to`). Page with `cursor` when the response is truncated. Set `include_analysis` to true when the user wants more than the probability series. For a Polymarket event, ask `octagon-prediction-markets-agent` for the event's history over the window.
+1. For a Kalshi event, call `prediction_markets_history` with the event ticker and the window (`captured_from`, `captured_to`). Page with `cursor` when the response is truncated. Set `include_analysis` to true when the user wants more than the probability series. For a Polymarket event, ask `octagon-prediction-markets-agent` for the event's history over the window with `cache: true`, which returns only an existing report; if no cached report carries the series, tell the user that generating one takes minutes and uses report credits, and call again with `cache: false` only after they agree.
 2. Compute from the series: start and end probability, net change, the largest moves (by size), and any regime change, meaning a sustained shift rather than a spike that reverted.
 3. For each large move, identify the explanation: a data release, announcement, ruling, poll, or news event on or just before that date. When the history alone does not explain a move, call `octagon-prediction-markets-agent` with the market link and `cache: true`; generate a new report (`cache: false`) only after telling the user it takes minutes and uses report credits and getting their agreement.
 4. Present the analysis in the structure below.

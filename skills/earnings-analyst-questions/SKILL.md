@@ -73,9 +73,9 @@ Analysts highlighted several critical topics during Tesla's latest earnings call
 
 - **Megapack Sales Impact** – The elimination of tax credits for solar projects raised concerns about its effect on Tesla's Megapack sales pipeline
 
-- **Incentive Loss and Autonomy Challenges** – Analysts warned of potential rough quarters due to the loss of U.S. incentives and the early-stage risks of autonomy development [Elon Musk]
+- **Incentive Loss and Autonomy Challenges** – Analysts warned of potential rough quarters due to the loss of U.S. incentives and the early-stage risks of autonomy development
 
-- **Lower-Cost Model Details** – Requests for more information on production timelines and cost-saving strategies for Tesla's upcoming lower-cost vehicle [Lars Moravy]
+- **Lower-Cost Model Details** – Requests for more information on production timelines and cost-saving strategies for Tesla's upcoming lower-cost vehicle
 
 **Follow-up Questions**
 - What specific funding mechanisms has Tesla outlined for the robotaxi business?

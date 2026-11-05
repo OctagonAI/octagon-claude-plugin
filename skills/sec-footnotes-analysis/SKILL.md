@@ -25,8 +25,10 @@ Determine the following before querying:
 Use the `octagon-agent` tool with a natural language prompt:
 
 ```
-Analyze the footnotes and accounting policies from <TICKER>'s latest quarterly filing.
+Analyze the footnotes and accounting policies from <TICKER>'s latest <FILING TYPE, default 10-Q> filing[, focusing on <FOCUS AREA>].
 ```
+
+Fill the placeholders from step 1. Keep a bracketed clause only when the user supplied that parameter, and drop the brackets themselves.
 
 **MCP Call Format:**
 

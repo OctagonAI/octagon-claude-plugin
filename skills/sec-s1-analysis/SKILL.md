@@ -25,8 +25,10 @@ Determine the following before querying:
 Use the `octagon-agent` tool with a natural language prompt:
 
 ```
-Analyze the S-1 registration statement for <COMPANY> and extract key business risks and opportunities.
+Analyze the S-1 registration statement for <COMPANY> and extract key business risks and opportunities[, focusing on <FOCUS AREA>][, including <SPECIFIC TOPICS>].
 ```
+
+Fill the placeholders from step 1. Keep a bracketed clause only when the user supplied that parameter, and drop the brackets themselves.
 
 **MCP Call Format:**
 

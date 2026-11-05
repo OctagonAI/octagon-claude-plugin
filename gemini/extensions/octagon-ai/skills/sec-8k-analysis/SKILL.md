@@ -236,7 +236,7 @@ Track over time:
 
 ## Use Cases
 
-- **Event-driven investing**: Track material events for trading signals
+- **Event-driven investing**: Track material events as they are disclosed
 - **M&A monitoring**: Follow acquisition announcements and completions
 - **Governance oversight**: Monitor leadership and board changes
 - **Risk management**: Identify material risks as they emerge

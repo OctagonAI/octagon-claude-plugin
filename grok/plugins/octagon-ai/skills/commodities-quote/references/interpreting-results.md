@@ -241,7 +241,7 @@ Order: Price > 50-Day > 200-Day = **Strong uptrend**
 
 ## Practical Application
 
-### Trading Signals
+### Price Signals
 
 | Finding | Implication |
 |---------|-------------|

@@ -25,8 +25,10 @@ Determine the following before querying:
 Use the `octagon-agent` tool with a natural language prompt:
 
 ```
-Extract and summarize the risk factors section from <TICKER>'s latest annual report.
+Extract and summarize the risk factors section from <TICKER>'s latest <FILING TYPE, default 10-K> filing[, focusing on <FOCUS AREAS>].
 ```
+
+Fill the placeholders from step 1. Keep a bracketed clause only when the user supplied that parameter, and drop the brackets themselves.
 
 **MCP Call Format:**
 

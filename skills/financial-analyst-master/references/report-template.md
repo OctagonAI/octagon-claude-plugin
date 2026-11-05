@@ -2,10 +2,9 @@
 
 ## Initiation of Coverage: [COMPANY_NAME] ([TICKER])
 
-**Rating**: [Buy/Hold/Sell]
 **Current Price**: $[XX.XX]
-**Target Price**: $[XX.XX]
-**Upside**: [XX]%
+**Valuation Range (bear to bull)**: $[XX.XX] to $[XX.XX]
+**Base-Case Value**: $[XX.XX]
 **Date**: [DATE]
 **Analyst**: [NAME]
 
@@ -13,14 +12,14 @@
 
 ## 1. Executive Summary & Snapshot
 
-### Investment Rating
+### Valuation Snapshot
 
 | Metric | Value |
 |--------|-------|
 | Current Price | $[XX.XX] |
-| Target Price | $[XX.XX] |
-| Implied Upside | [XX]% |
-| Rating | [Buy/Hold/Sell] |
+| Valuation Range (bear to bull) | $[XX.XX] to $[XX.XX] |
+| Base-Case Value | $[XX.XX] |
+| Price vs. Base Case | [XX]% above/below |
 | Market Cap | $[XX]B |
 | Enterprise Value | $[XX]B |
 
@@ -61,7 +60,7 @@
 
 ### Positioning Statement
 
-[Company] is [positioning description]. We initiate at [Rating] with a $[XX] target price representing [XX]% upside.
+[Company] is [positioning description]. The shares trade at $[XX], against a scenario-weighted base-case value of $[XX] within a $[XX] to $[XX] range.
 
 **Data Sources**: octagon-agent (financial-growth, revenue-product-segmentation)
 
@@ -146,7 +145,7 @@
 
 ### Scenario Analysis
 
-| Scenario | Probability | Target Price | Key Assumptions |
+| Scenario | Probability | Implied Value | Key Assumptions |
 |----------|-------------|--------------|-----------------|
 | Bull Case | [X]% | $[XX] | [Key assumption] |
 | Base Case | [X]% | $[XX] | [Key assumption] |
@@ -166,13 +165,13 @@
 | EV/EBITDA | [X.X]x | [X.X]x | [X]% |
 | EV/Revenue | [X.X]x | [X.X]x | [X]% |
 
-### Target Price Derivation
+### Implied Value Derivation
 
 | Method | Multiple | Metric | Implied Value |
 |--------|----------|--------|---------------|
 | P/E | [X.X]x | FY[YEAR+1]E EPS $[X.XX] | $[XX] |
 | EV/EBITDA | [X.X]x | FY[YEAR+1]E EBITDA $[X]B | $[XX] |
-| **Blended Target** | | | **$[XX]** |
+| **Blended Value** | | | **$[XX]** |
 
 ### Valuation Re-Rating Catalysts
 

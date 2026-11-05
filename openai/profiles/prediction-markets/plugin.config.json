@@ -73,7 +73,7 @@
   "kimi": {
     "serverName": "octagon-predictions",
     "shortDescription": "Event odds research",
-    "cliDescription": "Cited research on Kalshi and Polymarket markets: odds, drivers, probability history, Trust Scores, mispricing vs Octagon's model. Research only, no bets. Free Octagon account; OAuth on first use.",
+    "cliDescription": "Cited research on Kalshi and Polymarket markets: odds, drivers, probability history, Trust Scores, mispricing vs Octagon's model. Research only, no bets. Generating a new report takes several minutes and uses report credits. Free Octagon account; OAuth on first use.",
     "repository": "https://github.com/OctagonAI/octagon-prediction-markets-kimi-plugin",
     "repoDescription": "Cited research on Kalshi and Polymarket prediction markets for Kimi: odds, drivers, probability history, Trust Scores. By Octagon AI.",
     "iconUrl": "https://www.octagonai.co/plugins/octagon-prediction-markets/icon.png",

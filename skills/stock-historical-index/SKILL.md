@@ -46,9 +46,11 @@ The agent returns comprehensive daily index data:
 
 | Date | Open | High | Low | Close | Volume | Change | Change % | VWAP |
 |------|------|------|-----|-------|--------|--------|----------|------|
-| 2025-04-30 | 5,499.44 | 5,581.84 | 5,433.24 | 5,569.07 | 5.45B | +69.63 | +1.27% | 5,520.90 |
-| 2025-04-29 | 5,508.87 | 5,571.95 | 5,505.70 | 5,560.82 | 4.75B | +51.95 | +0.94% | 5,536.84 |
+| 2025-04-30 | 5,499.44 | 5,581.84 | 5,433.24 | 5,569.07 | 5.45B | +8.25 | +0.15% | 5,520.90 |
+| 2025-04-29 | 5,508.87 | 5,571.95 | 5,505.70 | 5,560.82 | 4.75B | +32.07 | +0.58% | 5,536.84 |
 | ... | ... | ... | ... | ... | ... | ... | ... | ... |
+
+`Change` and `Change %` are measured against the prior session's close (the 2025-04-29 row is against the 2025-04-28 close of 5,528.75), not against the day's open. An index does not trade, so `Volume` and `VWAP` are derived from the constituents' trading; present them as aggregates, not as native index fields.
 
 **Key Statistics**:
 - Highest single-day volume: 9.49B on 2025-04-09
@@ -211,8 +213,8 @@ From the data:
 |----|-----|
 | 50-day | Short-term trend |
 | 200-day | Long-term trend |
-| Golden Cross | 50 > 200 (bullish) |
-| Death Cross | 50 < 200 (bearish) |
+| Golden Cross | 50-day crosses above 200-day (bullish) |
+| Death Cross | 50-day crosses below 200-day (bearish) |
 
 ## Volatility Analysis
 

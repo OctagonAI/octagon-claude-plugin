@@ -29,7 +29,7 @@ The octagon-agent returns structured segment analysis with source citations:
 
 Segment is reportable if:
 - Revenue ≥ 10% of total
-- Profit/Loss ≥ 10% of combined
+- Absolute profit or loss ≥ 10% of the greater, in absolute amount, of the combined profit of all profitable segments or the combined loss of all loss-making segments (ASC 280)
 - Assets ≥ 10% of total
 - Or management chooses to disclose
 
