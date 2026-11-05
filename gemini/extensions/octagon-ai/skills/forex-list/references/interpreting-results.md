@@ -262,7 +262,6 @@ The data includes:
 
 | Skill | Purpose |
 |-------|---------|
-| forex-quote | Real-time prices |
 | commodities-quote | Commodity context |
 | stock-historical-index | Risk sentiment |
 | sector-performance-snapshot | Macro view |

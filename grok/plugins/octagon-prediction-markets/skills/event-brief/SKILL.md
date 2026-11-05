@@ -25,7 +25,7 @@ Deliver a one-page brief that an analyst could forward: what the market measures
 3. **Base rates**: how similar events have resolved historically, and what that implies.
 4. **Drivers**: the three to five factors behind the current probability, each with a source and a direction.
 5. **Catalyst calendar**: dated upcoming events that could move the market, with the direction each would push.
-6. **Model view**: the model's probability and the gap to the market, with the confidence behind it.
+6. **Model view**: only what the report's `model_probability_source` allows, under the same rules as `mispricing-analysis`. A `recalibrated` row gives the model probability, the gap to the market, and the evidence grade. `market_baseline` means the model is the price re-expressed, so say the report carries no independent read. `ladder_model` supports relative rung pricing only, not a gap against the market. `unmodeled`, `out_of_scope`, or `determined` rows get no model probability at all. With no source field, give the gap once with the caveat that its provenance is unknown.
 7. **Trust Score**: the market's 0–100 score and label from the report, and the pillar or screen behind it, so the reader knows how much weight the price deserves.
 8. **What would change the picture**: the two or three developments that would most alter the probability.
 

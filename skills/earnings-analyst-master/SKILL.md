@@ -166,7 +166,7 @@ Synthesize findings into earnings analysis report. See [references/report-templa
 - Sentiment signal
 - Strategic direction
 - Key catalysts ahead
-- Recommended action
+- Questions to track into the next quarter
 
 **Skills used**: All skills synthesized
 

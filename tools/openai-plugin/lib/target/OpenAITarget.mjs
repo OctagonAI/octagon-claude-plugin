@@ -44,6 +44,11 @@ export class OpenAITarget extends Target {
     return config.assetPaths();
   }
 
+  /** @param {import("../config/PluginConfig.mjs").PluginConfig} config */
+  archiveName(config) {
+    return `${config.data.name}-openai-${config.data.version}.zip`;
+  }
+
   /** @param {import("./Target.mjs").RuleOptions} options */
   rules({ knownTools, online = false }) {
     return createOpenAIRules({ knownTools, online });

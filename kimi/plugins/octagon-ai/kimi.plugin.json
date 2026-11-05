@@ -1,0 +1,332 @@
+{
+  "name": "octagon-ai",
+  "version": "1.1.2",
+  "description": "Cited AI research on public companies: SEC filings, earnings call transcripts, financial statements, market data, and analyst estimates.",
+  "author": {
+    "name": "Octagon AI",
+    "email": "contact@octagonai.co"
+  },
+  "homepage": "https://www.octagonai.co/",
+  "license": "MIT",
+  "keywords": [
+    "finance",
+    "equity-research",
+    "sec-filings",
+    "earnings-calls",
+    "market-data"
+  ],
+  "skills": [
+    "./skills/"
+  ],
+  "sessionStart": {
+    "skill": "get-started"
+  },
+  "skillInstructions": "Cite the source of every figure. Research on public companies only. The plugin cannot execute trades, connect to a brokerage, or hold funds, and it does not give personalized investment advice. Prediction-market research is a separate plugin, `octagon-prediction-markets`.",
+  "systemPromptPath": "./SYSTEM.md",
+  "mcpServers": {
+    "octagon": {
+      "url": "https://mcp.octagonai.co/public-markets/mcp",
+      "auth": "oauth",
+      "enabledTools": [
+        "octagon-agent",
+        "octagon-deep-research-agent"
+      ],
+      "toolTimeoutMs": 600000
+    }
+  },
+  "interface": {
+    "displayName": "Octagon AI",
+    "shortDescription": "Cited stock research",
+    "longDescription": "Octagon AI gives investment professionals cited research on public companies, directly in the conversation.\n\nUse it to:\n- Analyze 10-K, 10-Q, 8-K, S-1, and proxy filings, including risk factors, MD&A, segments, and footnotes\n- Extract guidance, management commentary, and analyst Q&A from earnings call transcripts\n- Retrieve income statements, balance sheets, cash flows, growth rates, ratios, and market caps\n- Get stock quotes, price performance, analyst estimates, price targets, and ratings\n\nAnswers cite their sources so you can verify every figure.\n\nOctagon AI is a research tool. It does not place trades, move money, or provide personalized investment advice. An Octagon account is required; you sign in the first time you connect.",
+    "developerName": "Octagon AI",
+    "websiteURL": "https://www.octagonai.co/",
+    "tryPrompts": [
+      "Summarize the risk factors in Apple's latest 10-K.",
+      "What guidance did NVIDIA give on last quarter's earnings call?",
+      "Compare Apple's and Microsoft's revenue growth over the last three fiscal years."
+    ],
+    "mcpOverrides": {
+      "octagon": {
+        "displayName": "Octagon AI research server",
+        "description": "Cited AI research on public companies: SEC filings, earnings call transcripts, financial statements, market data, and analyst estimates.",
+        "iconUrl": "https://www.octagonai.co/plugins/octagon-ai/icon.png"
+      }
+    },
+    "skillOverrides": {
+      "analyst-estimates": {
+        "displayName": "Analyst estimates",
+        "description": "Retrieve analyst financial estimates including Revenue and EPS projections with low/high ranges and analyst coverage. Use when analyzing forward expectations, consensus estimates, valuation inputs, or comparing projections to historical performance."
+      },
+      "balance-sheet": {
+        "displayName": "Balance sheet",
+        "description": "Retrieve detailed balance sheet statement data including Total Assets, Current Assets, Non-Current Assets, Liabilities, Equity, and Net Debt for public companies. Use when analyzing financial position, capital structure, or leverage metrics."
+      },
+      "balance-sheet-growth": {
+        "displayName": "Balance sheet growth",
+        "description": "Retrieve year-over-year growth in balance sheet items including Total Assets, Total Liabilities, Shareholders Equity, Cash, and Inventories. Use when analyzing company financial position trends, capital structure changes, or liquidity management."
+      },
+      "batch-market-cap": {
+        "displayName": "Market cap, multiple companies",
+        "description": "Retrieve market capitalization data for multiple companies at once using Octagon. Use when comparing valuations across peers, screening by market cap, or analyzing a portfolio's composition by company size."
+      },
+      "cash-flow-growth": {
+        "displayName": "Cash flow growth",
+        "description": "Retrieve year-over-year growth in cash flow metrics including Operating Cash Flow, Free Cash Flow, and Net Cash Flow. Use when analyzing company cash generation trends, capital allocation efficiency, or liquidity trajectory."
+      },
+      "cash-flow-statement": {
+        "displayName": "Cash flow statement",
+        "description": "Retrieve real-time or historical cash flow statement data including Net Income, Operating Cash Flow, Investing Cash Flow, Financing Cash Flow, Free Cash Flow, and Cash Position for public companies. Use when analyzing cash generation, capital allocation, or liquidity trends."
+      },
+      "commodities-list": {
+        "displayName": "Commodities catalog",
+        "description": "Retrieve the full catalog of tradable commodities across energy, metals, and agriculture using Octagon. Use when researching commodity markets, identifying trading firms, understanding market participants, and analyzing commodity sector coverage."
+      },
+      "commodities-quote": {
+        "displayName": "Commodity quotes",
+        "description": "Retrieve real-time commodity price quotes using Octagon. Use when checking current commodity prices, analyzing day ranges, comparing to moving averages, and tracking precious metals, energy, and agricultural commodity prices."
+      },
+      "company-market-cap": {
+        "displayName": "Company market cap",
+        "description": "Retrieve market capitalization data for a single company using Octagon. Use when you need the current market value, valuation context, or size classification for any publicly traded stock."
+      },
+      "earnings-analyst-master": {
+        "displayName": "Earnings call analyst",
+        "description": "Comprehensive earnings call analyst skill that orchestrates all Octagon earnings analysis skills. Use when analyzing earnings calls, extracting management insights, tracking guidance, and creating earnings-focused research reports."
+      },
+      "earnings-analyst-questions": {
+        "displayName": "Analyst questions on the call",
+        "description": "Identify key themes and concerns raised by analysts during earnings calls, including specific analyst attribution and topic categorization."
+      },
+      "earnings-call-analysis": {
+        "displayName": "Earnings call analysis",
+        "description": "Analyze earnings call transcripts to extract forward-looking guidance, strategic focus areas, supply chain insights, and generate follow-up questions for deeper analysis."
+      },
+      "earnings-call-insights": {
+        "displayName": "Earnings call insights",
+        "description": "Analyze earnings call transcripts to extract key insights about future guidance, strategic priorities, management commentary, and market signals."
+      },
+      "earnings-capital-allocation": {
+        "displayName": "Capital allocation commentary",
+        "description": "Extract management's commentary on capital allocation, investment priorities, shareholder returns, and strategic investments from earnings call transcripts."
+      },
+      "earnings-competitive-review": {
+        "displayName": "Competitive landscape review",
+        "description": "Analyze management's discussion of competitive landscape, market positioning, and strategic differentiation from earnings call transcripts."
+      },
+      "earnings-conf-call-sentiment": {
+        "displayName": "Management tone and sentiment",
+        "description": "Analyze the overall sentiment and tone of management during earnings conference calls, including confidence levels, optimism indicators, and forward-looking language."
+      },
+      "earnings-cost-mgmt": {
+        "displayName": "Cost management initiatives",
+        "description": "Analyze cost reduction initiatives and operational efficiency measures from earnings transcripts, including headcount actions, facility consolidation, and productivity improvements."
+      },
+      "earnings-financial-guidance": {
+        "displayName": "Financial guidance",
+        "description": "Extract and analyze financial guidance and forward-looking statements from earnings transcripts, including segment guidance, risk factors, and guidance vs. actuals comparison."
+      },
+      "earnings-market-expansion": {
+        "displayName": "Market expansion plans",
+        "description": "Identify market expansion and geographic growth plans discussed in earnings calls, including new market launches, international expansion, and product diversification strategies."
+      },
+      "earnings-mgmt-comments": {
+        "displayName": "Management commentary",
+        "description": "Extract management's commentary on specific topics from earnings call transcripts, including product development, strategy, competitive positioning, and executive quotes."
+      },
+      "earnings-product-pipeline": {
+        "displayName": "Product pipeline updates",
+        "description": "Extract product development and pipeline updates from earnings calls, including clinical trial progress, regulatory submissions, and launch timelines."
+      },
+      "earnings-qa-analysis": {
+        "displayName": "Q&A session analysis",
+        "description": "Analyze the Q&A section of earnings call transcripts for strategic insights, analyst concerns, and management responses on key topics."
+      },
+      "earnings-revenue-guidance": {
+        "displayName": "Revenue guidance",
+        "description": "Extract specific revenue guidance and growth projections from earnings call transcripts, including segment breakdown, constant currency adjustments, and M&A contributions."
+      },
+      "esg-benchmark-comparison": {
+        "displayName": "ESG sector benchmarks",
+        "description": "Retrieve ESG benchmark comparison metrics by sector using Octagon. Use when comparing ESG performance across industries, analyzing sector-level sustainability benchmarks, identifying ESG leaders and laggards by industry, or referencing frameworks like MSCI, S&P Global, CDP, and CSRD."
+      },
+      "esg-ratings": {
+        "displayName": "ESG ratings",
+        "description": "Retrieve ESG ratings and scores using Octagon. Use when analyzing Environmental, Social, and Governance ratings, MSCI ESG ratings, Sustainalytics risk ratings, industry ESG rankings, and sustainability metrics for any public company."
+      },
+      "financial-analyst-master": {
+        "displayName": "Equity research analyst",
+        "description": "Comprehensive equity research analyst skill that orchestrates all Octagon financial analysis skills. Use when conducting full company analysis, writing initiation of coverage reports, performing due diligence, or building valuation and scenario analysis with quantitative support inside Octagon."
+      },
+      "financial-growth": {
+        "displayName": "Financial growth metrics",
+        "description": "Retrieve comprehensive year-over-year growth in key financial metrics including Revenue, Gross Profit, Operating Income, Net Income, EPS, and Free Cash Flow. Use when analyzing overall company financial performance trends across income statement and cash flow."
+      },
+      "financial-health-scores": {
+        "displayName": "Financial health scores",
+        "description": "Retrieve financial health scores including Altman Z-Score and Piotroski Score for public companies. Use when assessing bankruptcy risk, financial strength, value investing screening, or credit quality analysis."
+      },
+      "financial-metrics-analysis": {
+        "displayName": "Financial metrics analysis",
+        "description": "Analyze year-over-year growth in income statement items and financial metrics using Octagon. Use when retrieving YoY Revenue Growth, Cost of Revenue Growth, Gross Profit Growth, Operating Income Growth, Net Income Growth, or comparing financial performance across fiscal periods for any public company."
+      },
+      "forex-list": {
+        "displayName": "Currency pairs",
+        "description": "Retrieve a full listing of actively traded currency pairs in the global forex market using Octagon. Use when researching forex markets, understanding currency pair categories, analyzing major/minor/exotic pairs, and identifying trading opportunities."
+      },
+      "get-started": {
+        "displayName": "Get started with Octagon",
+        "description": "Introduce Octagon AI, explain how to connect it, and suggest first research requests. Use when the user is new to Octagon, asks what Octagon can do, or needs help connecting their Octagon account."
+      },
+      "historical-financial-ratings": {
+        "displayName": "Historical financial ratings",
+        "description": "Retrieve historical financial ratings and key metric scores over time using Octagon. Use when analyzing overall ratings, return on assets, return on equity, discounted cash flow scores, debt-to-equity scores, and letter grades (A+, A, B, etc.) for any public company."
+      },
+      "historical-market-cap": {
+        "displayName": "Historical market cap",
+        "description": "Retrieve historical market capitalization data for any stock using Octagon. Use when tracking market cap changes over time, analyzing valuation trends, identifying peak and trough valuations, and comparing historical size classifications."
+      },
+      "income-statement": {
+        "displayName": "Income statement",
+        "description": "Retrieve real-time income statement data including Revenue, Net Income, and EPS Diluted for public companies. Use when analyzing absolute financial figures, historical earnings, or comparing company scale across fiscal periods."
+      },
+      "income-statement-growth": {
+        "displayName": "Income statement growth",
+        "description": "Retrieve year-over-year growth in income statement items including Revenue, Gross Profit, Operating Income, Net Income, and EPS Diluted. Use when analyzing company financial growth trends, comparing fiscal year performance, or identifying profitability inflection points."
+      },
+      "industry-pe-ratios": {
+        "displayName": "Industry P/E ratios",
+        "description": "Retrieve industry-specific P/E ratios using Octagon. Use when comparing company valuations to specific industry peers, analyzing sub-sector valuations, and understanding niche market valuations beyond broad sector averages."
+      },
+      "industry-performance-snapshot": {
+        "displayName": "Industry performance",
+        "description": "Retrieve a daily overview of industry performance using Octagon. Use when analyzing daily price movements, average changes, and performance trends for specific industries within an exchange."
+      },
+      "market-analyst-master": {
+        "displayName": "Market analyst",
+        "description": "Comprehensive market analyst skill that orchestrates all Octagon stock performance and market data skills. Use when conducting stock analysis, creating market reports, evaluating valuations, comparing sectors, or performing technical and sentiment analysis."
+      },
+      "octagon-research-router": {
+        "displayName": "Research router",
+        "description": "Choose the right Octagon workflow for a financial research request. Use when a request spans several kinds of analysis, when it is unclear which Octagon skill fits, or when deciding which Octagon tool to call."
+      },
+      "octagon-status": {
+        "displayName": "Connection status",
+        "description": "Check whether Octagon is connected and summarize the Octagon tools that are currently available. Use when the user asks what Octagon can do right now, whether Octagon is working, or why Octagon requests are failing."
+      },
+      "price-target-consensus": {
+        "displayName": "Price target consensus",
+        "description": "Retrieve consensus price targets for any stock using Octagon. Use when you need the average, median, high, and low analyst price targets to evaluate upside/downside potential and analyst agreement."
+      },
+      "price-target-summary": {
+        "displayName": "Price target summary",
+        "description": "Retrieve analysts' price target summary for any stock using Octagon. Use when evaluating analyst sentiment, upside/downside potential, consensus expectations, and tracking target trends over time."
+      },
+      "ratings-snapshot": {
+        "displayName": "Ratings snapshot",
+        "description": "Retrieve ratings snapshot with overall rating and key metric scores including DCF, ROE, ROA, Debt-to-Equity, P/E, and P/B for public companies. Use when screening stocks, comparing quality metrics, or quick fundamental assessment."
+      },
+      "revenue-geographic-segmentation": {
+        "displayName": "Revenue by geography",
+        "description": "Retrieve detailed revenue breakdown by geographic segment for public companies. Use when analyzing regional exposure, geographic concentration, international expansion, or currency risk assessment."
+      },
+      "revenue-product-segmentation": {
+        "displayName": "Revenue by product",
+        "description": "Retrieve detailed revenue breakdown by product segment for public companies. Use when analyzing product mix, revenue concentration, segment contribution, or business line performance."
+      },
+      "sec-10k-analysis": {
+        "displayName": "10-K analysis",
+        "description": "Analyze 10-K annual filings for public companies using Octagon. Use when extracting key financial metrics, risk factors, business overview, management discussion, and regulatory disclosures from SEC 10-K filings."
+      },
+      "sec-10q-analysis": {
+        "displayName": "10-Q analysis",
+        "description": "Analyze 10-Q quarterly filings for public companies using Octagon. Use when extracting quarterly performance metrics, revenue breakdown, operating margins, segment performance, and interim financial updates from SEC 10-Q filings."
+      },
+      "sec-8k-analysis": {
+        "displayName": "8-K material events",
+        "description": "Analyze 8-K filings to extract material events and corporate changes using Octagon. Use when tracking real-time corporate disclosures, M&A announcements, leadership changes, earnings releases, and other material events requiring immediate investor attention."
+      },
+      "sec-amendments-review": {
+        "displayName": "Filing amendments",
+        "description": "Review amendments to SEC filings using Octagon. Use when tracking material changes, corrections, restatements, and updates to previously filed documents including 10-K/A, 10-Q/A, 8-K/A, S-1/A, and Form 144/A filings."
+      },
+      "sec-analyst-master": {
+        "displayName": "SEC filings analyst",
+        "description": "Comprehensive SEC filing analyst skill that orchestrates all Octagon SEC analysis skills. Use when conducting due diligence, regulatory compliance review, M&A analysis, or creating comprehensive company assessments based on SEC disclosures."
+      },
+      "sec-annual-comparison": {
+        "displayName": "Year-over-year 10-K comparison",
+        "description": "Compare key metrics and disclosures between annual 10-K filings using Octagon. Use when analyzing year-over-year changes in financials, risk factors, business descriptions, and strategic priorities across fiscal years."
+      },
+      "sec-business-desc-analysis": {
+        "displayName": "Business description",
+        "description": "Extract and analyze business descriptions and competitive landscape from SEC filings using Octagon. Use when researching company business models, market positioning, competitive advantages, industry dynamics, and strategic focus areas from Item 1 disclosures."
+      },
+      "sec-cash-flow-review": {
+        "displayName": "Cash flow review",
+        "description": "Extract and analyze cash flow trends and working capital changes from SEC filings using Octagon. Use when researching operating cash flow, investing activities, financing activities, free cash flow, liquidity, and working capital dynamics from 10-K and 10-Q filings."
+      },
+      "sec-corp-governance": {
+        "displayName": "Corporate governance",
+        "description": "Review corporate governance practices and board composition from SEC filings using Octagon. Use when researching board structure, director qualifications, committee composition, governance policies, shareholder rights, and related party transactions from proxy statements."
+      },
+      "sec-debt-covenant": {
+        "displayName": "Debt covenants",
+        "description": "Analyze debt covenants and credit agreement terms from SEC filings using Octagon. Use when researching financial covenants, leverage ratios, interest coverage requirements, credit facilities, debt maturity schedules, and covenant compliance from 10-K, 10-Q, and 8-K filings."
+      },
+      "sec-footnotes-analysis": {
+        "displayName": "Footnotes and accounting policies",
+        "description": "Analyze footnotes and accounting policies from SEC filings using Octagon. Use when researching revenue recognition policies, critical estimates, lease obligations, pension assumptions, stock compensation, contingencies, and new accounting pronouncements."
+      },
+      "sec-mda-analysis": {
+        "displayName": "MD&A analysis",
+        "description": "Analyze Management Discussion and Analysis (MD&A) sections from SEC filings using Octagon. Use when extracting strategic initiatives, financial performance commentary, macroeconomic challenges, and forward-looking statements from 10-K and 10-Q filings."
+      },
+      "sec-proxy-analysis": {
+        "displayName": "Proxy statement analysis",
+        "description": "Analyze proxy statements (DEF 14A) to extract executive compensation, governance information, and shareholder voting matters using Octagon. Use when researching CEO pay, board composition, say-on-pay votes, and corporate governance practices."
+      },
+      "sec-risk-factors": {
+        "displayName": "Risk factors",
+        "description": "Extract and summarize risk factors from SEC filings using Octagon. Use when analyzing Item 1A risk disclosures, categorizing business risks, identifying new or material risks, and comparing risk profiles across companies or time periods."
+      },
+      "sec-s1-analysis": {
+        "displayName": "S-1 IPO filing analysis",
+        "description": "Analyze S-1 registration statements for IPOs using Octagon. Use when researching companies preparing to go public, extracting business models, risk factors, use of proceeds, capitalization, principal shareholders, and growth opportunities from IPO filings."
+      },
+      "sec-segment-reporting": {
+        "displayName": "Segment reporting",
+        "description": "Analyze business segment performance and reporting from SEC filings using Octagon. Use when researching segment revenue, operating income, margins, geographic breakdown, and segment restructuring from 10-K and 10-Q filings."
+      },
+      "sector-pe-ratios": {
+        "displayName": "Sector P/E ratios",
+        "description": "Retrieve sector P/E ratios using Octagon. Use when comparing company valuations to sector benchmarks, analyzing sector valuations across exchanges, and understanding market-wide valuation trends."
+      },
+      "sector-performance-snapshot": {
+        "displayName": "Sector performance",
+        "description": "Retrieve a snapshot of market sector performance using Octagon. Use when analyzing sector-wide metrics including revenue, EBITDA, net income, market cap, and enterprise value for companies within a specific sector and exchange."
+      },
+      "stock-grades": {
+        "displayName": "Analyst grades and ratings",
+        "description": "Retrieve the latest stock grades and ratings from top analysts and financial institutions using Octagon. Use when tracking analyst upgrades, downgrades, rating changes, and institutional sentiment over time."
+      },
+      "stock-historical-index": {
+        "displayName": "Index price history",
+        "description": "Retrieve full historical end-of-day price data for market indices using Octagon. Use when analyzing index performance over time, tracking market trends, calculating returns, and understanding market context for individual stock analysis."
+      },
+      "stock-performance": {
+        "displayName": "Stock performance",
+        "description": "Retrieve stock price data and performance metrics using Octagon. Use when analyzing daily closing prices, trading volume, price trends, historical performance, and comparing stock movements over specific time periods."
+      },
+      "stock-price-change": {
+        "displayName": "Price change by period",
+        "description": "Retrieve stock price change statistics across multiple time periods using Octagon. Use when analyzing short-term and long-term returns, comparing performance across timeframes, and evaluating momentum and historical growth."
+      },
+      "stock-quote": {
+        "displayName": "Stock quote",
+        "description": "Retrieve real-time stock quotes using Octagon. Use when you need current price, day range, 52-week range, volume, market cap, and moving averages for any publicly traded stock."
+      }
+    },
+    "defaultLocale": "en-US",
+    "locales": "./locales/"
+  }
+}

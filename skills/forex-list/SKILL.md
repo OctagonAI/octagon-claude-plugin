@@ -287,7 +287,6 @@ What pairs are most active during Asian session?
 
 | Skill | Combined Use |
 |-------|--------------|
-| forex-quote | Real-time pair prices |
 | commodities-quote | Commodity currency context |
 | stock-historical-index | Risk sentiment context |
 | sector-performance-snapshot | Global macro view |

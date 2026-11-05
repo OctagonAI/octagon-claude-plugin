@@ -1,5 +1,5 @@
 // @ts-check
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import path from "node:path";
 import { ConfigError } from "../errors.mjs";
 
@@ -47,6 +47,23 @@ export class Profile {
       throw new ConfigError(`profile "${name}"`, [`no such directory: ${root}`]);
     }
     return new Profile({ name, root });
+  }
+
+  /**
+   * Every profile: the default one first, then the named ones in name order.
+   *
+   * @param {string} openaiRoot
+   * @returns {Profile[]}
+   */
+  static all(openaiRoot) {
+    const dir = path.join(openaiRoot, PROFILES_DIR);
+    const named = existsSync(dir)
+      ? readdirSync(dir, { withFileTypes: true })
+          .filter(entry => entry.isDirectory() && PROFILE_NAME.test(entry.name))
+          .map(entry => entry.name)
+          .sort()
+      : [];
+    return [Profile.default(openaiRoot), ...named.map(name => Profile.named(openaiRoot, name))];
   }
 
   /**

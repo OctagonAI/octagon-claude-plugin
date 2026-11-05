@@ -53,7 +53,7 @@ The agent returns price change data across multiple timeframes:
 | 3 Years | 79.03% |
 | 5 Years | 100.02% |
 | 10 Years | 1,043.14% |
-| All-Time High | 210,270.08% |
+| Return Since Inception | 210,270.08% |
 
 **Key Insight**: Strong long-term growth with 10-year return of 1,043.14%, but recent short-term performance slightly negative.
 

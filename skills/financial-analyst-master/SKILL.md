@@ -1,6 +1,6 @@
 ---
 name: financial-analyst-master
-description: Comprehensive equity research analyst skill that orchestrates all Octagon financial analysis skills. Use when conducting full company analysis, writing initiation of coverage reports, performing due diligence, or creating investment recommendations with quantitative support inside the Octagon Claude plugin.
+description: Comprehensive equity research analyst skill that orchestrates all Octagon financial analysis skills. Use when conducting full company analysis, writing initiation of coverage reports, performing due diligence, or building valuation and scenario analysis with quantitative support inside the Octagon Claude plugin.
 ---
 
 # Financial Analyst Master
@@ -110,7 +110,7 @@ Synthesize findings into equity research report. See [references/report-template
 ## Report Structure
 
 ### Executive Summary & Snapshot
-- Current price, target price, implied upside (%), investment rating
+- Current price, the bear-to-bull valuation range from the scenario analysis, and where the price sits in it
 - Factor profile: Growth, Returns, Multiple, Integrated percentile
 - 12-month price chart
 
@@ -206,7 +206,7 @@ Retrieve year-over-year growth in key income-statement items for INTC, limited t
 
 **Formatting**:
 - Bullet-heavy where useful (bullets under 2 lines)
-- Bold all key metrics (target price, upside %, rating)
+- Bold all key metrics (valuation range, growth rates, margins)
 - Tables for peer comps, models, valuation cross-checks
 - Placeholders for charts/figures
 - Footnote every number with source and date

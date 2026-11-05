@@ -61,6 +61,11 @@ export class GeminiTarget extends Target {
     if (problems.length > 0) throw new ConfigError(`plugin "${config.data.name}"`, problems);
   }
 
+  /** @param {import("../config/PluginConfig.mjs").PluginConfig} config */
+  allowList(config) {
+    return config.data.gemini?.includeTools;
+  }
+
   /** @param {import("./Target.mjs").EmitContext} context */
   async emit({ writer, config, skills }) {
     const manifest = new GeminiManifestBuilder(config);

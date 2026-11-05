@@ -25,8 +25,10 @@ Determine the following before querying:
 Use the `octagon-agent` tool with a natural language prompt:
 
 ```
-Extract executive compensation details and governance information from <TICKER>'s latest proxy statement.
+Extract executive compensation details and governance information from <TICKER>'s latest proxy statement[, focusing on <FOCUS AREA>][, compared with <COMPARISON>].
 ```
+
+Fill the placeholders from step 1. Keep a bracketed clause only when the user supplied that parameter, and drop the brackets themselves.
 
 **MCP Call Format:**
 
@@ -233,10 +235,12 @@ What shareholder proposals were included in JPM's latest proxy statement and how
 
 ### Shareholder Proposals
 
+Report the voting standard the proxy states for each proposal (majority of votes cast, majority of shares outstanding, or plurality) and whether the proposal is binding; most shareholder proposals are advisory. Do not assume a fixed 50% threshold.
+
 | Support Level | Interpretation |
 |---------------|----------------|
-| >50% | Passed - expect action |
-| 30-50% | Significant support |
+| At or above the stated threshold | Passed under that voting standard; note whether it is binding or advisory |
+| Just below the threshold | Failed, but with support boards often respond to |
 | 20-30% | Moderate interest |
 | <20% | Limited support |
 

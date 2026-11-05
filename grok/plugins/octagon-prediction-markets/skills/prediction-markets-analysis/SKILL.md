@@ -45,6 +45,6 @@ Use the Octagon prediction-markets agent to research one market, or to find the 
 ## Framing
 
 - Probabilities are the market's belief at a timestamp. Report them as such.
-- A gap between market and model is a mispricing finding: state its size, direction, and confidence. Do not turn it into a recommendation.
+- A gap between market and model is a mispricing finding only when the report's `model_probability_source` is `recalibrated`; state its size, direction, and evidence grade. `market_baseline` carries no gap, `ladder_model` supports relative rung pricing only, and `unmodeled`, `out_of_scope`, or `determined` rows get no model probability. Never turn a finding into a recommendation.
 - Do not suggest wagers, sides, amounts, or timing. If the report's text phrases a finding as advice, keep the finding and drop the advice wording.
 - This is research, not investment advice.

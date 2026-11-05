@@ -1,0 +1,291 @@
+{
+  "displayName": "Octagon AI",
+  "shortDescription": "有据可查的股票研究",
+  "longDescription": "Octagon AI 为投资专业人士提供有据可查的上市公司研究，直接在对话中完成。\n\n可用于：\n- 分析 10-K、10-Q、8-K、S-1 和委托书等 SEC 文件，包括风险因素、管理层讨论与分析、业务分部和附注\n- 从盈利电话会议记录中提取业绩指引、管理层评论和分析师问答\n- 获取利润表、资产负债表、现金流量表、增长率、财务比率和市值\n- 查询股票报价、价格表现、分析师预期、目标价和评级\n\n每个回答都注明来源，方便核实每一个数字。\n\nOctagon AI 是研究工具，不执行交易、不转移资金，也不提供个性化投资建议。需要 Octagon 账户，首次连接时登录即可。",
+  "developerName": "Octagon AI",
+  "tryPrompts": [
+    "总结苹果公司最新 10-K 中的风险因素。",
+    "英伟达在上一季度盈利电话会议上给出了哪些业绩指引？",
+    "比较苹果和微软最近三个财年的收入增长。"
+  ],
+  "mcpOverrides": {
+    "octagon": {
+      "displayName": "Octagon 研究服务",
+      "description": "基于 SEC 文件、盈利电话会议记录、财务报表、股价和分析师预期的有据可查的回答。使用 Octagon 账户登录。"
+    }
+  },
+  "skillOverrides": {
+    "analyst-estimates": {
+      "displayName": "分析师预期",
+      "description": "获取分析师对营收和每股收益的预测，包括高低区间和覆盖分析师数量。用于分析市场预期、一致预期和估值输入。"
+    },
+    "balance-sheet": {
+      "displayName": "资产负债表",
+      "description": "获取上市公司资产负债表明细：总资产、流动与非流动资产、负债、股东权益和净负债。用于分析财务状况、资本结构和杠杆。"
+    },
+    "balance-sheet-growth": {
+      "displayName": "资产负债表增长",
+      "description": "获取总资产、总负债、股东权益、现金和存货等项目的同比增长。用于分析财务状况趋势、资本结构变化和流动性管理。"
+    },
+    "batch-market-cap": {
+      "displayName": "多公司市值",
+      "description": "一次获取多家公司的市值数据。用于同业估值比较、按市值筛选或分析组合的规模构成。"
+    },
+    "cash-flow-growth": {
+      "displayName": "现金流增长",
+      "description": "获取经营现金流、自由现金流和净现金流的同比增长。用于分析现金创造趋势、资本配置效率和流动性走势。"
+    },
+    "cash-flow-statement": {
+      "displayName": "现金流量表",
+      "description": "获取上市公司实时或历史现金流量表：净利润、经营、投资和筹资现金流、自由现金流及现金头寸。用于分析现金创造和资本配置。"
+    },
+    "commodities-list": {
+      "displayName": "商品目录",
+      "description": "获取能源、金属和农产品等可交易商品的完整目录。用于研究商品市场和各板块的覆盖范围。"
+    },
+    "commodities-quote": {
+      "displayName": "商品报价",
+      "description": "获取商品实时价格报价。用于查看当前价格、日内区间、与均线的比较，以及跟踪贵金属、能源和农产品价格。"
+    },
+    "company-market-cap": {
+      "displayName": "公司市值",
+      "description": "获取单家公司的市值数据。用于了解任一上市公司的当前市场价值、估值背景和规模分类。"
+    },
+    "earnings-analyst-master": {
+      "displayName": "盈利电话会议分析师",
+      "description": "统筹所有 Octagon 盈利电话会议分析技能的综合技能。用于分析电话会议、提取管理层观点、跟踪业绩指引和撰写盈利研究报告。"
+    },
+    "earnings-analyst-questions": {
+      "displayName": "电话会议分析师提问",
+      "description": "识别分析师在盈利电话会议上提出的关键主题和关切，标注提问分析师并按主题分类。"
+    },
+    "earnings-call-analysis": {
+      "displayName": "盈利电话会议分析",
+      "description": "分析盈利电话会议记录，提取前瞻性指引、战略重点和供应链信息，并生成可进一步追问的问题。"
+    },
+    "earnings-call-insights": {
+      "displayName": "盈利电话会议要点",
+      "description": "分析盈利电话会议记录，提取关于未来指引、战略优先事项、管理层评论和市场信号的关键要点。"
+    },
+    "earnings-capital-allocation": {
+      "displayName": "资本配置评论",
+      "description": "从盈利电话会议记录中提取管理层关于资本配置、投资优先事项、股东回报和战略投资的评论。"
+    },
+    "earnings-competitive-review": {
+      "displayName": "竞争格局评估",
+      "description": "分析管理层在盈利电话会议上对竞争格局、市场定位和战略差异化的讨论。"
+    },
+    "earnings-conf-call-sentiment": {
+      "displayName": "管理层语气与情绪",
+      "description": "分析管理层在盈利电话会议上的整体情绪和语气，包括信心水平、乐观指标和前瞻性措辞。"
+    },
+    "earnings-cost-mgmt": {
+      "displayName": "成本管理举措",
+      "description": "分析盈利电话会议记录中的降本举措和运营效率措施，包括人员调整、设施整合和生产率提升。"
+    },
+    "earnings-financial-guidance": {
+      "displayName": "财务指引",
+      "description": "提取并分析盈利电话会议记录中的财务指引和前瞻性声明，包括分部指引、风险因素以及指引与实际的对比。"
+    },
+    "earnings-market-expansion": {
+      "displayName": "市场扩张计划",
+      "description": "识别盈利电话会议上讨论的市场扩张和地域增长计划，包括新市场进入、国际扩张和产品多元化战略。"
+    },
+    "earnings-mgmt-comments": {
+      "displayName": "管理层评论",
+      "description": "从盈利电话会议记录中提取管理层对特定主题的评论，包括产品开发、战略、竞争定位和高管原话。"
+    },
+    "earnings-product-pipeline": {
+      "displayName": "产品管线进展",
+      "description": "从盈利电话会议中提取产品开发和管线进展，包括临床试验进度、监管申报和上市时间表。"
+    },
+    "earnings-qa-analysis": {
+      "displayName": "问答环节分析",
+      "description": "分析盈利电话会议问答环节，提炼战略洞察、分析师关切以及管理层对关键问题的回应。"
+    },
+    "earnings-revenue-guidance": {
+      "displayName": "收入指引",
+      "description": "从盈利电话会议记录中提取具体的收入指引和增长预测，包括分部拆分、固定汇率调整和并购贡献。"
+    },
+    "esg-benchmark-comparison": {
+      "displayName": "ESG 行业基准",
+      "description": "按行业获取 ESG 基准比较指标。用于跨行业比较 ESG 表现、识别行业内的领先者和落后者，并参考 MSCI、标普全球、CDP 和 CSRD 等框架。"
+    },
+    "esg-ratings": {
+      "displayName": "ESG 评级",
+      "description": "获取 ESG 评级和得分。用于分析任一上市公司的环境、社会和治理评级、MSCI ESG 评级、Sustainalytics 风险评级和可持续发展指标。"
+    },
+    "financial-analyst-master": {
+      "displayName": "股票研究分析师",
+      "description": "统筹所有 Octagon 财务分析技能的综合技能。用于完整的公司分析、首次覆盖报告、尽职调查，以及有定量支撑的研究结论。"
+    },
+    "financial-growth": {
+      "displayName": "财务增长指标",
+      "description": "获取营收、毛利、营业利润、净利润、每股收益和自由现金流等关键指标的同比增长。用于分析利润表和现金流的整体趋势。"
+    },
+    "financial-health-scores": {
+      "displayName": "财务健康评分",
+      "description": "获取上市公司的 Altman Z 值和 Piotroski 得分等财务健康评分。用于评估破产风险、财务实力、价值筛选或信用质量。"
+    },
+    "financial-metrics-analysis": {
+      "displayName": "财务指标分析",
+      "description": "分析利润表项目和财务指标的同比增长：营收、营业成本、毛利、营业利润和净利润增长，并跨财务期间比较。"
+    },
+    "forex-list": {
+      "displayName": "货币对",
+      "description": "获取全球外汇市场活跃交易货币对的完整列表。用于研究外汇市场、了解主要、次要和新兴货币对的分类。"
+    },
+    "get-started": {
+      "displayName": "开始使用 Octagon",
+      "description": "介绍 Octagon AI、说明如何连接，并推荐首批研究请求。用于用户初次使用 Octagon、询问 Octagon 能做什么或需要连接账户时。"
+    },
+    "historical-financial-ratings": {
+      "displayName": "历史财务评级",
+      "description": "获取历史财务评级和关键指标得分随时间的变化，包括总体评级、资产回报率、净资产收益率、现金流折现得分、负债权益得分和字母等级。"
+    },
+    "historical-market-cap": {
+      "displayName": "历史市值",
+      "description": "获取任一股票的历史市值数据。用于跟踪市值随时间的变化、分析估值趋势、识别估值峰谷并比较历史规模分类。"
+    },
+    "income-statement": {
+      "displayName": "利润表",
+      "description": "获取上市公司实时利润表数据，包括营收、净利润和稀释每股收益。用于分析绝对财务数字、历史盈利，或跨财务期间比较公司规模。"
+    },
+    "income-statement-growth": {
+      "displayName": "利润表增长",
+      "description": "获取营收、毛利、营业利润、净利润和稀释每股收益的同比增长。用于分析增长趋势、比较财年表现或识别盈利拐点。"
+    },
+    "industry-pe-ratios": {
+      "displayName": "行业市盈率",
+      "description": "获取细分行业的市盈率。用于将公司估值与同一细分行业比较、分析子行业估值，以及理解超出大类板块平均值的细分市场估值。"
+    },
+    "industry-performance-snapshot": {
+      "displayName": "行业表现",
+      "description": "获取每日行业表现概览。用于分析特定交易所内各行业的日内价格变动、平均涨跌和表现趋势。"
+    },
+    "market-analyst-master": {
+      "displayName": "市场分析师",
+      "description": "统筹所有 Octagon 股票表现和市场数据技能的综合技能。用于股票分析、市场报告、估值评估、板块比较以及技术面和情绪分析。"
+    },
+    "octagon-research-router": {
+      "displayName": "研究路由",
+      "description": "为金融研究请求选择合适的 Octagon 工作流。用于请求跨多种分析类型、不确定哪个技能合适，或需要决定调用哪个 Octagon 工具时。"
+    },
+    "octagon-status": {
+      "displayName": "连接状态",
+      "description": "检查 Octagon 是否已连接，并汇总当前可用的 Octagon 工具。用于用户询问 Octagon 现在能做什么、是否正常，或请求为何失败时。"
+    },
+    "price-target-consensus": {
+      "displayName": "目标价一致预期",
+      "description": "获取任一股票的一致目标价：分析师目标价的平均值、中位数、最高值和最低值，用于评估上下行空间和分析师一致程度。"
+    },
+    "price-target-summary": {
+      "displayName": "目标价摘要",
+      "description": "获取任一股票的分析师目标价摘要。用于评估分析师情绪、上下行空间、一致预期，并跟踪目标价随时间的变化。"
+    },
+    "ratings-snapshot": {
+      "displayName": "评级快照",
+      "description": "获取上市公司的总体评级和关键指标得分，包括现金流折现、净资产收益率、资产回报率、负债权益比、市盈率和市净率。用于筛选股票、比较质量指标或快速评估基本面。"
+    },
+    "revenue-geographic-segmentation": {
+      "displayName": "按地区拆分的收入",
+      "description": "获取上市公司按地理分部拆分的收入明细。用于分析地区敞口、地域集中度、国际扩张或汇率风险。"
+    },
+    "revenue-product-segmentation": {
+      "displayName": "按产品拆分的收入",
+      "description": "获取上市公司按产品分部拆分的收入明细。用于分析产品组合、收入集中度、分部贡献或业务线表现。"
+    },
+    "sec-10k-analysis": {
+      "displayName": "10-K 年报分析",
+      "description": "分析上市公司的 10-K 年报。用于从 SEC 10-K 文件中提取关键财务指标、风险因素、业务概况、管理层讨论和监管披露。"
+    },
+    "sec-10q-analysis": {
+      "displayName": "10-Q 季报分析",
+      "description": "分析上市公司的 10-Q 季报。用于从 SEC 10-Q 文件中提取季度业绩指标、收入拆分、营业利润率、分部表现和中期财务更新。"
+    },
+    "sec-8k-analysis": {
+      "displayName": "8-K 重大事项",
+      "description": "分析 8-K 文件以提取重大事项和公司变动。用于跟踪实时公司披露、并购公告、管理层变动、业绩发布等需要投资者立即关注的事项。"
+    },
+    "sec-amendments-review": {
+      "displayName": "文件修订审阅",
+      "description": "审阅 SEC 文件的修订版。用于跟踪 10-K/A、10-Q/A、8-K/A、S-1/A 和 Form 144/A 等文件中的重大变更、更正、重述和更新。"
+    },
+    "sec-analyst-master": {
+      "displayName": "SEC 文件分析师",
+      "description": "统筹所有 Octagon SEC 文件分析技能的综合技能。用于尽职调查、合规审阅、并购分析，或基于 SEC 披露撰写完整的公司评估。"
+    },
+    "sec-annual-comparison": {
+      "displayName": "10-K 年度对比",
+      "description": "比较不同年度 10-K 年报之间的关键指标和披露。用于分析财务数据、风险因素、业务描述和战略重点的逐年变化。"
+    },
+    "sec-business-desc-analysis": {
+      "displayName": "业务描述分析",
+      "description": "从 SEC 文件中提取并分析业务描述和竞争格局。用于研究第 1 项披露中的商业模式、市场定位、竞争优势、行业动态和战略重点。"
+    },
+    "sec-cash-flow-review": {
+      "displayName": "现金流审阅",
+      "description": "从 SEC 文件中提取并分析现金流趋势和营运资本变化。用于研究 10-K 和 10-Q 中的经营、投资和筹资活动、自由现金流和流动性。"
+    },
+    "sec-corp-governance": {
+      "displayName": "公司治理",
+      "description": "从 SEC 文件中审阅公司治理实践和董事会构成。用于研究委托书中的董事会结构、董事资质、委员会构成、治理政策、股东权利和关联交易。"
+    },
+    "sec-debt-covenant": {
+      "displayName": "债务契约",
+      "description": "从 SEC 文件中分析债务契约和信贷协议条款。用于研究 10-K、10-Q 和 8-K 中的财务契约、杠杆比率、利息保障要求、信贷安排、到期安排和契约遵守情况。"
+    },
+    "sec-footnotes-analysis": {
+      "displayName": "附注与会计政策",
+      "description": "分析 SEC 文件中的附注和会计政策。用于研究收入确认政策、关键估计、租赁义务、养老金假设、股权激励、或有事项和新会计准则。"
+    },
+    "sec-mda-analysis": {
+      "displayName": "管理层讨论与分析",
+      "description": "分析 SEC 文件中的管理层讨论与分析（MD&A）部分。用于从 10-K 和 10-Q 中提取战略举措、业绩评论、宏观经济挑战和前瞻性声明。"
+    },
+    "sec-proxy-analysis": {
+      "displayName": "委托书分析",
+      "description": "分析委托书（DEF 14A），提取高管薪酬、治理信息和股东投票事项。用于研究 CEO 薪酬、董事会构成、薪酬表决和公司治理实践。"
+    },
+    "sec-risk-factors": {
+      "displayName": "风险因素",
+      "description": "从 SEC 文件中提取并总结风险因素。用于分析第 1A 项风险披露、对业务风险分类、识别新增或重大风险，并跨公司或跨期间比较风险状况。"
+    },
+    "sec-s1-analysis": {
+      "displayName": "S-1 招股说明书分析",
+      "description": "分析 IPO 的 S-1 注册文件。用于研究拟上市公司，从 IPO 文件中提取商业模式、风险因素、募集资金用途、资本结构、主要股东和增长机会。"
+    },
+    "sec-segment-reporting": {
+      "displayName": "分部报告",
+      "description": "分析 SEC 文件中的业务分部表现和报告。用于研究 10-K 和 10-Q 中的分部收入、营业利润、利润率、地域拆分和分部重组。"
+    },
+    "sector-pe-ratios": {
+      "displayName": "板块市盈率",
+      "description": "获取板块市盈率。用于将公司估值与板块基准比较、跨交易所分析板块估值，并理解整体市场的估值趋势。"
+    },
+    "sector-performance-snapshot": {
+      "displayName": "板块表现",
+      "description": "获取市场板块表现快照。用于分析特定板块和交易所内公司的收入、EBITDA、净利润、市值和企业价值等板块级指标。"
+    },
+    "stock-grades": {
+      "displayName": "分析师评级变动",
+      "description": "获取顶级分析师和金融机构的最新股票评级。用于跟踪分析师上调、下调、评级变化和机构情绪随时间的变化。"
+    },
+    "stock-historical-index": {
+      "displayName": "指数历史价格",
+      "description": "获取市场指数完整的历史日收盘数据。用于分析指数长期表现、跟踪市场趋势、计算回报，并为个股分析提供市场背景。"
+    },
+    "stock-performance": {
+      "displayName": "股票表现",
+      "description": "获取股价数据和表现指标。用于分析日收盘价、成交量、价格趋势、历史表现，并比较特定时间段内的股价变动。"
+    },
+    "stock-price-change": {
+      "displayName": "分时段价格变动",
+      "description": "获取多个时间段的股价变动统计。用于分析短期和长期回报、跨时间段比较表现，以及评估动量和历史增长。"
+    },
+    "stock-quote": {
+      "displayName": "股票报价",
+      "description": "获取实时股票报价。用于查看任一上市公司的当前价格、日内区间、52 周区间、成交量、市值和移动平均线。"
+    }
+  }
+}

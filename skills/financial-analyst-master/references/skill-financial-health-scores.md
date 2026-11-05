@@ -30,16 +30,16 @@ Retrieve Altman Z-Score and Piotroski Score for GE
 ### Altman Z-Score
 | Score | Zone | Meaning |
 |-------|------|---------|
-| >2.99 | Safe | Low bankruptcy risk |
-| 1.81-2.99 | Grey | Moderate risk |
-| <1.81 | Distress | High bankruptcy risk |
+| > 3.0 | Safe | Low bankruptcy risk |
+| 1.8 - 3.0 | Grey | Moderate risk |
+| < 1.8 | Distress | High bankruptcy risk |
 
 ### Piotroski F-Score
 | Score | Meaning |
 |-------|---------|
-| 7-9 | Strong financial health |
-| 4-6 | Average financial health |
-| 0-3 | Weak financial health |
+| 8-9 | Strong financial health |
+| 5-7 | Moderate financial health |
+| 0-4 | Weak financial health |
 
 ## Integration with Other Skills
 

@@ -185,7 +185,7 @@ The overall sentiment and tone of NVIDIA's management during their Q3 2026 earni
 
 ## Use Cases
 
-1. **Sentiment Trading**: Gauge management mood for trading signals
+1. **Sentiment Trading**: Gauge management mood as a sentiment indicator
 2. **Earnings Reaction**: Predict stock reaction based on tone
 3. **Management Assessment**: Evaluate leadership confidence
 4. **Trend Tracking**: Monitor sentiment changes over quarters

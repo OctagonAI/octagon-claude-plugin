@@ -97,7 +97,9 @@ P/E Ratio = Stock Price / Earnings Per Share
 
 For sectors:
 ```
-Sector P/E = Weighted Average P/E of all stocks in the sector
+Sector P/E = constituent P/Es combined by a stated method:
+  market-cap weighted, equal weighted, or total market cap / total earnings
+Always report the method and the constituent universe with the figure
 ```
 
 ### Types of P/E

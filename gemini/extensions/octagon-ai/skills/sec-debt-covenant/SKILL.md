@@ -25,8 +25,10 @@ Determine the following before querying:
 Use the `octagon-agent` tool with a natural language prompt:
 
 ```
-Analyze debt covenants and credit agreement terms disclosed in <TICKER>'s latest SEC filings.
+Analyze debt covenants and credit agreement terms disclosed in <TICKER>'s latest <FILING TYPE, or "SEC" when none was given> filings[, focusing on <FOCUS AREA>].
 ```
+
+Fill the placeholders from step 1. Keep a bracketed clause only when the user supplied that parameter, and drop the brackets themselves.
 
 **MCP Call Format:**
 

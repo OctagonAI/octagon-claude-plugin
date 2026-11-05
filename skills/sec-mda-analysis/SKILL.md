@@ -25,8 +25,10 @@ Determine the following before querying:
 Use the `octagon-agent` tool with a natural language prompt:
 
 ```
-Analyze the Management Discussion and Analysis section from <TICKER>'s latest quarterly report.
+Analyze the Management Discussion and Analysis section from <TICKER>'s latest <FILING TYPE, default 10-Q> filing[, focusing on <FOCUS AREAS>].
 ```
+
+Fill the placeholders from step 1. Keep a bracketed clause only when the user supplied that parameter, and drop the brackets themselves.
 
 **MCP Call Format:**
 
@@ -95,7 +97,7 @@ What strategic initiatives does AMZN highlight in their latest MD&A section?
 
 **Comparative Analysis:**
 ```
-Compare the MD&A commentary between TSLA's Q4 2025 and Q4 2024 10-Q filings.
+Compare the MD&A commentary between TSLA's FY2025 and FY2024 10-K filings.
 ```
 
 **Segment Analysis:**

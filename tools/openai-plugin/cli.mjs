@@ -9,25 +9,32 @@ import { SOURCE_REPOSITORY, TARGET_IDS, createBuild } from "./lib/createBuild.mj
 import { PackagingError } from "./lib/errors.mjs";
 import { GeminiManifestBuilder } from "./lib/manifest/GeminiManifestBuilder.mjs";
 import { GROK_PLUGINS_DIR, GrokManifestBuilder } from "./lib/manifest/GrokManifestBuilder.mjs";
+import { KIMI_CATALOG_PATH, KIMI_CATALOG_VERSION, KimiManifestBuilder } from "./lib/manifest/KimiManifestBuilder.mjs";
+import { CatalogSync } from "./lib/output/CatalogSync.mjs";
+import { PluginConfig } from "./lib/config/PluginConfig.mjs";
+import { Profile } from "./lib/config/Profile.mjs";
+import { layout } from "./lib/createBuild.mjs";
 import { Archiver } from "./lib/output/Archiver.mjs";
 import { PackageView } from "./lib/validation/PackageView.mjs";
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const REPO_URL = `${SOURCE_REPOSITORY}.git`;
-const COMMANDS = ["build", "validate", "sync", "entry", "about"];
+const COMMANDS = ["build", "validate", "sync", "entry", "about", "catalog"];
 
 const USAGE = `Usage: node tools/openai-plugin/cli.mjs <command> [options]
 
 Commands:
-  build      Build and validate the plugin package into out/ (OpenAI: also zip it)
+  build      Build and validate the plugin package into out/ (OpenAI, Kimi: also zip it)
   validate   Re-validate the existing build in out/ without rebuilding
-  sync       Grok, Gemini: build, then copy the validated package into its committed
-             directory (grok/plugins/<name>/, gemini/extensions/<name>/); --check reports drift instead
-  entry      Grok only: print the marketplace.json entry for the current HEAD commit
-  about      Gemini only: print the mirror repository's About settings (description, homepage, topic)
+  sync       Grok, Gemini, Kimi: build, then copy the validated package into its committed
+             directory (grok/plugins/, gemini/extensions/, kimi/plugins/); --check reports drift instead
+  entry      Grok: print the marketplace.json entry for the current HEAD commit
+             Kimi: print the catalog entry (release asset URL, display text, availability)
+  about      Gemini, Kimi: print the mirror repository's About settings (description, homepage, topics)
+  catalog    Kimi only: write kimi/marketplace.json from every profile with a kimi block; --check reports drift
 
 Options:
-  --target NAME   Package format: openai (default), grok, or gemini
+  --target NAME   Package format: openai (default), grok, gemini, or kimi
   --profile NAME  Build the plugin under openai/profiles/NAME (default: openai/ itself)
   --online        Also check that every public URL answers 2xx
   --out DIR       Output directory (default: out/)
@@ -88,8 +95,17 @@ async function main() {
     return result.ok ? 0 : 1;
   }
 
+  if (command === "catalog") {
+    if (target !== "kimi") return onlyFor(command, "kimi");
+    return kimiCatalog(values.check);
+  }
+
   if (command === "entry") {
-    if (target !== "grok") return onlyFor(command, "grok");
+    if (target === "kimi") {
+      console.log(JSON.stringify(new KimiManifestBuilder(build.config).catalogEntry(), null, 2));
+      return 0;
+    }
+    if (target !== "grok") return onlyFor(command, "grok or kimi");
     const entry = new GrokManifestBuilder(build.config).catalogEntry({
       repoUrl: REPO_URL,
       sha: headSha(),
@@ -100,14 +116,18 @@ async function main() {
   }
 
   if (command === "about") {
-    if (target !== "gemini") return onlyFor(command, "gemini");
+    if (target === "kimi") {
+      console.log(JSON.stringify(new KimiManifestBuilder(build.config).aboutSettings(), null, 2));
+      return 0;
+    }
+    if (target !== "gemini") return onlyFor(command, "gemini or kimi");
     console.log(JSON.stringify(new GeminiManifestBuilder(build.config).aboutSettings(), null, 2));
     return 0;
   }
 
   if (command === "sync") {
     if (!build.sync) {
-      console.error(`"sync" applies to targets with a committed directory (grok, gemini); --target ${target} produces an archive.`);
+      console.error(`"sync" applies to targets with a committed directory (grok, gemini, kimi); --target ${target} produces an archive.`);
       return 2;
     }
     const result = await build.pipeline.run();
@@ -136,13 +156,49 @@ async function main() {
   }
   const pkg = await PackageView.load(stagingDir, { manifestPath: build.target.manifestPath });
   let validation = await build.validator.run({ pkg }, "package");
-  const zipPath = build.writer.artifactPath(`${build.config.data.name}-openai-${build.config.data.version}.zip`);
-  if (target === "openai" && existsSync(zipPath)) {
+  const zipName = build.target.archiveName(build.config);
+  const zipPath = zipName ? build.writer.artifactPath(zipName) : null;
+  if (zipPath && existsSync(zipPath)) {
     const archive = await new Archiver().inspect(zipPath);
     validation = validation.merge(await build.validator.run({ pkg, archive }, "archive"));
   }
   printFindings(validation);
   return validation.ok ? 0 : 1;
+}
+
+/**
+ * Assembles the self-serve Kimi catalog from every profile that declares a
+ * `kimi` block, in profile order, and writes or checks `kimi/marketplace.json`.
+ *
+ * @param {boolean} check
+ * @returns {Promise<number>}
+ */
+async function kimiCatalog(check) {
+  const paths = layout(REPO_ROOT);
+  const entries = [];
+  for (const profile of Profile.all(paths.openaiRoot)) {
+    const config = await PluginConfig.load(profile.pluginConfig);
+    if (!config.data.kimi) continue;
+    entries.push(new KimiManifestBuilder(config).catalogEntry());
+  }
+  if (entries.length === 0) {
+    console.error("No profile declares a kimi block; nothing to catalog.");
+    return 1;
+  }
+  const catalog = { version: KIMI_CATALOG_VERSION, plugins: entries };
+  const sync = new CatalogSync({ repoRoot: REPO_ROOT, relativePath: KIMI_CATALOG_PATH });
+  if (check) {
+    const drift = await sync.check(catalog);
+    if (drift) {
+      console.error(`${KIMI_CATALOG_PATH} is ${drift}; run: npm run catalog:kimi`);
+      return 1;
+    }
+    console.log(`${KIMI_CATALOG_PATH} matches the profiles`);
+    return 0;
+  }
+  await sync.write(catalog);
+  console.log(`Wrote ${entries.length} entries to ${KIMI_CATALOG_PATH}`);
+  return 0;
 }
 
 /**

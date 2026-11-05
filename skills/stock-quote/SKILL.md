@@ -162,8 +162,8 @@ What are the 50-day and 200-day moving averages for AMZN?
 
 | Signal | Condition | Interpretation |
 |--------|-----------|----------------|
-| Golden Cross | 50-day > 200-day | Bullish |
-| Death Cross | 50-day < 200-day | Bearish |
+| 50-day MA above 200-day MA | 50-day > 200-day | Bullish structure (a Golden Cross is the crossing event itself, which needs price history) |
+| 50-day MA below 200-day MA | 50-day < 200-day | Bearish structure (a Death Cross is the crossing event itself) |
 | Price > Both MAs | Above both averages | Strong uptrend |
 | Price < Both MAs | Below both averages | Strong downtrend |
 
