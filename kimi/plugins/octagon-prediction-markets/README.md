@@ -42,7 +42,7 @@ No other endpoint is called. The plugin sends no telemetry of its own.
 
 - Authentication is browser OAuth with an Octagon account (free tier available), using Kimi's native MCP OAuth with dynamic client registration.
 - The plugin declares no headers, tokens, environment variables, or local files.
-- Tokens live in Kimi's own credential store; disabling or removing the plugin revokes them, and the grant can also be revoked on the Octagon side.
+- Tokens live in Kimi's own credential store (Kimi Code keeps MCP OAuth credentials under `~/.kimi-code/credentials/mcp/`, separate from the plugin files). To disconnect, revoke the `octagon-predictions` server's authorization from the plugin manager (`/plugins`, then M on the installed plugin) or revoke the grant on the Octagon side; removing the plugin alone does not delete a stored token.
 
 ## Try it
 
