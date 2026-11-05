@@ -144,8 +144,16 @@ export class PackageWriter {
    * @param {unknown} value
    */
   async writeArtifactJson(fileName, value) {
+    await this.writeArtifactText(fileName, `${JSON.stringify(value, null, 2)}\n`);
+  }
+
+  /**
+   * @param {string} fileName A file name (not a path) placed directly in `outRoot`.
+   * @param {string} text
+   */
+  async writeArtifactText(fileName, text) {
     await mkdir(this.outRoot, { recursive: true });
-    await writeFile(this.artifactPath(fileName), `${JSON.stringify(value, null, 2)}\n`);
+    await writeFile(this.artifactPath(fileName), text);
   }
 
   /**

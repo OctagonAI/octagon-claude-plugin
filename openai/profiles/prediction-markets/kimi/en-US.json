@@ -1,0 +1,11 @@
+{
+  "skills": {
+    "event-brief": { "displayName": "Event brief" },
+    "mispricing-analysis": { "displayName": "Mispricing analysis" },
+    "prediction-markets-analysis": { "displayName": "Prediction market research" },
+    "prediction-markets-get-started": { "displayName": "Get started with prediction markets" },
+    "prediction-markets-status": { "displayName": "Connection status" },
+    "probability-history": { "displayName": "Probability history" },
+    "trust-score": { "displayName": "Trust Score" }
+  }
+}

@@ -58,7 +58,14 @@
     "build:gemini:predictions": "node tools/openai-plugin/cli.mjs build --target gemini --profile prediction-markets",
     "sync:gemini": "node tools/openai-plugin/cli.mjs sync --target gemini && node tools/openai-plugin/cli.mjs sync --target gemini --profile prediction-markets",
     "check:gemini": "node tools/openai-plugin/cli.mjs sync --target gemini --check && node tools/openai-plugin/cli.mjs sync --target gemini --check --profile prediction-markets",
-    "about:gemini": "node tools/openai-plugin/cli.mjs about --target gemini && node tools/openai-plugin/cli.mjs about --target gemini --profile prediction-markets"
+    "about:gemini": "node tools/openai-plugin/cli.mjs about --target gemini && node tools/openai-plugin/cli.mjs about --target gemini --profile prediction-markets",
+    "build:kimi": "node tools/openai-plugin/cli.mjs build --target kimi",
+    "build:kimi:predictions": "node tools/openai-plugin/cli.mjs build --target kimi --profile prediction-markets",
+    "sync:kimi": "node tools/openai-plugin/cli.mjs sync --target kimi && node tools/openai-plugin/cli.mjs sync --target kimi --profile prediction-markets && node tools/openai-plugin/cli.mjs catalog --target kimi",
+    "check:kimi": "node tools/openai-plugin/cli.mjs sync --target kimi --check && node tools/openai-plugin/cli.mjs sync --target kimi --check --profile prediction-markets && node tools/openai-plugin/cli.mjs catalog --target kimi --check",
+    "entry:kimi": "node tools/openai-plugin/cli.mjs entry --target kimi && node tools/openai-plugin/cli.mjs entry --target kimi --profile prediction-markets",
+    "about:kimi": "node tools/openai-plugin/cli.mjs about --target kimi && node tools/openai-plugin/cli.mjs about --target kimi --profile prediction-markets",
+    "catalog:kimi": "node tools/openai-plugin/cli.mjs catalog --target kimi"
   },
   "keywords": [
     "mcp",

@@ -73,6 +73,26 @@
       "For questions about Kalshi or Polymarket prediction markets, suggest the `octagon-prediction-markets` extension instead of answering from memory."
     ]
   },
+  "kimi": {
+    "serverName": "octagon",
+    "mcpUrl": "https://mcp.octagonai.co/public-markets/mcp",
+    "enabledTools": [
+      "octagon-agent",
+      "octagon-deep-research-agent"
+    ],
+    "shortDescription": "Cited stock research",
+    "cliDescription": "Cited research on public companies: SEC filings, earnings calls, financials, market data, analyst estimates. Free Octagon account; sign in with OAuth on first use.",
+    "repository": "https://github.com/OctagonAI/octagon-ai-kimi-plugin",
+    "repoDescription": "Cited research on public companies for Kimi: SEC filings, earnings calls, financials, market data. By Octagon AI.",
+    "iconUrl": "https://www.octagonai.co/plugins/octagon-ai/icon.png",
+    "translations": {
+      "en-US": "./kimi/en-US.json",
+      "zh-CN": "./kimi/zh-CN.json"
+    },
+    "systemPromptNotes": [
+      "For questions about Kalshi or Polymarket prediction markets, suggest the `octagon-prediction-markets` plugin instead of answering from memory."
+    ]
+  },
   "interface": {
     "displayName": "Octagon AI",
     "shortDescription": "Cited stock & market research",

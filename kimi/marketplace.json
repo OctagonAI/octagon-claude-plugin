@@ -1,0 +1,63 @@
+{
+  "version": "2",
+  "plugins": [
+    {
+      "id": "octagon-ai",
+      "displayName": "Octagon AI",
+      "version": "1.1.2",
+      "shortDescription": "Cited stock research",
+      "description": "Cited AI research on public companies: SEC filings, earnings call transcripts, financial statements, market data, and analyst estimates.",
+      "cliDescription": "Cited research on public companies: SEC filings, earnings calls, financials, market data, analyst estimates. Free Octagon account; sign in with OAuth on first use.",
+      "homepage": "https://www.octagonai.co/",
+      "keywords": [
+        "finance",
+        "equity-research",
+        "sec-filings",
+        "earnings-calls",
+        "market-data"
+      ],
+      "iconUrl": "https://www.octagonai.co/plugins/octagon-ai/icon.png",
+      "source": "https://github.com/OctagonAI/octagon-ai-kimi-plugin/releases/download/v1.1.2/octagon-ai-kimi-1.1.2.zip",
+      "clients": [
+        "desktop",
+        "cli"
+      ],
+      "platforms": [
+        "macos",
+        "windows",
+        "linux"
+      ]
+    },
+    {
+      "id": "octagon-prediction-markets",
+      "displayName": "Octagon Prediction Markets",
+      "version": "1.0.2",
+      "shortDescription": "Event odds research",
+      "description": "Cited research on Kalshi and Polymarket prediction markets: event odds, what moves them, probability history, Trust Scores, and where the market-implied probability diverges from Octagon's research-adjusted model estimate.",
+      "cliDescription": "Cited research on Kalshi and Polymarket markets: odds, drivers, probability history, Trust Scores, mispricing vs Octagon's model. Research only, no bets. Free Octagon account; OAuth on first use.",
+      "homepage": "https://www.octagonai.co/",
+      "keywords": [
+        "prediction-markets",
+        "kalshi",
+        "polymarket",
+        "odds",
+        "event-probabilities",
+        "trust-score",
+        "forecasting",
+        "mispricing",
+        "research"
+      ],
+      "iconUrl": "https://www.octagonai.co/plugins/octagon-prediction-markets/icon.png",
+      "source": "https://github.com/OctagonAI/octagon-prediction-markets-kimi-plugin/releases/download/v1.0.2/octagon-prediction-markets-kimi-1.0.2.zip",
+      "clients": [
+        "desktop",
+        "cli"
+      ],
+      "platforms": [
+        "macos",
+        "windows",
+        "linux"
+      ]
+    }
+  ]
+}

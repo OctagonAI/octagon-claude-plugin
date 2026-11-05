@@ -1,0 +1,88 @@
+{
+  "name": "octagon-prediction-markets",
+  "version": "1.0.2",
+  "description": "Cited research on Kalshi and Polymarket prediction markets: event odds, what moves them, probability history, Trust Scores, and where the market-implied probability diverges from Octagon's research-adjusted model estimate.",
+  "author": {
+    "name": "Octagon AI",
+    "email": "contact@octagonai.co"
+  },
+  "homepage": "https://www.octagonai.co/",
+  "license": "MIT",
+  "keywords": [
+    "prediction-markets",
+    "kalshi",
+    "polymarket",
+    "odds",
+    "event-probabilities",
+    "trust-score",
+    "forecasting",
+    "mispricing",
+    "research"
+  ],
+  "skills": [
+    "./skills/"
+  ],
+  "sessionStart": {
+    "skill": "prediction-markets-get-started"
+  },
+  "skillInstructions": "Cite the source of every figure. Research only. The plugin does not place, route, or recommend bets or trades, hold funds, or connect to any trading account, and it does not give personalized financial advice. Generating a new report takes several minutes and uses report credits; the skills ask before generating one.",
+  "systemPromptPath": "./SYSTEM.md",
+  "mcpServers": {
+    "octagon-predictions": {
+      "url": "https://mcp.octagonai.co/prediction-markets/mcp",
+      "auth": "oauth",
+      "toolTimeoutMs": 600000
+    }
+  },
+  "interface": {
+    "displayName": "Octagon Prediction Markets",
+    "shortDescription": "Event odds research",
+    "longDescription": "Octagon Prediction Markets turns Kalshi and Polymarket prediction markets into a research dataset: current odds, what moved them, where the market-implied probability diverges from Octagon's research-adjusted model estimate, and how much each market's price can be trusted.\n\nBuilt for analysts, economists, strategists, policy and risk teams, and journalists who treat event probabilities as data.\n\nGive it a market and it returns a cited analyst brief:\n- What resolves the event, and when\n- The current market-implied probability, with its timestamp\n- How that probability has moved over time, and the drivers and catalysts behind each move\n- How similar events have resolved before\n- Whether the market is mispriced relative to the model, with the size of the gap and the confidence behind it\n- The market's Octagon Trust Score, 0 to 100, with the reasons behind it\n\nAsk for a topic and it finds the markets that exist for it, on either venue, and shows where the model disagrees with the price.\n\nCovers more than 130,000 active events across Kalshi and Polymarket, in sports, crypto, climate, elections, finance, commodities, politics, culture, economics, and science and technology.\n\nOctagon is a research tool. It does not place, route, or recommend bets or trades, hold funds, or connect to any trading account, and it does not give personalized financial advice. Requires an Octagon account (sign up at octagonai.co). Generating new reports requires a plan that includes report generation; cached reports are available on all plans.",
+    "developerName": "Octagon AI",
+    "websiteURL": "https://www.octagonai.co/",
+    "tryPrompts": [
+      "Write an event brief for this market: https://kalshi.com/markets/kxfeddecision/fed-meeting/kxfeddecision-26dec",
+      "What is the Trust Score for that market, and what drives it?",
+      "Put $50 on YES for me."
+    ],
+    "mcpOverrides": {
+      "octagon-predictions": {
+        "displayName": "Octagon Prediction Markets research server",
+        "description": "Cited research on Kalshi and Polymarket prediction markets: event odds, what moves them, probability history, Trust Scores, and where the market-implied probability diverges from Octagon's research-adjusted model estimate.",
+        "iconUrl": "https://www.octagonai.co/plugins/octagon-prediction-markets/icon.png"
+      }
+    },
+    "skillOverrides": {
+      "event-brief": {
+        "displayName": "Event brief",
+        "description": "Write a cited analyst brief on one prediction-market event, covering resolution criteria, the current market-implied probability, base rates, drivers, and the catalyst calendar. Use when the user asks what a prediction market says, shares a Kalshi or Polymarket link, or asks for research on the odds of an event."
+      },
+      "mispricing-analysis": {
+        "displayName": "Mispricing analysis",
+        "description": "Compare a prediction market's implied probability with Octagon's research-adjusted model estimate and report the mispricing, its size and direction, the confidence behind each estimate, and how similar gaps have resolved historically. Use when the user asks whether a market is mispriced, how the market compares to the model, or whether the odds look right."
+      },
+      "prediction-markets-analysis": {
+        "displayName": "Prediction market research",
+        "description": "Research a prediction market on Kalshi or Polymarket with the Octagon prediction-markets agent. Returns a cited report with the market-implied and model probabilities, price drivers, catalysts, resolution history, and the market's Trust Score. Use when the user shares a Kalshi or Polymarket link, names an event with a market, or asks what the odds on something are and why."
+      },
+      "prediction-markets-get-started": {
+        "displayName": "Get started with prediction markets",
+        "description": "Introduce Octagon Prediction Markets, explain what prediction-market data is and how to connect, and suggest first requests. Use when the user is new to the plugin, asks what it can do with prediction markets, Kalshi, or Polymarket, or needs help connecting their Octagon account."
+      },
+      "prediction-markets-status": {
+        "displayName": "Connection status",
+        "description": "Check whether Octagon is connected and summarize the prediction-market tools that are currently available. Use when the user asks whether the plugin is working, what it can do right now, or why requests are failing."
+      },
+      "probability-history": {
+        "displayName": "Probability history",
+        "description": "Analyze how a prediction market's probability has moved over time, including the largest moves, regime changes, and the events that explain each move. Use when the user asks how the odds have changed, what moved a market, or wants the probability history of a Kalshi or Polymarket market."
+      },
+      "trust-score": {
+        "displayName": "Trust Score",
+        "description": "Explain and retrieve the Octagon Trust Score for a Kalshi or Polymarket market: a 0–100 score of whether the market can be rigged and whether its price can be trusted, with the pillars and screens behind it. Use when the user asks how trustworthy a market is, whether a market could be manipulated, what the Trust Score or Trust Index means, or why a market scored the way it did."
+      }
+    },
+    "defaultLocale": "en-US",
+    "locales": "./locales/"
+  }
+}

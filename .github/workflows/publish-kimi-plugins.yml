@@ -1,0 +1,210 @@
+name: Publish Kimi plugins
+
+# Mirrors each generated plugin under kimi/plugins/<name>/ to its own public
+# repository (the unit Kimi Code installs by URL and Plugin Builder imports),
+# tags v<version> when that version has no tag yet, and publishes a GitHub
+# Release carrying the plugin ZIP (manifest at the archive root) and its
+# SHA-256. kimi/marketplace.json points at that asset. The mirrors are never
+# edited by hand.
+#
+# Every step is idempotent, so a rerun after a partial failure repairs the
+# mirror: a missing tag is created, a missing release is created, a missing
+# or stale asset is rebuilt from the tagged commit and uploaded.
+#
+# Credentials: the same GitHub App as the Gemini mirrors, installed on the two
+# Kimi mirror repositories as well, with Contents (write) for the push, tag,
+# and release, and Administration (write) for the About description, homepage,
+# and topics. The token is requested with exactly those permissions.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-kimi-plugins
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        plugin:
+          - name: octagon-ai
+            profile: ""
+          - name: octagon-prediction-markets
+            profile: prediction-markets
+    env:
+      PLUGIN_NAME: ${{ matrix.plugin.name }}
+      PLUGIN_PROFILE: ${{ matrix.plugin.profile }}
+    steps:
+      - name: Check out the source repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Refuse to publish a stale plugin
+        run: |
+          if [ -n "$PLUGIN_PROFILE" ]; then
+            node tools/openai-plugin/cli.mjs sync --target kimi --check --profile "$PLUGIN_PROFILE"
+          else
+            node tools/openai-plugin/cli.mjs sync --target kimi --check
+          fi
+          node tools/openai-plugin/cli.mjs catalog --target kimi --check
+
+      - name: Read the plugin's version and mirror settings
+        id: meta
+        run: |
+          dir="kimi/plugins/$PLUGIN_NAME"
+          version=$(node -p "require('./$dir/kimi.plugin.json').version")
+          if [ -n "$PLUGIN_PROFILE" ]; then
+            about=$(node tools/openai-plugin/cli.mjs about --target kimi --profile "$PLUGIN_PROFILE")
+          else
+            about=$(node tools/openai-plugin/cli.mjs about --target kimi)
+          fi
+          repo=$(node -p "new URL(JSON.parse(process.argv[1]).repository).pathname.slice(1)" "$about")
+          {
+            echo "dir=$dir"
+            echo "version=$version"
+            echo "repo=$repo"
+            echo "repo_name=${repo##*/}"
+            echo "description=$(node -p "JSON.parse(process.argv[1]).description" "$about")"
+            echo "homepage=$(node -p "JSON.parse(process.argv[1]).homepage" "$about")"
+            echo "topics=$(node -p "JSON.parse(process.argv[1]).topics.join(',')" "$about")"
+          } >> "$GITHUB_OUTPUT"
+
+      # A rerun of an older workflow must not push older content over a newer
+      # mirror: default-branch installs follow the mirror's HEAD. Only the
+      # commit that is currently at the tip of main may publish.
+      - name: Skip the run unless it is the current tip of main
+        id: fresh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tip=$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)
+          if [ "$tip" = "$GITHUB_SHA" ]; then
+            echo "current=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "current=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Skipping: $GITHUB_SHA is not the tip of main ($tip); rerun from the latest commit instead."
+          fi
+
+      - name: Mint a token for the mirror repository
+        if: steps.fresh.outputs.current == 'true'
+        id: token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.GEMINI_MIRROR_APP_ID }}
+          private-key: ${{ secrets.GEMINI_MIRROR_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ steps.meta.outputs.repo_name }}
+          permission-contents: write
+          permission-administration: write
+
+      - name: Check out the mirror repository
+        if: steps.fresh.outputs.current == 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.meta.outputs.repo }}
+          token: ${{ steps.token.outputs.token }}
+          path: mirror
+          fetch-depth: 0
+
+      - name: Replace the mirror's contents with the generated plugin
+        if: steps.fresh.outputs.current == 'true'
+        env:
+          DIR: ${{ steps.meta.outputs.dir }}
+          VERSION: ${{ steps.meta.outputs.version }}
+        run: |
+          rsync -a --delete --exclude .git "$DIR/" mirror/
+          cd mirror
+          git config user.name "octagon-release-bot"
+          git config user.email "release-bot@octagonai.co"
+          git add -A
+          # Same-version content changes are refused: the tag and the release asset
+          # for v$VERSION would keep the old content while main moved on.
+          if git rev-parse -q --verify "refs/tags/v$VERSION" > /dev/null \
+            && ! git diff --cached --quiet "refs/tags/v$VERSION" --; then
+            echo "::error::Contents changed but v$VERSION is already tagged. Bump the version in plugin.config.json and sync again."
+            exit 1
+          fi
+          if git diff --cached --quiet; then
+            echo "No content change."
+          else
+            git commit -m "Release $VERSION (octagon-claude-plugin@${GITHUB_SHA::7})"
+            git push origin HEAD:main
+          fi
+
+      - name: Ensure the version is tagged, released, and carries its assets
+        if: steps.fresh.outputs.current == 'true'
+        env:
+          GH_TOKEN: ${{ steps.token.outputs.token }}
+          REPO: ${{ steps.meta.outputs.repo }}
+          VERSION: ${{ steps.meta.outputs.version }}
+        run: |
+          cd mirror
+          tag="v$VERSION"
+          asset="$PLUGIN_NAME-kimi-$VERSION.zip"
+
+          # 1. Tag: create it on the current mirror HEAD only when it does not exist.
+          if git ls-remote --exit-code --tags origin "refs/tags/$tag" > /dev/null; then
+            echo "$tag exists."
+          else
+            git tag -a "$tag" -m "Release $VERSION"
+            git push origin "$tag"
+          fi
+
+          # 2. Assets: always rebuilt from the tagged commit, so a repaired or
+          #    re-uploaded asset can never differ from what the tag points at.
+          #    The ZIP has the manifest at its root, as the hosted validator and
+          #    Kimi Code's installer require; the checksum sits beside it.
+          git fetch --tags --quiet origin
+          git archive --format=zip --output "../$asset" "$tag"
+          (cd .. && sha256sum "$asset" > "$asset.sha256")
+
+          # 3. Release: create it if missing, then make sure both assets are attached.
+          if gh release view "$tag" --repo "$REPO" > /dev/null 2>&1; then
+            echo "Release $tag exists."
+          else
+            gh release create "$tag" --repo "$REPO" \
+              --title "$PLUGIN_NAME $VERSION" \
+              --notes "Generated from OctagonAI/octagon-claude-plugin@${GITHUB_SHA}. Install in Kimi Code: /plugins install https://github.com/$REPO"
+          fi
+          attached=$(gh release view "$tag" --repo "$REPO" --json assets --jq '.assets[].name')
+          for file in "$asset" "$asset.sha256"; do
+            if echo "$attached" | grep -qx "$file"; then
+              echo "Asset $file is attached."
+            else
+              gh release upload "$tag" "../$file" --repo "$REPO" --clobber
+            fi
+          done
+
+      - name: Assert the mirror's About settings and topics
+        if: steps.fresh.outputs.current == 'true'
+        env:
+          GH_TOKEN: ${{ steps.token.outputs.token }}
+          REPO: ${{ steps.meta.outputs.repo }}
+          DESCRIPTION: ${{ steps.meta.outputs.description }}
+          HOMEPAGE: ${{ steps.meta.outputs.homepage }}
+          TOPICS: ${{ steps.meta.outputs.topics }}
+          VERSION: ${{ steps.meta.outputs.version }}
+        run: |
+          gh api --method PATCH "repos/$REPO" \
+            -f description="$DESCRIPTION" \
+            -f homepage="$HOMEPAGE" \
+            -F has_wiki=false > /dev/null
+          node -p "JSON.stringify({ names: process.env.TOPICS.split(',') })" \
+            | gh api --method PUT "repos/$REPO/topics" -H "Accept: application/vnd.github+json" --input - > /dev/null
+          echo "Mirror $REPO is at $VERSION."

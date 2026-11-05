@@ -8,7 +8,7 @@
 /** @typedef {import("../validation/Validator.mjs").Validator} Validator */
 /** @typedef {import("../validation/Validator.mjs").ValidationReport} ValidationReport */
 /** @typedef {import("../validation/PackageView.mjs").PackageView} PackageView */
-/** @typedef {"openai" | "grok" | "gemini"} TargetId */
+/** @typedef {"openai" | "grok" | "gemini" | "kimi"} TargetId */
 
 /**
  * @typedef {{ writer: PackageWriter, config: PluginConfig, skills: readonly SkillDocument[], assetsRoot: string }} EmitContext
@@ -22,8 +22,11 @@
  *   pluginName?: string,
  *   tools?: readonly string[],
  *   includeTools?: readonly string[],
+ *   config?: PluginConfig,
  * }} RuleOptions `tools` is every tool the configured server serves;
- *   `includeTools` the client-side allow-list, when the target supports one.
+ *   `includeTools` the client-side allow-list, when the target supports one;
+ *   `config` the loaded plugin config, for rules that compare the package
+ *   against declared values (locales, URLs) rather than a fixed constant.
  */
 
 /**
@@ -75,6 +78,28 @@ export class Target {
    */
   async emit(_context) {
     throw new Error(`${this.id}.emit() is not implemented`);
+  }
+
+  /**
+   * The client-side tool allow-list this target declares on its server, when
+   * the host supports one. Rules compare the shipped manifest against it.
+   *
+   * @param {PluginConfig} _config
+   * @returns {readonly string[] | undefined}
+   */
+  allowList(_config) {
+    return undefined;
+  }
+
+  /**
+   * File name (no directories) of the archive `finalize` writes into the
+   * output root, or `null` for directory-only targets.
+   *
+   * @param {PluginConfig} _config
+   * @returns {string | null}
+   */
+  archiveName(_config) {
+    return null;
   }
 
   /**

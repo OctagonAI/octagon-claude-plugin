@@ -12,6 +12,7 @@ import { RepoSync } from "./output/RepoSync.mjs";
 import { SkillRepository } from "./source/SkillRepository.mjs";
 import { GeminiTarget } from "./target/GeminiTarget.mjs";
 import { GrokTarget } from "./target/GrokTarget.mjs";
+import { KimiTarget } from "./target/KimiTarget.mjs";
 import { OpenAITarget } from "./target/OpenAITarget.mjs";
 import { createRules, createSharedRules } from "./validation/rules/index.mjs";
 import { Validator } from "./validation/Validator.mjs";
@@ -21,7 +22,7 @@ import { Validator } from "./validation/Validator.mjs";
 
 /** The repository every generated package is produced from. */
 export const SOURCE_REPOSITORY = "https://github.com/OctagonAI/octagon-claude-plugin";
-export const TARGET_IDS = Object.freeze(/** @type {const} */ (["openai", "grok", "gemini"]));
+export const TARGET_IDS = Object.freeze(/** @type {const} */ (["openai", "grok", "gemini", "kimi"]));
 
 /** Repository layout the tool reads from. Everything here is read-only. */
 export function layout(/** @type {string} */ repoRoot) {
@@ -61,6 +62,8 @@ function createTarget(id, paths) {
       return new GrokTarget({ licenseFile: paths.licenseFile });
     case "gemini":
       return new GeminiTarget({ licenseFile: paths.licenseFile });
+    case "kimi":
+      return new KimiTarget({ licenseFile: paths.licenseFile });
     default:
       throw new ConfigError(`target "${id}"`, [`targets are ${TARGET_IDS.map(name => `"${name}"`).join(", ")}`]);
   }
@@ -92,7 +95,8 @@ export async function createBuild({ repoRoot, outRoot, online = false, profile: 
     mcpUrl: config.data.mcp.url,
     pluginName: config.data.name,
     tools: config.data.mcp.tools,
-    includeTools: config.data.gemini?.includeTools,
+    includeTools: target.allowList(config),
+    config,
   };
   // The OpenAI target keeps the original rule order; other targets get the
   // shared rules followed by their own.

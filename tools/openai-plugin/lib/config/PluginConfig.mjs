@@ -41,6 +41,7 @@ const LISTING_FIELDS = Object.freeze(["oauthUrl", "readmeIntro", "scopeNote", "s
  *   listing?: ListingConfigData,
  *   grok?: Partial<ListingConfigData> & GrokCatalogData,
  *   gemini?: GeminiConfigData,
+ *   kimi?: KimiConfigData,
  * }} PluginConfigData
  *
  * @typedef {{
@@ -72,6 +73,24 @@ const LISTING_FIELDS = Object.freeze(["oauthUrl", "readmeIntro", "scopeNote", "s
  * }} GeminiConfigData The Gemini CLI extension block: the mirror repository
  *   the gallery indexes, its About text, an optional client-side tool
  *   allow-list, and extra standing rules for `GEMINI.md`.
+ *
+ * @typedef {{
+ *   serverName?: string,
+ *   mcpUrl?: string,
+ *   enabledTools?: string[],
+ *   shortDescription: string,
+ *   cliDescription: string,
+ *   repository: string,
+ *   repoDescription: string,
+ *   iconUrl: string,
+ *   translations: Record<string, string>,
+ *   systemPromptNotes?: string[],
+ * }} KimiConfigData The Kimi plugin block: an optional endpoint and tool
+ *   allow-list for the one remote server, the 20-character marketplace
+ *   `shortDescription` and the terse `cliDescription` the Kimi Code TUI shows,
+ *   the mirror repository and its About text, the hosted icon, one translation
+ *   file per locale (profile-relative paths; `en-US` names the skills, every
+ *   other locale is a complete translation), and extra rules for `SYSTEM.md`.
  */
 
 /**
@@ -148,6 +167,7 @@ export class PluginConfig {
     }
     if (raw.grok !== undefined) PluginConfig.#checkGrok(raw.grok, raw.listing, check);
     if (raw.gemini !== undefined) PluginConfig.#checkGemini(raw.gemini, raw.mcp, check);
+    if (raw.kimi !== undefined) PluginConfig.#checkKimi(raw.kimi, raw.mcp, check);
     check.throwIfAny(source);
   }
 
@@ -221,6 +241,47 @@ export class PluginConfig {
   }
 
   /**
+   * @param {unknown} kimi
+   * @param {unknown} mcp
+   * @param {Checker} check
+   */
+  static #checkKimi(kimi, mcp, check) {
+    if (!check.object(kimi, "kimi")) return;
+    check.optionalString(kimi.serverName, "kimi.serverName");
+    if (kimi.mcpUrl !== undefined && check.string(kimi.mcpUrl, "kimi.mcpUrl")) {
+      if (!kimi.mcpUrl.startsWith("https://")) check.fail("kimi.mcpUrl must be an https:// URL");
+      else if (!parses(kimi.mcpUrl)) check.fail("kimi.mcpUrl must be a valid URL");
+    }
+    check.string(kimi.shortDescription, "kimi.shortDescription");
+    check.string(kimi.cliDescription, "kimi.cliDescription");
+    if (check.string(kimi.repository, "kimi.repository") && !/^https:\/\/github\.com\/[\w.-]+\/[\w.-]+$/.test(kimi.repository)) {
+      check.fail("kimi.repository must be a https://github.com/<owner>/<repo> URL");
+    }
+    if (check.string(kimi.repoDescription, "kimi.repoDescription") && kimi.repoDescription.length > 350) {
+      check.fail("kimi.repoDescription must be at most 350 characters (GitHub's About field)");
+    }
+    if (check.string(kimi.iconUrl, "kimi.iconUrl") && (!kimi.iconUrl.startsWith("https://") || !parses(kimi.iconUrl))) {
+      check.fail("kimi.iconUrl must be an https:// URL");
+    }
+    if (check.object(kimi.translations, "kimi.translations")) {
+      const locales = Object.keys(kimi.translations);
+      if (locales.length === 0) check.fail("kimi.translations must map at least one locale to a file");
+      for (const [locale, file] of Object.entries(kimi.translations)) {
+        if (!/^[a-z]{2}-[A-Z]{2}$/.test(locale)) check.fail(`kimi.translations: "${locale}" is not a <language>-<REGION> locale such as en-US`);
+        if (typeof file !== "string" || !file.startsWith("./")) check.fail(`kimi.translations.${locale} must be a ./ path relative to the profile`);
+      }
+    }
+    if (kimi.enabledTools !== undefined && check.stringArray(kimi.enabledTools, "kimi.enabledTools")) {
+      if (kimi.enabledTools.length === 0) check.fail("kimi.enabledTools must list at least one tool when present");
+      const known = /** @type {string[]} */ (mcp && typeof mcp === "object" && Array.isArray(/** @type {any} */ (mcp).tools) ? /** @type {any} */ (mcp).tools : []);
+      for (const tool of kimi.enabledTools) {
+        if (!known.includes(tool)) check.fail(`kimi.enabledTools: "${tool}" is not in mcp.tools`);
+      }
+    }
+    if (kimi.systemPromptNotes !== undefined) check.stringArray(kimi.systemPromptNotes, "kimi.systemPromptNotes");
+  }
+
+  /**
    * The vendor-neutral listing copy, from `listing` or, for configs that
    * predate it, from the same fields under `grok`.
    *
@@ -265,6 +326,17 @@ export class PluginConfig {
       throw new ConfigError(`plugin "${this.data.name}"`, ['a "gemini" block is required to build the Gemini target']);
     }
     return this.data.gemini;
+  }
+
+  /**
+   * @returns {Readonly<KimiConfigData>}
+   * @throws {ConfigError} when the config has no `kimi` block.
+   */
+  kimi() {
+    if (!this.data.kimi) {
+      throw new ConfigError(`plugin "${this.data.name}"`, ['a "kimi" block is required to build the Kimi target']);
+    }
+    return this.data.kimi;
   }
 
   /** @returns {string[]} Asset paths (relative to `openai/`) referenced by the listing. */

@@ -1,0 +1,47 @@
+{
+  "displayName": "Octagon 预测市场",
+  "shortDescription": "事件概率研究",
+  "longDescription": "Octagon 预测市场把 Kalshi 和 Polymarket 预测市场变成研究数据集：当前概率、推动概率变化的因素、市场隐含概率与 Octagon 研究校准模型估计之间的差异，以及每个市场价格的可信程度。\n\n面向把事件概率当作数据来用的分析师、经济学家、策略师、政策与风险团队以及记者。\n\n给它一个市场，它会返回一份有据可查的分析简报：\n- 事件如何结算，何时结算\n- 当前的市场隐含概率及其时间戳\n- 概率随时间的变化，以及每次变动背后的驱动因素和催化剂\n- 类似事件过去如何结算\n- 市场相对模型是否存在错误定价，差距有多大，置信度如何\n- 市场的 Octagon 信任评分（0 到 100）及其理由\n\n询问一个主题，它会找出两个平台上相关的市场，并展示模型与价格的分歧。\n\n覆盖 Kalshi 和 Polymarket 上超过 13 万个活跃事件，涵盖体育、加密、气候、选举、金融、商品、政治、文化、经济以及科技。\n\nOctagon 是研究工具。它不下注、不路由或推荐任何投注或交易，不持有资金，不连接任何交易账户，也不提供个性化财务建议。需要 Octagon 账户，首次连接时登录即可。",
+  "developerName": "Octagon AI",
+  "tryPrompts": [
+    "为这个市场写一份事件简报：https://kalshi.com/markets/kxfeddecision/fed-meeting/kxfeddecision-26dec",
+    "这个市场的概率在过去一个月是如何变化的，是什么推动了变化？",
+    "这个市场相对 Octagon 的模型估计是否存在错误定价？"
+  ],
+  "mcpOverrides": {
+    "octagon-predictions": {
+      "displayName": "Octagon 预测市场服务",
+      "description": "关于 Kalshi 和 Polymarket 市场的有据可查的研究：概率、驱动因素、概率历史、信任评分和错误定价分析。使用 Octagon 账户登录。"
+    }
+  },
+  "skillOverrides": {
+    "event-brief": {
+      "displayName": "事件简报",
+      "description": "针对单个预测市场事件撰写有据可查的分析简报，涵盖结算条件、当前市场隐含概率、基准率、驱动因素和催化剂日程。用于用户询问预测市场的看法、分享 Kalshi 或 Polymarket 链接，或要求研究某事件的概率。"
+    },
+    "mispricing-analysis": {
+      "displayName": "错误定价分析",
+      "description": "比较预测市场的隐含概率与 Octagon 研究校准模型估计，报告错误定价的大小、方向、各估计的置信度，以及类似差距历史上如何收敛。用于用户询问市场是否被错误定价、市场与模型如何比较，或概率是否合理。"
+    },
+    "prediction-markets-analysis": {
+      "displayName": "预测市场研究",
+      "description": "使用 Octagon 预测市场智能体研究 Kalshi 或 Polymarket 上的预测市场，返回包含市场隐含概率与模型概率、价格驱动因素、催化剂、结算历史和信任评分的有据可查的报告。用于用户分享市场链接、提到有市场的事件，或询问某事的概率及原因。"
+    },
+    "prediction-markets-get-started": {
+      "displayName": "开始使用预测市场",
+      "description": "介绍 Octagon 预测市场、说明预测市场数据是什么以及如何连接，并推荐首批请求。用于用户初次使用、询问它能对预测市场、Kalshi 或 Polymarket 做什么，或需要连接账户时。"
+    },
+    "prediction-markets-status": {
+      "displayName": "连接状态",
+      "description": "检查 Octagon 是否已连接，并汇总当前可用的预测市场工具。用于用户询问插件是否正常、现在能做什么，或请求为何失败时。"
+    },
+    "probability-history": {
+      "displayName": "概率历史",
+      "description": "分析预测市场概率随时间的变化，包括最大变动、状态切换以及解释每次变动的事件。用于用户询问概率如何变化、什么推动了市场，或需要 Kalshi 或 Polymarket 市场的概率历史时。"
+    },
+    "trust-score": {
+      "displayName": "信任评分",
+      "description": "解释并获取 Kalshi 或 Polymarket 市场的 Octagon 信任评分：一个 0 到 100 的分值，衡量市场是否可能被操纵、价格是否可信，并给出背后的支柱和筛查项。用于用户询问市场有多可信、是否可能被操纵、信任评分或信任指数是什么意思，或某市场为何得到该分数时。"
+    }
+  }
+}

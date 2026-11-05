@@ -35,6 +35,9 @@ jobs:
       - name: Check that the committed Gemini CLI extensions match the build
         run: npm run check:gemini
 
+      - name: Check that the committed Kimi plugins and catalog match the build
+        run: npm run check:kimi
+
       - name: Validate Claude plugin manifest when Claude CLI is available
         run: |
           if command -v claude >/dev/null 2>&1; then
