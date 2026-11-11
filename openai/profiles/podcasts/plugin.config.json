@@ -1,0 +1,130 @@
+{
+  "name": "octagon-podcasts",
+  "version": "1.0.0",
+  "description": "Cited research on what investors, strategists and operators said on finance and business podcasts: who thinks what and why, where views agree and disagree, with the episode behind every claim.",
+  "author": {
+    "name": "Octagon AI",
+    "email": "contact@octagonai.co",
+    "url": "https://www.octagonai.co/"
+  },
+  "homepage": "https://www.octagonai.co/",
+  "license": "MIT",
+  "keywords": [
+    "podcasts",
+    "market-commentary",
+    "investor-sentiment",
+    "strategists",
+    "transcripts",
+    "research"
+  ],
+  "mcp": {
+    "serverName": "octagon-podcasts",
+    "url": "https://mcp.octagonai.co/podcasts/mcp",
+    "tools": [
+      "octagon-podcasts-agent"
+    ]
+  },
+  "listing": {
+    "oauthUrl": "https://login.octagonai.co",
+    "readmeIntro": "Built for analysts, portfolio managers, strategists and journalists who want to know what the people they follow are actually saying. Ask about a topic, a company, a show or a person and get a synthesis of the views, where they agree and disagree, and a citation to the episode and chapter behind every claim.",
+    "scopeNote": "Research on spoken commentary only. Views are the speakers' opinions, attributed and cited, never adopted as recommendations. The plugin does not trade, hold funds, or give personalized investment advice. Earnings calls are not podcasts: company filings and calls belong to the Octagon AI plugin.",
+    "smokeTests": [
+      {
+        "prompt": "What are podcast guests saying about Nvidia since September 2026?",
+        "expect": "a synthesis of views, each attributed to a show and date and cited to the episode, with agreement and disagreement called out and no recommendation"
+      },
+      {
+        "prompt": "Summarize the last 3 All-In episodes.",
+        "expect": "three episodes, newest first, each with its date, main topics and a citation"
+      },
+      {
+        "prompt": "Which companies were discussed most on podcasts in September 2026?",
+        "expect": "a ranked list with mention counts when available and the episodes behind the top names"
+      }
+    ]
+  },
+  "interface": {
+    "displayName": "Octagon Podcasts",
+    "shortDescription": "What market voices are saying",
+    "longDescription": "Octagon Podcasts tells you what the people who move markets are saying, with the episode behind every claim.\n\nIt searches transcripts from 74 finance and business podcasts, including Bloomberg Surveillance, Odd Lots, All-In, Invest Like the Best and Excess Returns, and synthesizes what investors, strategists, operators and guests said: who thinks what, why, where they agree and where they disagree.\n\nUse it to:\n- Get the range of views on a topic or company, and who disagrees\n- Track what a specific host or guest has said over time\n- Recap the latest episodes of a show\n- See which companies and themes podcasts discussed most in a period\n\nEvery claim is attributed to a show and date and linked to the episode, deep-linked to the chapter when available. Views are the speakers' opinions, reported as such.\n\nOctagon Podcasts is a research tool. It does not trade, hold funds, or give personalized investment advice. An Octagon account is required; you sign in the first time you connect.",
+    "developerName": "Octagon AI",
+    "category": "Finance",
+    "capabilities": [
+      "Synthesize podcast views on a topic or company",
+      "Track what a host or guest has said over time",
+      "Recap the latest episodes of a show",
+      "Rank the most-discussed companies and themes",
+      "Cite the episode and chapter behind every claim"
+    ],
+    "websiteURL": "https://www.octagonai.co/reports/chatgpt-integration/?utm_source=openai_directory&utm_medium=plugin&utm_campaign=podcasts",
+    "supportURL": "https://www.octagonai.co/contact/",
+    "privacyPolicyURL": "https://www.octagonai.co/privacy/",
+    "termsOfServiceURL": "https://www.octagonai.co/terms-of-service/",
+    "defaultPrompt": [
+      "What are podcast guests saying about Nvidia since September 2026?",
+      "Summarize the last 3 All-In episodes.",
+      "Which companies did podcasts discuss most in September 2026?"
+    ],
+    "brandColor": "#7A68AE",
+    "brandColorDark": "#9E8DC3",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png"
+  },
+  "onboardingSkill": "podcasts-get-started",
+  "review": {
+    "test_cases": {
+      "positive": [
+        {
+          "description": "Topic and company views with attribution and disagreement",
+          "prompt": "What are podcast guests saying about Nvidia since September 2026?",
+          "tools_triggered": "octagon-podcasts-agent",
+          "expected_behavior": "Groups views by position, attributes each to a show and date with a [n] citation, names agreement and disagreement, ends with the Sources list of episode links, and makes no recommendation."
+        },
+        {
+          "description": "Two-sided question with named disagreement",
+          "prompt": "Will the Fed keep hiking? Who disagrees? Use episodes since July 2026.",
+          "tools_triggered": "octagon-podcasts-agent",
+          "expected_behavior": "Presents both sides with the reasoning each gave, names a speaker only when the episode identifies them and otherwise says 'a guest on <show>', and cites every view."
+        },
+        {
+          "description": "Show recap, newest first",
+          "prompt": "Summarize the last 3 All-In episodes.",
+          "tools_triggered": "octagon-podcasts-agent",
+          "expected_behavior": "Returns three episodes newest first, each with date, main topics and a citation, and nothing drawn from outside those episodes."
+        },
+        {
+          "description": "Voice tracking over time",
+          "prompt": "What has David Rosenberg said as a guest since September 2026?",
+          "tools_triggered": "octagon-podcasts-agent",
+          "expected_behavior": "Lists his appearances chronologically, attributes statements to him only where the episode identifies him, cites each, and notes whether his view held or changed."
+        },
+        {
+          "description": "Most-discussed ranking",
+          "prompt": "Which companies were discussed most on podcasts in September 2026?",
+          "tools_triggered": "octagon-podcasts-agent",
+          "expected_behavior": "Returns a ranked list with mention counts and the episodes behind the top names; when counts are unavailable, states that the ranking reflects the newest episodes."
+        }
+      ],
+      "negative": [
+        {
+          "description": "Advice and sizing are out of scope. The assistant declines the recommendation and the amount, explains that the plugin reports speakers' views rather than giving advice, offers the synthesis of views instead, and suggests a licensed advisor for personal decisions.",
+          "prompt": "Based on what the podcasts say, should I buy Nvidia? How much?"
+        },
+        {
+          "description": "Earnings calls are not podcasts. The podcasts tool is not invoked; the assistant explains the distinction and points to the Octagon AI plugin for earnings-call transcripts.",
+          "prompt": "What did NVIDIA's CFO say on the Q3 earnings call?"
+        },
+        {
+          "description": "Unrelated request. Octagon tools are not invoked; the assistant answers without the plugin or says the request is outside its scope.",
+          "prompt": "What's a good recipe for banana bread?"
+        }
+      ]
+    }
+  },
+  "publication": {
+    "countries": [
+      "US"
+    ],
+    "release_notes": "Initial release: cited research on what investors, strategists and operators said on 74 finance and business podcasts, including topic and company views, host and guest tracking, show recaps, and most-discussed rankings."
+  }
+}

@@ -40,6 +40,8 @@
     "validate:openai": "node tools/openai-plugin/cli.mjs validate --online",
     "build:openai:predictions": "node tools/openai-plugin/cli.mjs build --profile prediction-markets",
     "validate:openai:predictions": "node tools/openai-plugin/cli.mjs validate --online --profile prediction-markets",
+    "build:openai:podcasts": "node tools/openai-plugin/cli.mjs build --profile podcasts",
+    "validate:openai:podcasts": "node tools/openai-plugin/cli.mjs validate --online --profile podcasts",
     "test:openai": "node --test tests/openai-plugin/*.test.mjs",
     "validate:plugin": "claude plugin validate .",
     "validate:all": "npm test && npm run validate:plugin",
