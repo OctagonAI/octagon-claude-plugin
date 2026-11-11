@@ -111,7 +111,7 @@
           "prompt": "Is now a good time to buy ETH? How much of my savings should I put in?"
         },
         {
-          "description": "Equities belong to Octagon Market Data. The crypto tool is not invoked for a stock quote; the assistant points to that plugin.",
+          "description": "Equities belong to Octagon Stock Data. The crypto tool is not invoked for a stock quote; the assistant points to that plugin.",
           "prompt": "What is Coinbase's stock price today?"
         },
         {

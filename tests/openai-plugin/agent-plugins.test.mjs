@@ -12,7 +12,7 @@ import { REPO_ROOT, skillText, tempDir, writeTree } from "./helpers.mjs";
 const SINGLE_AGENT = [
   ["sec-filings", "octagon-sec-filings", "octagon-sec-agent", "/sec/mcp", 18],
   ["earnings-calls", "octagon-earnings-calls", "octagon-transcripts-agent", "/earnings-calls/mcp", 16],
-  ["market-data", "octagon-market-data", "octagon-stock-data-agent", "/market-data/mcp", 20],
+  ["stock-data", "octagon-stock-data", "octagon-stock-data-agent", "/market-data/mcp", 20],
   ["crypto", "octagon-crypto", "octagon-crypto-agent", "/crypto/mcp", 6],
   ["financials", "octagon-financials", "octagon-financials-agent", "/financials/mcp", 19],
   ["holdings", "octagon-holdings", "octagon-holdings-agent", "/holdings/mcp", 7],

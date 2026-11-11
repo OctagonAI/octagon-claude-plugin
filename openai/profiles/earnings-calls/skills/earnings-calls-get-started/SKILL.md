@@ -57,6 +57,6 @@ State these plainly when relevant, and name the plugin that does:
 
 - The filing text behind the numbers (10-K, 10-Q, 8-K): the **Octagon SEC Filings** plugin.
 - What investors and strategists said on podcasts: the **Octagon Podcasts** plugin.
-- Stock prices and valuation: the **Octagon Market Data** plugin.
+- Stock prices and valuation: the **Octagon Stock Data** plugin.
 - Everything at once, across sources: the **Octagon AI** plugin.
 - It does not give investment advice. When asked what to buy, sell or hold, offer the data and suggest a licensed advisor.

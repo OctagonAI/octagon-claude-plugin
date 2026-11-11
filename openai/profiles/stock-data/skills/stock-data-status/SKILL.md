@@ -1,9 +1,9 @@
 ---
-name: market-data-status
+name: stock-data-status
 description: Check whether Octagon is connected and whether the stock market data tool is answering. Use when the user asks whether the plugin is working, what it can do right now, or why requests are failing.
 ---
 
-# Octagon Market Data Status
+# Octagon Stock Data Status
 
 Report the current state of the Octagon connection and the tool it provides.
 
@@ -32,12 +32,12 @@ When connected, say the tool is working and what it can do right now:
 - Analyst price targets and grades
 - Commodity and forex quotes
 
-Then suggest a first request, or follow the `market-data-get-started` skill.
+Then suggest a first request, or follow the `stock-data-get-started` skill.
 
 ## Step 3: When something is wrong
 
 - **Not connected** or **sign-in expired**: ask the user to connect or reconnect Octagon from the plugin's connection settings, then check again.
 - **Account limit or service issue**: report the exact message in plain language and stop retrying.
-- **The tool answers but not for this request**: the request may belong to another Octagon plugin; check the "What the plugin does not do" list in `market-data-get-started`.
+- **The tool answers but not for this request**: the request may belong to another Octagon plugin; check the "What the plugin does not do" list in `stock-data-get-started`.
 
 Never ask the user to paste passwords, access tokens, or other credentials into the conversation.

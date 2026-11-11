@@ -55,7 +55,7 @@ Offer two or three of these, adapted to what the user mentioned:
 
 State these plainly when relevant, and name the plugin that does:
 
-- Stock quotes and equity market data: the **Octagon Market Data** plugin.
+- Stock quotes and equity market data: the **Octagon Stock Data** plugin.
 - Crypto headlines across the market, not one asset: the **Octagon Market News** plugin.
 - Everything at once, across sources: the **Octagon AI** plugin.
 - It does not give investment advice. When asked what to buy, sell or hold, offer the data and suggest a licensed advisor.

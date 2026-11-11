@@ -56,6 +56,6 @@ Offer two or three of these, adapted to what the user mentioned:
 State these plainly when relevant, and name the plugin that does:
 
 - Analysis of a filing, a call or the financials behind a headline: the **Octagon AI** plugin.
-- Stock prices and performance: the **Octagon Market Data** plugin.
+- Stock prices and performance: the **Octagon Stock Data** plugin.
 - What investors said on podcasts: the **Octagon Podcasts** plugin.
 - It does not give investment advice. When asked what to buy, sell or hold, offer the data and suggest a licensed advisor.

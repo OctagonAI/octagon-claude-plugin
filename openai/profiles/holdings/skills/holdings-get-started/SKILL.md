@@ -57,6 +57,6 @@ Offer two or three of these, adapted to what the user mentioned:
 State these plainly when relevant, and name the plugin that does:
 
 - The company's own filings (10-K, 10-Q, 8-K): the **Octagon SEC Filings** plugin.
-- Stock prices and market cap: the **Octagon Market Data** plugin.
+- Stock prices and market cap: the **Octagon Stock Data** plugin.
 - Everything at once, across sources: the **Octagon AI** plugin.
 - It does not give investment advice. When asked what to buy, sell or hold, offer the data and suggest a licensed advisor.
