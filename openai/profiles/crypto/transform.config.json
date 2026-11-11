@@ -1,0 +1,35 @@
+{
+  "extends": "../../transform.config.json",
+  "includeSkills": [],
+  "excludeSkills": [],
+  "substitutions": [
+    {
+      "find": "Use the `octagon-agent` tool",
+      "replace": "Use the `octagon-crypto-agent` tool"
+    },
+    {
+      "find": "\"toolName\": \"octagon-agent\"",
+      "replace": "\"toolName\": \"octagon-crypto-agent\""
+    },
+    {
+      "pattern": "^\\*\\*Data Sources?:?\\*\\*:?.*$",
+      "flags": "m",
+      "replace": "**Data Source:** octagon-crypto-agent"
+    },
+    {
+      "pattern": "\\boctagon-(?!crypto-agent\\b)[a-z][a-z0-9-]*-agent\\b",
+      "replace": "octagon-crypto-agent"
+    },
+    {
+      "pattern": "\\boctagon-agent\\b",
+      "replace": "octagon-crypto-agent"
+    }
+  ],
+  "forbiddenPatterns": [
+    {
+      "pattern": "\\b(?:you should|we recommend|investors should)\\b",
+      "flags": "i",
+      "reason": "the plugin reports data; it holds no view"
+    }
+  ]
+}

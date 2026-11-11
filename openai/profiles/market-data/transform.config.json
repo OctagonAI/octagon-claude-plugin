@@ -1,0 +1,54 @@
+{
+  "extends": "../../transform.config.json",
+  "includeSkills": [
+    "stock-quote",
+    "stock-performance",
+    "stock-price-change",
+    "stock-historical-index",
+    "stock-grades",
+    "sector-pe-ratios",
+    "sector-performance-snapshot",
+    "industry-pe-ratios",
+    "industry-performance-snapshot",
+    "price-target-consensus",
+    "price-target-summary",
+    "company-market-cap",
+    "batch-market-cap",
+    "historical-market-cap",
+    "commodities-list",
+    "commodities-quote",
+    "forex-list",
+    "market-analyst-master"
+  ],
+  "excludeSkills": [],
+  "substitutions": [
+    {
+      "find": "Use the `octagon-agent` tool",
+      "replace": "Use the `octagon-stock-data-agent` tool"
+    },
+    {
+      "find": "\"toolName\": \"octagon-agent\"",
+      "replace": "\"toolName\": \"octagon-stock-data-agent\""
+    },
+    {
+      "pattern": "^\\*\\*Data Sources?:?\\*\\*:?.*$",
+      "flags": "m",
+      "replace": "**Data Source:** octagon-stock-data-agent"
+    },
+    {
+      "pattern": "\\boctagon-(?!stock-data-agent\\b)[a-z][a-z0-9-]*-agent\\b",
+      "replace": "octagon-stock-data-agent"
+    },
+    {
+      "pattern": "\\boctagon-agent\\b",
+      "replace": "octagon-stock-data-agent"
+    }
+  ],
+  "forbiddenPatterns": [
+    {
+      "pattern": "\\b(?:you should|we recommend|investors should)\\b",
+      "flags": "i",
+      "reason": "the plugin reports data; it holds no view"
+    }
+  ]
+}

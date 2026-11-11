@@ -1,0 +1,130 @@
+{
+  "name": "octagon-market-news",
+  "version": "1.0.0",
+  "description": "Financial news with publication dates and sources: general market headlines, company press releases, stock news by ticker, cryptocurrency news by pair, and forex news, filtered by date range.",
+  "author": {
+    "name": "Octagon AI",
+    "email": "contact@octagonai.co",
+    "url": "https://www.octagonai.co/"
+  },
+  "homepage": "https://www.octagonai.co/",
+  "license": "MIT",
+  "keywords": [
+    "market-news",
+    "press-releases",
+    "stock-news",
+    "crypto-news",
+    "forex-news",
+    "headlines"
+  ],
+  "mcp": {
+    "serverName": "octagon-news",
+    "url": "https://mcp.octagonai.co/news/mcp",
+    "tools": [
+      "octagon-news-agent"
+    ]
+  },
+  "listing": {
+    "oauthUrl": "https://login.octagonai.co",
+    "readmeIntro": "Built for anyone who needs to know what was published about a company, an asset or the market, when, and by whom. Ask for a ticker, a pair or a date range and get the articles with their dates and sources.",
+    "scopeNote": "Research only, from financial news. The plugin does not trade, hold funds, or give personalized investment advice. Questions outside its data belong to the other Octagon plugins, which the skills name.",
+    "smokeTests": [
+      {
+        "prompt": "What is the latest news on TSLA?",
+        "expect": "Lists recent articles with date, source and a one-line summary each; no interpretation beyond the articles."
+      },
+      {
+        "prompt": "List Apple's press releases from the last 30 days.",
+        "expect": "Lists each release with date and title, from the company's own releases, in the requested window."
+      },
+      {
+        "prompt": "What crypto news mentioned Bitcoin this week?",
+        "expect": "Lists articles for BTC in the window with dates and sources."
+      }
+    ]
+  },
+  "interface": {
+    "displayName": "Octagon Market News",
+    "shortDescription": "Headlines, press releases",
+    "longDescription": "Octagon Market News gives you financial news with the source behind every figure, directly in the conversation.\n\nUse it to:\n- Ticker news\n- Company press releases\n- Crypto and forex news\n- News in a date range\n\nEvery answer states the publication and date it came from, so you can verify it.\n\nOctagon Market News is a research tool. It does not place trades, move money, or provide personalized investment advice. An Octagon account is required; you sign in the first time you connect.",
+    "developerName": "Octagon AI",
+    "category": "Finance",
+    "capabilities": [
+      "Ticker news",
+      "Company press releases",
+      "Crypto and forex news",
+      "News in a date range",
+      "General market headlines"
+    ],
+    "websiteURL": "https://www.octagonai.co/reports/chatgpt-integration/?utm_source=openai_directory&utm_medium=plugin&utm_campaign=market-news",
+    "supportURL": "https://www.octagonai.co/contact/",
+    "privacyPolicyURL": "https://www.octagonai.co/privacy/",
+    "termsOfServiceURL": "https://www.octagonai.co/terms-of-service/",
+    "defaultPrompt": [
+      "What's the latest news on TSLA?",
+      "List Apple's press releases from the last 30 days.",
+      "What moved BTC in the news this week?"
+    ],
+    "brandColor": "#7A68AE",
+    "brandColorDark": "#9E8DC3",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png"
+  },
+  "onboardingSkill": "market-news-get-started",
+  "review": {
+    "test_cases": {
+      "positive": [
+        {
+          "description": "Ticker news",
+          "prompt": "What is the latest news on TSLA?",
+          "tools_triggered": "octagon-news-agent",
+          "expected_behavior": "Lists recent articles with date, source and a one-line summary each; no interpretation beyond the articles."
+        },
+        {
+          "description": "Press releases in a window",
+          "prompt": "List Apple's press releases from the last 30 days.",
+          "tools_triggered": "octagon-news-agent",
+          "expected_behavior": "Lists each release with date and title, from the company's own releases, in the requested window."
+        },
+        {
+          "description": "Crypto news by pair",
+          "prompt": "What crypto news mentioned Bitcoin this week?",
+          "tools_triggered": "octagon-news-agent",
+          "expected_behavior": "Lists articles for BTC in the window with dates and sources."
+        },
+        {
+          "description": "Forex news",
+          "prompt": "Summarize forex news on EURUSD from the past week.",
+          "tools_triggered": "octagon-news-agent",
+          "expected_behavior": "Lists the articles and summarizes the themes they reported, each attributed to its source and date."
+        },
+        {
+          "description": "General headlines",
+          "prompt": "What were the main market headlines today?",
+          "tools_triggered": "octagon-news-agent",
+          "expected_behavior": "Lists today's headlines with sources and times."
+        }
+      ],
+      "negative": [
+        {
+          "description": "Advice is out of scope. The assistant reports the articles, gives no recommendation, and suggests a licensed advisor.",
+          "prompt": "The news on TSLA looks bad. Should I sell?"
+        },
+        {
+          "description": "Filing text belongs to Octagon SEC Filings. The news tool is not invoked; the assistant points to that plugin.",
+          "prompt": "What did Tesla's 10-K say about warranty reserves?"
+        },
+        {
+          "description": "Unrelated request. Octagon tools are not invoked.",
+          "prompt": "Write a birthday message for my sister."
+        }
+      ]
+    }
+  },
+  "publication": {
+    "countries": [
+      "US"
+    ],
+    "release_notes": "Initial release: financial news with publication dates and sources: general market headlines, company press releases, stock news by ticker, cryptocurrency news by pair, and forex news, filtered by date range."
+  }
+}

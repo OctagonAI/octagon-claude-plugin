@@ -1,0 +1,130 @@
+{
+  "name": "octagon-earnings-calls",
+  "version": "1.0.0",
+  "description": "Cited research from earnings call transcripts for 8,000+ public companies since 2018: guidance, management commentary by topic, analyst questions and answers, capital allocation, product pipeline, call sentiment, and how the narrative changed across quarters.",
+  "author": {
+    "name": "Octagon AI",
+    "email": "contact@octagonai.co",
+    "url": "https://www.octagonai.co/"
+  },
+  "homepage": "https://www.octagonai.co/",
+  "license": "MIT",
+  "keywords": [
+    "earnings-calls",
+    "transcripts",
+    "guidance",
+    "analyst-qa",
+    "management-commentary",
+    "sentiment"
+  ],
+  "mcp": {
+    "serverName": "octagon-earnings",
+    "url": "https://mcp.octagonai.co/earnings-calls/mcp",
+    "tools": [
+      "octagon-transcripts-agent"
+    ]
+  },
+  "listing": {
+    "oauthUrl": "https://login.octagonai.co",
+    "readmeIntro": "Built for analysts, portfolio managers and journalists who need what management actually said on the call and what analysts pushed back on, with the call behind every claim. Ask about one call or a run of calls and get guidance, commentary, Q&A and tone, cited to the quarter.",
+    "scopeNote": "Research only, from earnings call transcripts. The plugin does not trade, hold funds, or give personalized investment advice. Questions outside its data belong to the other Octagon plugins, which the skills name.",
+    "smokeTests": [
+      {
+        "prompt": "What guidance did NVIDIA give on its latest earnings call?",
+        "expect": "Lists each guidance item with its figure or range and the executive who gave it, cited to the call and quarter; separates guidance from commentary."
+      },
+      {
+        "prompt": "What did analysts push back on during Netflix's latest earnings call?",
+        "expect": "Groups analyst questions by theme with the asking analyst when the transcript names one, summarizes management's answers, cited to the call."
+      },
+      {
+        "prompt": "How has Amazon's commentary on AWS changed over the last four earnings calls?",
+        "expect": "Walks the four calls in order, quotes or paraphrases the AWS commentary from each, and states what changed, each cited to its quarter."
+      }
+    ]
+  },
+  "interface": {
+    "displayName": "Octagon Earnings Calls",
+    "shortDescription": "Guidance, Q&A, sentiment",
+    "longDescription": "Octagon Earnings Calls gives you earnings call transcripts with the source behind every figure, directly in the conversation.\n\nUse it to:\n- Extract guidance and revenue outlook\n- Summarize analyst Q&A\n- Track management commentary by topic\n- Gauge call sentiment and tone\n\nEvery answer states the call it came from, so you can verify it.\n\nOctagon Earnings Calls is a research tool. It does not place trades, move money, or provide personalized investment advice. An Octagon account is required; you sign in the first time you connect.",
+    "developerName": "Octagon AI",
+    "category": "Finance",
+    "capabilities": [
+      "Extract guidance and revenue outlook",
+      "Summarize analyst Q&A",
+      "Track management commentary by topic",
+      "Gauge call sentiment and tone",
+      "Review product pipeline and capital allocation"
+    ],
+    "websiteURL": "https://www.octagonai.co/reports/chatgpt-integration/?utm_source=openai_directory&utm_medium=plugin&utm_campaign=earnings-calls",
+    "supportURL": "https://www.octagonai.co/contact/",
+    "privacyPolicyURL": "https://www.octagonai.co/privacy/",
+    "termsOfServiceURL": "https://www.octagonai.co/terms-of-service/",
+    "defaultPrompt": [
+      "What guidance did NVIDIA give on its latest earnings call?",
+      "What did analysts push back on during Netflix's latest call?",
+      "How has Amazon's commentary on AWS changed over the last four calls?"
+    ],
+    "brandColor": "#7A68AE",
+    "brandColorDark": "#9E8DC3",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png"
+  },
+  "onboardingSkill": "earnings-calls-get-started",
+  "review": {
+    "test_cases": {
+      "positive": [
+        {
+          "description": "Guidance extraction",
+          "prompt": "What guidance did NVIDIA give on its latest earnings call?",
+          "tools_triggered": "octagon-transcripts-agent",
+          "expected_behavior": "Lists each guidance item with its figure or range and the executive who gave it, cited to the call and quarter; separates guidance from commentary."
+        },
+        {
+          "description": "Analyst Q&A themes",
+          "prompt": "What did analysts push back on during Netflix's latest earnings call?",
+          "tools_triggered": "octagon-transcripts-agent",
+          "expected_behavior": "Groups analyst questions by theme with the asking analyst when the transcript names one, summarizes management's answers, cited to the call."
+        },
+        {
+          "description": "Narrative change across calls",
+          "prompt": "How has Amazon's commentary on AWS changed over the last four earnings calls?",
+          "tools_triggered": "octagon-transcripts-agent",
+          "expected_behavior": "Walks the four calls in order, quotes or paraphrases the AWS commentary from each, and states what changed, each cited to its quarter."
+        },
+        {
+          "description": "Capital allocation commentary",
+          "prompt": "Summarize management's remarks on capital allocation from Apple's latest call.",
+          "tools_triggered": "octagon-transcripts-agent",
+          "expected_behavior": "Covers buybacks, dividends, capex and M&A remarks with figures where given, cited to the call."
+        },
+        {
+          "description": "Call sentiment on a topic",
+          "prompt": "What was the tone of Tesla's last earnings call on margins?",
+          "tools_triggered": "octagon-transcripts-agent",
+          "expected_behavior": "Characterizes the tone with the specific statements that support it, attributed to speakers and cited; no outside inference."
+        }
+      ],
+      "negative": [
+        {
+          "description": "Advice is out of scope. The assistant offers the call analysis, gives no recommendation or timing, and suggests a licensed advisor for personal decisions.",
+          "prompt": "Given what management said on the call, should I buy Tesla before the next quarter?"
+        },
+        {
+          "description": "Podcasts are not earnings calls. The transcripts tool is not invoked; the assistant points to the Octagon Podcasts plugin.",
+          "prompt": "What are podcast guests saying about Tesla's margins?"
+        },
+        {
+          "description": "Unrelated request. Octagon tools are not invoked.",
+          "prompt": "Write me a haiku about autumn."
+        }
+      ]
+    }
+  },
+  "publication": {
+    "countries": [
+      "US"
+    ],
+    "release_notes": "Initial release: cited research from earnings call transcripts for 8,000+ public companies since 2018: guidance, management commentary by topic, analyst questions and answers, capital allocation, product pipeline, call sentiment, and how the narrative changed across quarters."
+  }
+}

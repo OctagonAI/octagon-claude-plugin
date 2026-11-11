@@ -1,0 +1,132 @@
+{
+  "name": "octagon-market-data",
+  "version": "1.0.0",
+  "description": "Stock market data with sources and timestamps: quotes, price history and performance across periods, index history, sector and industry performance and P/E ratios, market capitalizations, analyst price targets and grades, ETF and fund quotes, and commodity and forex quotes.",
+  "author": {
+    "name": "Octagon AI",
+    "email": "contact@octagonai.co",
+    "url": "https://www.octagonai.co/"
+  },
+  "homepage": "https://www.octagonai.co/",
+  "license": "MIT",
+  "keywords": [
+    "stock-quotes",
+    "price-history",
+    "market-cap",
+    "sector-performance",
+    "pe-ratios",
+    "price-targets",
+    "commodities",
+    "forex"
+  ],
+  "mcp": {
+    "serverName": "octagon-market-data",
+    "url": "https://mcp.octagonai.co/market-data/mcp",
+    "tools": [
+      "octagon-stock-data-agent"
+    ]
+  },
+  "listing": {
+    "oauthUrl": "https://login.octagonai.co",
+    "readmeIntro": "Built for anyone who needs a market number with its timestamp and source: analysts checking a quote, a performance window, a sector multiple or a consensus target without opening a terminal. Ask for the figure and the period and get it with its date and provider.",
+    "scopeNote": "Research only, from stock market data. The plugin does not trade, hold funds, or give personalized investment advice. Questions outside its data belong to the other Octagon plugins, which the skills name.",
+    "smokeTests": [
+      {
+        "prompt": "How has NVDA performed over 1, 3 and 12 months?",
+        "expect": "Returns the percentage change for each period with the as-of date and source; no commentary on whether to act."
+      },
+      {
+        "prompt": "Compare the P/E of the semiconductor industry with the technology sector.",
+        "expect": "Returns both P/E figures with the exchange, date and calculation method the tool reports, and the difference."
+      },
+      {
+        "prompt": "What is the consensus analyst price target for AAPL?",
+        "expect": "Returns high, low, median and consensus targets with the number of analysts and the as-of date; frames it as analyst expectations, not a recommendation."
+      }
+    ]
+  },
+  "interface": {
+    "displayName": "Octagon Market Data",
+    "shortDescription": "Prices, performance, valuation",
+    "longDescription": "Octagon Market Data gives you stock market data with the source behind every figure, directly in the conversation.\n\nUse it to:\n- Get quotes and price history\n- Compare performance across periods\n- Sector and industry P/E and performance\n- Analyst price targets and grades\n\nEvery answer states the data provider and timestamp it came from, so you can verify it.\n\nOctagon Market Data is a research tool. It does not place trades, move money, or provide personalized investment advice. An Octagon account is required; you sign in the first time you connect.",
+    "developerName": "Octagon AI",
+    "category": "Finance",
+    "capabilities": [
+      "Get quotes and price history",
+      "Compare performance across periods",
+      "Sector and industry P/E and performance",
+      "Analyst price targets and grades",
+      "Commodity and forex quotes"
+    ],
+    "websiteURL": "https://www.octagonai.co/reports/chatgpt-integration/?utm_source=openai_directory&utm_medium=plugin&utm_campaign=market-data",
+    "supportURL": "https://www.octagonai.co/contact/",
+    "privacyPolicyURL": "https://www.octagonai.co/privacy/",
+    "termsOfServiceURL": "https://www.octagonai.co/terms-of-service/",
+    "defaultPrompt": [
+      "How has NVDA performed over 1, 3 and 12 months?",
+      "Compare the P/E of the semiconductor industry with the technology sector.",
+      "What is the consensus analyst price target for AAPL?"
+    ],
+    "brandColor": "#7A68AE",
+    "brandColorDark": "#9E8DC3",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png"
+  },
+  "onboardingSkill": "market-data-get-started",
+  "review": {
+    "test_cases": {
+      "positive": [
+        {
+          "description": "Performance across periods",
+          "prompt": "How has NVDA performed over 1, 3 and 12 months?",
+          "tools_triggered": "octagon-stock-data-agent",
+          "expected_behavior": "Returns the percentage change for each period with the as-of date and source; no commentary on whether to act."
+        },
+        {
+          "description": "Industry versus sector multiple",
+          "prompt": "Compare the P/E of the semiconductor industry with the technology sector.",
+          "tools_triggered": "octagon-stock-data-agent",
+          "expected_behavior": "Returns both P/E figures with the exchange, date and calculation method the tool reports, and the difference."
+        },
+        {
+          "description": "Price target consensus",
+          "prompt": "What is the consensus analyst price target for AAPL?",
+          "tools_triggered": "octagon-stock-data-agent",
+          "expected_behavior": "Returns high, low, median and consensus targets with the number of analysts and the as-of date; frames it as analyst expectations, not a recommendation."
+        },
+        {
+          "description": "Batch market cap",
+          "prompt": "Retrieve market capitalization for AAPL, MSFT and GOOG.",
+          "tools_triggered": "octagon-stock-data-agent",
+          "expected_behavior": "Returns each company's market cap with the date, in a table, from one call."
+        },
+        {
+          "description": "Index history",
+          "prompt": "Get the daily closing prices for the S&P 500 over the last 90 days.",
+          "tools_triggered": "octagon-stock-data-agent",
+          "expected_behavior": "Returns the series with dates, the period change, and the source; offers a table or summary as the user prefers."
+        }
+      ],
+      "negative": [
+        {
+          "description": "Advice is out of scope. The assistant reports the performance figures, gives no recommendation or timing, and suggests a licensed advisor.",
+          "prompt": "NVDA is up 40% in three months. Should I take profits now?"
+        },
+        {
+          "description": "Statement figures belong to Octagon Financials. The market-data tool is not invoked for an income-statement question; the assistant points to that plugin.",
+          "prompt": "What was Apple's revenue last quarter?"
+        },
+        {
+          "description": "Unrelated request. Octagon tools are not invoked.",
+          "prompt": "Translate 'good morning' into Japanese."
+        }
+      ]
+    }
+  },
+  "publication": {
+    "countries": [
+      "US"
+    ],
+    "release_notes": "Initial release: stock market data with sources and timestamps: quotes, price history and performance across periods, index history, sector and industry performance and P/E ratios, market capitalizations, analyst price targets and grades, ETF and fund quotes, and commodity and forex quotes."
+  }
+}
