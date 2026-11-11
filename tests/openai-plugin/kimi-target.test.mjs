@@ -291,8 +291,8 @@ test("the Kimi build of both profiles is clean, reproducible, archived with a ch
   const before = Object.fromEntries(await Promise.all(protectedDirs.map(async dir => [dir, await hashTree(path.join(REPO_ROOT, dir))])));
 
   for (const [profile, expected] of [
-    [undefined, { name: "octagon-ai", version: "1.1.2", count: 68, server: "octagon", url: "https://mcp.octagonai.co/public-markets/mcp", enabledTools: ["octagon-agent", "octagon-deep-research-agent"], sessionStart: "get-started" }],
-    ["prediction-markets", { name: "octagon-prediction-markets", version: "1.0.2", count: 7, server: "octagon-predictions", url: "https://mcp.octagonai.co/prediction-markets/mcp", enabledTools: undefined, sessionStart: "prediction-markets-get-started" }],
+    [undefined, { name: "octagon-ai", count: 68, server: "octagon", url: "https://mcp.octagonai.co/public-markets/mcp", enabledTools: ["octagon-agent", "octagon-deep-research-agent"], sessionStart: "get-started" }],
+    ["prediction-markets", { name: "octagon-prediction-markets", count: 7, server: "octagon-predictions", url: "https://mcp.octagonai.co/prediction-markets/mcp", enabledTools: undefined, sessionStart: "prediction-markets-get-started" }],
   ]) {
     const outA = await tempDir(t);
     const first = await (await createBuild({ repoRoot: REPO_ROOT, outRoot: outA, target: "kimi", profile })).pipeline.run();
@@ -304,10 +304,11 @@ test("the Kimi build of both profiles is clean, reproducible, archived with a ch
     assert.equal(await hashTree(first.stagingDir), await hashTree(second.stagingDir), "builds are reproducible");
     assert.equal(first.archive?.sha256, second.archive?.sha256, "archives are reproducible");
     assert.ok(first.stagingDir.endsWith(path.join("kimi", expected.name)));
-    assert.equal(path.basename(first.archive.path), `${expected.name}-kimi-${expected.version}.zip`);
+    const version = first.plugin.version;
+    assert.equal(path.basename(first.archive.path), `${expected.name}-kimi-${version}.zip`);
     assert.ok(first.archive.entries.length < 450, `${first.archive.entries.length} entries stay under the warning threshold`);
     const sidecar = await readFile(`${first.archive.path}.sha256`, "utf8");
-    assert.equal(sidecar, `${first.archive.sha256}  ${expected.name}-kimi-${expected.version}.zip\n`);
+    assert.equal(sidecar, `${first.archive.sha256}  ${expected.name}-kimi-${version}.zip\n`);
 
     const manifest = JSON.parse(await readFile(path.join(first.stagingDir, KIMI_MANIFEST_PATH), "utf8"));
     assert.equal(manifest.name, expected.name);
