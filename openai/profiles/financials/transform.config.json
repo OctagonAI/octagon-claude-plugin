@@ -1,0 +1,53 @@
+{
+  "extends": "../../transform.config.json",
+  "includeSkills": [
+    "income-statement",
+    "income-statement-growth",
+    "balance-sheet",
+    "balance-sheet-growth",
+    "cash-flow-statement",
+    "cash-flow-growth",
+    "financial-growth",
+    "financial-metrics-analysis",
+    "financial-health-scores",
+    "revenue-product-segmentation",
+    "revenue-geographic-segmentation",
+    "analyst-estimates",
+    "esg-ratings",
+    "esg-benchmark-comparison",
+    "historical-financial-ratings",
+    "ratings-snapshot",
+    "financial-analyst-master"
+  ],
+  "excludeSkills": [],
+  "substitutions": [
+    {
+      "find": "Use the `octagon-agent` tool",
+      "replace": "Use the `octagon-financials-agent` tool"
+    },
+    {
+      "find": "\"toolName\": \"octagon-agent\"",
+      "replace": "\"toolName\": \"octagon-financials-agent\""
+    },
+    {
+      "pattern": "^\\*\\*Data Sources?:?\\*\\*:?.*$",
+      "flags": "m",
+      "replace": "**Data Source:** octagon-financials-agent"
+    },
+    {
+      "pattern": "\\boctagon-(?!financials-agent\\b)[a-z][a-z0-9-]*-agent\\b",
+      "replace": "octagon-financials-agent"
+    },
+    {
+      "pattern": "\\boctagon-agent\\b",
+      "replace": "octagon-financials-agent"
+    }
+  ],
+  "forbiddenPatterns": [
+    {
+      "pattern": "\\b(?:you should|we recommend|investors should)\\b",
+      "flags": "i",
+      "reason": "the plugin reports data; it holds no view"
+    }
+  ]
+}

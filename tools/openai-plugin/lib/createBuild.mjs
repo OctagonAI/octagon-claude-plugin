@@ -15,6 +15,7 @@ import { GrokTarget } from "./target/GrokTarget.mjs";
 import { KimiTarget } from "./target/KimiTarget.mjs";
 import { OpenAITarget } from "./target/OpenAITarget.mjs";
 import { createRules, createSharedRules } from "./validation/rules/index.mjs";
+import { SkillToolRule } from "./validation/rules/SkillToolRule.mjs";
 import { Validator } from "./validation/Validator.mjs";
 
 /** @typedef {import("./target/Target.mjs").Target} Target */
@@ -47,6 +48,16 @@ function protectedRepoPaths(paths) {
   return readdirSync(paths.repoRoot)
     .filter(name => name !== outName)
     .map(name => path.join(paths.repoRoot, name));
+}
+
+/**
+ * @param {string} sourceSkills
+ * @returns {string[]} Names of every skill directory in the source catalog.
+ */
+function catalogSkillNames(sourceSkills) {
+  return readdirSync(sourceSkills, { withFileTypes: true })
+    .filter(entry => entry.isDirectory() && !entry.name.startsWith("."))
+    .map(entry => entry.name);
 }
 
 /**
@@ -99,8 +110,10 @@ export async function createBuild({ repoRoot, outRoot, online = false, profile: 
     config,
   };
   // The OpenAI target keeps the original rule order; other targets get the
-  // shared rules followed by their own.
-  const rules = target.id === "openai" ? createRules(ruleOptions) : [...createSharedRules(ruleOptions), ...target.rules(ruleOptions)];
+  // shared rules followed by their own. A plugin built on one specialist tool
+  // also gets the allocation fence, whatever the target.
+  const fence = config.data.mcp.tools.length === 1 ? [new SkillToolRule({ tool: config.data.mcp.tools[0], catalogSkills: catalogSkillNames(paths.sourceSkills) })] : [];
+  const rules = [...(target.id === "openai" ? createRules(ruleOptions) : [...createSharedRules(ruleOptions), ...target.rules(ruleOptions)]), ...fence];
   const validator = new Validator(rules);
 
   const writer = new PackageWriter({

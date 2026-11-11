@@ -1,0 +1,50 @@
+{
+  "extends": "../../transform.config.json",
+  "includeSkills": [
+    "earnings-analyst-master",
+    "earnings-analyst-questions",
+    "earnings-call-analysis",
+    "earnings-call-insights",
+    "earnings-capital-allocation",
+    "earnings-competitive-review",
+    "earnings-conf-call-sentiment",
+    "earnings-cost-mgmt",
+    "earnings-financial-guidance",
+    "earnings-market-expansion",
+    "earnings-mgmt-comments",
+    "earnings-product-pipeline",
+    "earnings-qa-analysis",
+    "earnings-revenue-guidance"
+  ],
+  "excludeSkills": [],
+  "substitutions": [
+    {
+      "find": "Use the `octagon-agent` tool",
+      "replace": "Use the `octagon-transcripts-agent` tool"
+    },
+    {
+      "find": "\"toolName\": \"octagon-agent\"",
+      "replace": "\"toolName\": \"octagon-transcripts-agent\""
+    },
+    {
+      "pattern": "^\\*\\*Data Sources?:?\\*\\*:?.*$",
+      "flags": "m",
+      "replace": "**Data Source:** octagon-transcripts-agent"
+    },
+    {
+      "pattern": "\\boctagon-(?!transcripts-agent\\b)[a-z][a-z0-9-]*-agent\\b",
+      "replace": "octagon-transcripts-agent"
+    },
+    {
+      "pattern": "\\boctagon-agent\\b",
+      "replace": "octagon-transcripts-agent"
+    }
+  ],
+  "forbiddenPatterns": [
+    {
+      "pattern": "\\b(?:you should|we recommend|investors should)\\b",
+      "flags": "i",
+      "reason": "the plugin reports data; it holds no view"
+    }
+  ]
+}

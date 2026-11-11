@@ -1,0 +1,130 @@
+{
+  "name": "octagon-holdings",
+  "version": "1.0.0",
+  "description": "Institutional ownership from Form 13F filings: the latest filings, a holder's portfolio and performance, industry breakdowns, positions in a stock by quarter, ETF composition, and insider trades, each with the filing period stated.",
+  "author": {
+    "name": "Octagon AI",
+    "email": "contact@octagonai.co",
+    "url": "https://www.octagonai.co/"
+  },
+  "homepage": "https://www.octagonai.co/",
+  "license": "MIT",
+  "keywords": [
+    "13f",
+    "institutional-ownership",
+    "holdings",
+    "hedge-funds",
+    "insider-trades",
+    "etf-holdings"
+  ],
+  "mcp": {
+    "serverName": "octagon-holdings",
+    "url": "https://mcp.octagonai.co/holdings/mcp",
+    "tools": [
+      "octagon-holdings-agent"
+    ]
+  },
+  "listing": {
+    "oauthUrl": "https://login.octagonai.co",
+    "readmeIntro": "Built for analysts and journalists tracking where institutional money went: who added, who exited, what a fund holds and how it performed, by quarter, with the filing period on every figure.",
+    "scopeNote": "Research only, from institutional ownership data. The plugin does not trade, hold funds, or give personalized investment advice. Questions outside its data belong to the other Octagon plugins, which the skills name.",
+    "smokeTests": [
+      {
+        "prompt": "Which institutions added to NVDA positions last quarter?",
+        "expect": "Lists holders that increased positions with share and value changes, names the 13F quarter, and notes the filing lag."
+      },
+      {
+        "prompt": "Summarize Berkshire Hathaway's latest 13F portfolio by industry.",
+        "expect": "Returns the industry weights for the latest reported quarter with the filing date and the holder's CIK."
+      },
+      {
+        "prompt": "Show the institutional positions summary for AAPL in Q2 2026.",
+        "expect": "Returns holder count, total shares and value, and quarter-over-quarter change for that quarter, cited."
+      }
+    ]
+  },
+  "interface": {
+    "displayName": "Octagon 13F Holdings",
+    "shortDescription": "Who owns what, by quarter",
+    "longDescription": "Octagon 13F Holdings gives you institutional ownership data with the source behind every figure, directly in the conversation.\n\nUse it to:\n- Latest 13F filings\n- A fund's portfolio and performance\n- Institutional positions in a stock\n- Industry exposure by holder\n\nEvery answer states the 13F period it came from, so you can verify it.\n\nOctagon 13F Holdings is a research tool. It does not place trades, move money, or provide personalized investment advice. An Octagon account is required; you sign in the first time you connect.",
+    "developerName": "Octagon AI",
+    "category": "Finance",
+    "capabilities": [
+      "Latest 13F filings",
+      "A fund's portfolio and performance",
+      "Institutional positions in a stock",
+      "Industry exposure by holder",
+      "Insider trades"
+    ],
+    "websiteURL": "https://www.octagonai.co/reports/chatgpt-integration/?utm_source=openai_directory&utm_medium=plugin&utm_campaign=holdings",
+    "supportURL": "https://www.octagonai.co/contact/",
+    "privacyPolicyURL": "https://www.octagonai.co/privacy/",
+    "termsOfServiceURL": "https://www.octagonai.co/terms-of-service/",
+    "defaultPrompt": [
+      "Which institutions added to NVDA last quarter?",
+      "Show Berkshire's latest 13F portfolio by industry.",
+      "What insider trades were filed for AAPL this month?"
+    ],
+    "brandColor": "#7A68AE",
+    "brandColorDark": "#9E8DC3",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png"
+  },
+  "onboardingSkill": "holdings-get-started",
+  "review": {
+    "test_cases": {
+      "positive": [
+        {
+          "description": "Positions in a stock by quarter",
+          "prompt": "Which institutions added to NVDA positions last quarter?",
+          "tools_triggered": "octagon-holdings-agent",
+          "expected_behavior": "Lists holders that increased positions with share and value changes, names the 13F quarter, and notes the filing lag."
+        },
+        {
+          "description": "Holder industry breakdown",
+          "prompt": "Summarize Berkshire Hathaway's latest 13F portfolio by industry.",
+          "tools_triggered": "octagon-holdings-agent",
+          "expected_behavior": "Returns the industry weights for the latest reported quarter with the filing date and the holder's CIK."
+        },
+        {
+          "description": "Symbol positions summary",
+          "prompt": "Show the institutional positions summary for AAPL in Q2 2026.",
+          "tools_triggered": "octagon-holdings-agent",
+          "expected_behavior": "Returns holder count, total shares and value, and quarter-over-quarter change for that quarter, cited."
+        },
+        {
+          "description": "Exited positions",
+          "prompt": "Which funds exited META last quarter?",
+          "tools_triggered": "octagon-holdings-agent",
+          "expected_behavior": "Lists holders with closed positions and the prior position size, with the quarter stated."
+        },
+        {
+          "description": "Insider trades",
+          "prompt": "What insider trades were filed for TSLA this month?",
+          "tools_triggered": "octagon-holdings-agent",
+          "expected_behavior": "Lists each trade with date, insider, role, transaction type and size, from the filings."
+        }
+      ],
+      "negative": [
+        {
+          "description": "Advice is out of scope. The assistant reports the ownership changes, gives no recommendation, and suggests a licensed advisor.",
+          "prompt": "Big funds are buying NVDA. Should I follow them?"
+        },
+        {
+          "description": "Earnings calls belong to Octagon Earnings Calls. The holdings tool is not invoked; the assistant points to that plugin.",
+          "prompt": "What did NVIDIA say about data-center demand on its earnings call?"
+        },
+        {
+          "description": "Unrelated request. Octagon tools are not invoked.",
+          "prompt": "Convert 5 miles to kilometers."
+        }
+      ]
+    }
+  },
+  "publication": {
+    "countries": [
+      "US"
+    ],
+    "release_notes": "Initial release: institutional ownership from Form 13F filings: the latest filings, a holder's portfolio and performance, industry breakdowns, positions in a stock by quarter, ETF composition, and insider trades, each with the filing period stated."
+  }
+}

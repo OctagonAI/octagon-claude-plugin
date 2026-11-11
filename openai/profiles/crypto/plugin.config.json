@@ -1,0 +1,130 @@
+{
+  "name": "octagon-crypto",
+  "version": "1.0.0",
+  "description": "Cryptocurrency market data with sources and timestamps: the list of traded assets, real-time and batch quotes, historical end-of-day prices for any pair, volumes and market capitalization, and crypto news.",
+  "author": {
+    "name": "Octagon AI",
+    "email": "contact@octagonai.co",
+    "url": "https://www.octagonai.co/"
+  },
+  "homepage": "https://www.octagonai.co/",
+  "license": "MIT",
+  "keywords": [
+    "crypto",
+    "bitcoin",
+    "ethereum",
+    "crypto-quotes",
+    "price-history",
+    "digital-assets"
+  ],
+  "mcp": {
+    "serverName": "octagon-crypto",
+    "url": "https://mcp.octagonai.co/crypto/mcp",
+    "tools": [
+      "octagon-crypto-agent"
+    ]
+  },
+  "listing": {
+    "oauthUrl": "https://login.octagonai.co",
+    "readmeIntro": "Built for analysts, researchers and writers who need a crypto price, a history or a comparison with its timestamp and source. Ask for a pair and a period and get the data, not a take.",
+    "scopeNote": "Research only, from cryptocurrency market data. The plugin does not trade, hold funds, or give personalized investment advice. Questions outside its data belong to the other Octagon plugins, which the skills name.",
+    "smokeTests": [
+      {
+        "prompt": "What is the real-time quote for ETHUSD?",
+        "expect": "Returns the price, change, volume and timestamp with the source."
+      },
+      {
+        "prompt": "Retrieve historical end-of-day prices for BTCUSD for 2025.",
+        "expect": "Returns the daily series for the range with start, end, high and low, and the period change; offers a table."
+      },
+      {
+        "prompt": "Compare BTC, ETH and SOL performance over the last 90 days.",
+        "expect": "Returns each asset's percentage change over the window with as-of dates, in a table, with no ranking advice."
+      }
+    ]
+  },
+  "interface": {
+    "displayName": "Octagon Crypto",
+    "shortDescription": "Crypto quotes and history",
+    "longDescription": "Octagon Crypto gives you cryptocurrency market data with the source behind every figure, directly in the conversation.\n\nUse it to:\n- Real-time crypto quotes\n- Historical price charts by date range\n- Compare assets over a period\n- Batch quotes for a watchlist\n\nEvery answer states the data provider and timestamp it came from, so you can verify it.\n\nOctagon Crypto is a research tool. It does not place trades, move money, or provide personalized investment advice. An Octagon account is required; you sign in the first time you connect.",
+    "developerName": "Octagon AI",
+    "category": "Finance",
+    "capabilities": [
+      "Real-time crypto quotes",
+      "Historical price charts by date range",
+      "Compare assets over a period",
+      "Batch quotes for a watchlist",
+      "Crypto news by asset"
+    ],
+    "websiteURL": "https://www.octagonai.co/reports/chatgpt-integration/?utm_source=openai_directory&utm_medium=plugin&utm_campaign=crypto",
+    "supportURL": "https://www.octagonai.co/contact/",
+    "privacyPolicyURL": "https://www.octagonai.co/privacy/",
+    "termsOfServiceURL": "https://www.octagonai.co/terms-of-service/",
+    "defaultPrompt": [
+      "What is ETH trading at right now?",
+      "Chart BTC's daily closes for 2025.",
+      "Compare BTC, ETH and SOL over the last 90 days."
+    ],
+    "brandColor": "#7A68AE",
+    "brandColorDark": "#9E8DC3",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png"
+  },
+  "onboardingSkill": "crypto-get-started",
+  "review": {
+    "test_cases": {
+      "positive": [
+        {
+          "description": "Real-time quote",
+          "prompt": "What is the real-time quote for ETHUSD?",
+          "tools_triggered": "octagon-crypto-agent",
+          "expected_behavior": "Returns the price, change, volume and timestamp with the source."
+        },
+        {
+          "description": "Price history",
+          "prompt": "Retrieve historical end-of-day prices for BTCUSD for 2025.",
+          "tools_triggered": "octagon-crypto-agent",
+          "expected_behavior": "Returns the daily series for the range with start, end, high and low, and the period change; offers a table."
+        },
+        {
+          "description": "Multi-asset comparison",
+          "prompt": "Compare BTC, ETH and SOL performance over the last 90 days.",
+          "tools_triggered": "octagon-crypto-agent",
+          "expected_behavior": "Returns each asset's percentage change over the window with as-of dates, in a table, with no ranking advice."
+        },
+        {
+          "description": "Batch quotes",
+          "prompt": "Get quotes for BTCUSD, ETHUSD and SOLUSD.",
+          "tools_triggered": "octagon-crypto-agent",
+          "expected_behavior": "Returns all three quotes from one call with timestamps."
+        },
+        {
+          "description": "Crypto news",
+          "prompt": "What is the latest news on Bitcoin?",
+          "tools_triggered": "octagon-crypto-agent",
+          "expected_behavior": "Lists recent articles with date, source and a one-line summary each."
+        }
+      ],
+      "negative": [
+        {
+          "description": "Advice and sizing are out of scope. The assistant reports the data, gives no recommendation or allocation, and suggests a licensed advisor.",
+          "prompt": "Is now a good time to buy ETH? How much of my savings should I put in?"
+        },
+        {
+          "description": "Equities belong to Octagon Market Data. The crypto tool is not invoked for a stock quote; the assistant points to that plugin.",
+          "prompt": "What is Coinbase's stock price today?"
+        },
+        {
+          "description": "Unrelated request. Octagon tools are not invoked.",
+          "prompt": "Plan a three-day trip to Lisbon."
+        }
+      ]
+    }
+  },
+  "publication": {
+    "countries": [
+      "US"
+    ],
+    "release_notes": "Initial release: cryptocurrency market data with sources and timestamps: the list of traded assets, real-time and batch quotes, historical end-of-day prices for any pair, volumes and market capitalization, and crypto news."
+  }
+}

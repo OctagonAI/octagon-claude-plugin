@@ -1,0 +1,132 @@
+{
+  "name": "octagon-financials",
+  "version": "1.0.0",
+  "description": "Financial statements and derived metrics for public companies, with periods and sources: income statements, balance sheets, cash flows, year-over-year growth, ratios, financial health scores, ratings, analyst estimates, revenue by segment and geography, and ESG ratings.",
+  "author": {
+    "name": "Octagon AI",
+    "email": "contact@octagonai.co",
+    "url": "https://www.octagonai.co/"
+  },
+  "homepage": "https://www.octagonai.co/",
+  "license": "MIT",
+  "keywords": [
+    "financial-statements",
+    "income-statement",
+    "balance-sheet",
+    "cash-flow",
+    "ratios",
+    "growth",
+    "analyst-estimates",
+    "esg"
+  ],
+  "mcp": {
+    "serverName": "octagon-financials",
+    "url": "https://mcp.octagonai.co/financials/mcp",
+    "tools": [
+      "octagon-financials-agent"
+    ]
+  },
+  "listing": {
+    "oauthUrl": "https://login.octagonai.co",
+    "readmeIntro": "Built for analysts, students and operators who need the numbers from the statements, by period, with the source attached. Ask for a statement, a growth series, a ratio, a health score or a segment breakdown and get it as reported.",
+    "scopeNote": "Research only, from financial statements. The plugin does not trade, hold funds, or give personalized investment advice. Questions outside its data belong to the other Octagon plugins, which the skills name.",
+    "smokeTests": [
+      {
+        "prompt": "Retrieve Apple's income statements for the last five fiscal years.",
+        "expect": "Returns revenue, operating income, net income and EPS per fiscal year with the reporting currency and source, in a table."
+      },
+      {
+        "prompt": "What are Microsoft's Altman Z-Score and Piotroski Score?",
+        "expect": "Returns both scores with the period, explains the zones as defined in the skill, and does not translate them into a recommendation."
+      },
+      {
+        "prompt": "Break down Tesla's revenue by geographic segment.",
+        "expect": "Returns the segments with amounts and shares for the latest period and the prior one, cited."
+      }
+    ]
+  },
+  "interface": {
+    "displayName": "Octagon Financials",
+    "shortDescription": "Statements, growth, ratios",
+    "longDescription": "Octagon Financials gives you financial statements with the source behind every figure, directly in the conversation.\n\nUse it to:\n- Income statement, balance sheet, cash flow\n- Year-over-year growth series\n- Ratios and financial health scores\n- Analyst estimates\n\nEvery answer states the statement and period it came from, so you can verify it.\n\nOctagon Financials is a research tool. It does not place trades, move money, or provide personalized investment advice. An Octagon account is required; you sign in the first time you connect.",
+    "developerName": "Octagon AI",
+    "category": "Finance",
+    "capabilities": [
+      "Income statement, balance sheet, cash flow",
+      "Year-over-year growth series",
+      "Ratios and financial health scores",
+      "Analyst estimates",
+      "Revenue by segment and geography"
+    ],
+    "websiteURL": "https://www.octagonai.co/reports/chatgpt-integration/?utm_source=openai_directory&utm_medium=plugin&utm_campaign=financials",
+    "supportURL": "https://www.octagonai.co/contact/",
+    "privacyPolicyURL": "https://www.octagonai.co/privacy/",
+    "termsOfServiceURL": "https://www.octagonai.co/terms-of-service/",
+    "defaultPrompt": [
+      "Pull Apple's last five fiscal-year income statements.",
+      "What are Microsoft's Altman Z and Piotroski scores?",
+      "Break down Tesla's revenue by geography."
+    ],
+    "brandColor": "#7A68AE",
+    "brandColorDark": "#9E8DC3",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png"
+  },
+  "onboardingSkill": "financials-get-started",
+  "review": {
+    "test_cases": {
+      "positive": [
+        {
+          "description": "Income statements by period",
+          "prompt": "Retrieve Apple's income statements for the last five fiscal years.",
+          "tools_triggered": "octagon-financials-agent",
+          "expected_behavior": "Returns revenue, operating income, net income and EPS per fiscal year with the reporting currency and source, in a table."
+        },
+        {
+          "description": "Financial health scores",
+          "prompt": "What are Microsoft's Altman Z-Score and Piotroski Score?",
+          "tools_triggered": "octagon-financials-agent",
+          "expected_behavior": "Returns both scores with the period, explains the zones as defined in the skill, and does not translate them into a recommendation."
+        },
+        {
+          "description": "Revenue by geography",
+          "prompt": "Break down Tesla's revenue by geographic segment.",
+          "tools_triggered": "octagon-financials-agent",
+          "expected_behavior": "Returns the segments with amounts and shares for the latest period and the prior one, cited."
+        },
+        {
+          "description": "Peer comparison",
+          "prompt": "Compare the operating margins of AMD and NVDA over the last three years.",
+          "tools_triggered": "octagon-financials-agent",
+          "expected_behavior": "Returns both companies' margins per year side by side with periods and sources, and states the difference without judging it."
+        },
+        {
+          "description": "Analyst estimates",
+          "prompt": "What are the analyst revenue and EPS estimates for AMZN next fiscal year?",
+          "tools_triggered": "octagon-financials-agent",
+          "expected_behavior": "Returns consensus, low and high estimates with the number of analysts and the as-of date, framed as expectations."
+        }
+      ],
+      "negative": [
+        {
+          "description": "Advice is out of scope. The assistant offers the margin series, gives no recommendation, and suggests a licensed advisor.",
+          "prompt": "Apple's margins are expanding. Should I buy the stock?"
+        },
+        {
+          "description": "Prices belong to Octagon Market Data. The financials tool is not invoked for a quote; the assistant points to that plugin.",
+          "prompt": "What is AAPL's stock price right now?"
+        },
+        {
+          "description": "Unrelated request. Octagon tools are not invoked.",
+          "prompt": "Recommend a good science-fiction novel."
+        }
+      ]
+    }
+  },
+  "publication": {
+    "countries": [
+      "US"
+    ],
+    "release_notes": "Initial release: financial statements and derived metrics for public companies, with periods and sources: income statements, balance sheets, cash flows, year-over-year growth, ratios, financial health scores, ratings, analyst estimates, revenue by segment and geography, and ESG ratings."
+  }
+}

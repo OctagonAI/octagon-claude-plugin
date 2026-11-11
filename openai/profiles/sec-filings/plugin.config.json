@@ -1,0 +1,132 @@
+{
+  "name": "octagon-sec-filings",
+  "version": "1.0.0",
+  "description": "Cited research from SEC filings: 10-K, 10-Q, 20-F, S-1, 8-K, proxy statements and amendments for 8,000+ public companies since 2018, including risk factors, MD&A, footnotes, segments, covenants and governance.",
+  "author": {
+    "name": "Octagon AI",
+    "email": "contact@octagonai.co",
+    "url": "https://www.octagonai.co/"
+  },
+  "homepage": "https://www.octagonai.co/",
+  "license": "MIT",
+  "keywords": [
+    "sec-filings",
+    "10-k",
+    "10-q",
+    "8-k",
+    "s-1",
+    "proxy-statements",
+    "risk-factors",
+    "mda"
+  ],
+  "mcp": {
+    "serverName": "octagon-sec",
+    "url": "https://mcp.octagonai.co/sec/mcp",
+    "tools": [
+      "octagon-sec-agent"
+    ]
+  },
+  "listing": {
+    "oauthUrl": "https://login.octagonai.co",
+    "readmeIntro": "Built for analysts, portfolio managers, credit teams and journalists who need what a filing actually says, with the filing behind every claim. Ask about a 10-K, a 10-Q, an 8-K, an S-1 or a proxy and get the extracted passages, figures and comparisons, cited to the filing and period.",
+    "scopeNote": "Research only, from SEC filings. The plugin does not trade, hold funds, or give personalized investment advice. Questions outside its data belong to the other Octagon plugins, which the skills name.",
+    "smokeTests": [
+      {
+        "prompt": "Summarize the risk factors in Apple's latest 10-K.",
+        "expect": "Summarizes Item 1A by category, names the filing and period, and quotes or paraphrases the filing with citations; no outside sources."
+      },
+      {
+        "prompt": "What changed in Microsoft's MD&A between its last two 10-K filings?",
+        "expect": "Compares the two filings' MD&A sections side by side, cites both filings by fiscal year, and separates new language from restated language."
+      },
+      {
+        "prompt": "Extract the debt covenants disclosed in Tesla's latest 10-Q.",
+        "expect": "Lists each covenant with its threshold and the facility it applies to, cited to the 10-Q section, and notes compliance language as disclosed."
+      }
+    ]
+  },
+  "interface": {
+    "displayName": "Octagon SEC Filings",
+    "shortDescription": "Read the filing, cited",
+    "longDescription": "Octagon SEC Filings gives you SEC filings with the source behind every figure, directly in the conversation.\n\nUse it to:\n- Analyze 10-K, 10-Q and 8-K filings\n- Extract risk factors and MD&A\n- Review footnotes, covenants and segments\n- Compare filings year over year\n\nEvery answer states the filing it came from, so you can verify it.\n\nOctagon SEC Filings is a research tool. It does not place trades, move money, or provide personalized investment advice. An Octagon account is required; you sign in the first time you connect.",
+    "developerName": "Octagon AI",
+    "category": "Finance",
+    "capabilities": [
+      "Analyze 10-K, 10-Q and 8-K filings",
+      "Extract risk factors and MD&A",
+      "Review footnotes, covenants and segments",
+      "Compare filings year over year",
+      "Analyze S-1 and proxy statements"
+    ],
+    "websiteURL": "https://www.octagonai.co/reports/chatgpt-integration/?utm_source=openai_directory&utm_medium=plugin&utm_campaign=sec-filings",
+    "supportURL": "https://www.octagonai.co/contact/",
+    "privacyPolicyURL": "https://www.octagonai.co/privacy/",
+    "termsOfServiceURL": "https://www.octagonai.co/terms-of-service/",
+    "defaultPrompt": [
+      "Summarize the risk factors in Apple's latest 10-K.",
+      "What changed in Microsoft's MD&A between its last two 10-K filings?",
+      "Extract the debt covenants from Tesla's latest 10-Q."
+    ],
+    "brandColor": "#7A68AE",
+    "brandColorDark": "#9E8DC3",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png"
+  },
+  "onboardingSkill": "sec-filings-get-started",
+  "review": {
+    "test_cases": {
+      "positive": [
+        {
+          "description": "Risk factors from the latest 10-K",
+          "prompt": "Summarize the risk factors in Apple's latest 10-K.",
+          "tools_triggered": "octagon-sec-agent",
+          "expected_behavior": "Summarizes Item 1A by category, names the filing and period, and quotes or paraphrases the filing with citations; no outside sources."
+        },
+        {
+          "description": "Year-over-year MD&A comparison",
+          "prompt": "What changed in Microsoft's MD&A between its last two 10-K filings?",
+          "tools_triggered": "octagon-sec-agent",
+          "expected_behavior": "Compares the two filings' MD&A sections side by side, cites both filings by fiscal year, and separates new language from restated language."
+        },
+        {
+          "description": "Debt covenant extraction",
+          "prompt": "Extract the debt covenants disclosed in Tesla's latest 10-Q.",
+          "tools_triggered": "octagon-sec-agent",
+          "expected_behavior": "Lists each covenant with its threshold and the facility it applies to, cited to the 10-Q section, and notes compliance language as disclosed."
+        },
+        {
+          "description": "Material events from 8-K filings",
+          "prompt": "What did NVIDIA disclose in its 8-K filings this quarter?",
+          "tools_triggered": "octagon-sec-agent",
+          "expected_behavior": "Lists each 8-K by date and item number with a one-line summary of the event, cited to the filing."
+        },
+        {
+          "description": "S-1 analysis",
+          "prompt": "Summarize the business description and use of proceeds in the latest S-1 filed by Databricks.",
+          "tools_triggered": "octagon-sec-agent",
+          "expected_behavior": "Summarizes the business model, use of proceeds and key risk factors from the S-1, cited to the registration statement; if no S-1 exists, says so."
+        }
+      ],
+      "negative": [
+        {
+          "description": "Advice is out of scope. The assistant offers the filing analysis, gives no recommendation, and suggests a licensed advisor for personal decisions.",
+          "prompt": "Based on Apple's 10-K, should I buy the stock?"
+        },
+        {
+          "description": "Earnings calls are not filings. The SEC tool is not invoked; the assistant points to the Octagon Earnings Calls plugin.",
+          "prompt": "What did Apple's CEO say about margins on the last earnings call?"
+        },
+        {
+          "description": "Unrelated request. Octagon tools are not invoked; the assistant answers without the plugin or says it is outside scope.",
+          "prompt": "How do I change a flat tire?"
+        }
+      ]
+    }
+  },
+  "publication": {
+    "countries": [
+      "US"
+    ],
+    "release_notes": "Initial release: cited research from SEC filings: 10-K, 10-Q, 20-F, S-1, 8-K, proxy statements and amendments for 8,000+ public companies since 2018, including risk factors, MD&A, footnotes, segments, covenants and governance."
+  }
+}

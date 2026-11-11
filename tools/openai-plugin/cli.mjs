@@ -35,7 +35,8 @@ Commands:
 
 Options:
   --target NAME   Package format: openai (default), grok, gemini, or kimi
-  --profile NAME  Build the plugin under openai/profiles/NAME (default: openai/ itself)
+  --profile NAME  Build the plugin under openai/profiles/NAME (default: openai/ itself);
+                  "all" runs the command for the default profile and every named one
   --online        Also check that every public URL answers 2xx
   --out DIR       Output directory (default: out/)
   --check         With sync: exit non-zero if the committed directory differs from the build
@@ -67,6 +68,25 @@ async function main() {
       help: { type: "boolean", default: false },
     },
   });
+  if (values.profile === "all" && !values.help) {
+    // Every profile in turn; the worst exit code wins, and output stays in profile order.
+    let worst = 0;
+    for (const profile of Profile.all(layout(REPO_ROOT).openaiRoot)) {
+      const name = profile.name === "default" ? undefined : profile.name;
+      console.log(`\n== profile: ${profile.name}`);
+      worst = Math.max(worst, await runOne({ ...values, profile: name }, positionals));
+    }
+    return worst;
+  }
+  return runOne(values, positionals);
+}
+
+/**
+ * @param {{ online: boolean, check: boolean, out?: string, profile?: string, target: string, help: boolean }} values
+ * @param {string[]} positionals
+ * @returns {Promise<number>}
+ */
+async function runOne(values, positionals) {
   const [command] = positionals;
   if (values.help || !COMMANDS.includes(command ?? "")) {
     console.log(USAGE);

@@ -1,0 +1,52 @@
+{
+  "extends": "../../transform.config.json",
+  "includeSkills": [
+    "sec-10k-analysis",
+    "sec-10q-analysis",
+    "sec-8k-analysis",
+    "sec-amendments-review",
+    "sec-analyst-master",
+    "sec-annual-comparison",
+    "sec-business-desc-analysis",
+    "sec-cash-flow-review",
+    "sec-corp-governance",
+    "sec-debt-covenant",
+    "sec-footnotes-analysis",
+    "sec-mda-analysis",
+    "sec-proxy-analysis",
+    "sec-risk-factors",
+    "sec-s1-analysis",
+    "sec-segment-reporting"
+  ],
+  "excludeSkills": [],
+  "substitutions": [
+    {
+      "find": "Use the `octagon-agent` tool",
+      "replace": "Use the `octagon-sec-agent` tool"
+    },
+    {
+      "find": "\"toolName\": \"octagon-agent\"",
+      "replace": "\"toolName\": \"octagon-sec-agent\""
+    },
+    {
+      "pattern": "^\\*\\*Data Sources?:?\\*\\*:?.*$",
+      "flags": "m",
+      "replace": "**Data Source:** octagon-sec-agent"
+    },
+    {
+      "pattern": "\\boctagon-(?!sec-agent\\b)[a-z][a-z0-9-]*-agent\\b",
+      "replace": "octagon-sec-agent"
+    },
+    {
+      "pattern": "\\boctagon-agent\\b",
+      "replace": "octagon-sec-agent"
+    }
+  ],
+  "forbiddenPatterns": [
+    {
+      "pattern": "\\b(?:you should|we recommend|investors should)\\b",
+      "flags": "i",
+      "reason": "the plugin reports data; it holds no view"
+    }
+  ]
+}
