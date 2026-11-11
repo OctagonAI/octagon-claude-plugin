@@ -135,6 +135,34 @@ test("ForbiddenTextRule honours path prefixes", async t => {
   assert.equal((await global.check({ pkg })).length, 2);
 });
 
+test("the podcasts profile builds a valid, reproducible, podcasts-only package", async t => {
+  const first = await (await createBuild({ repoRoot: REPO_ROOT, outRoot: await tempDir(t), profile: "podcasts" })).pipeline.run();
+  const second = await (await createBuild({ repoRoot: REPO_ROOT, outRoot: await tempDir(t), profile: "podcasts" })).pipeline.run();
+
+  assert.equal(first.ok, true, first.validation.errors.map(String).join("\n"));
+  assert.equal(first.plugin.name, "octagon-podcasts");
+  assert.equal(first.archive?.sha256, second.archive?.sha256, "builds are reproducible");
+
+  // No upstream skill ships: the profile is overlay skills only, one per query type the agent supports.
+  assert.deepEqual(first.catalog.added, ["most-discussed", "podcast-catch-up", "podcasts-get-started", "podcasts-status", "show-recap", "topic-views", "voice-tracker"]);
+  assert.deepEqual(first.catalog.overridden, []);
+  assert.deepEqual(first.catalog.transformed, []);
+
+  const manifest = JSON.parse(await readFile(path.join(first.stagingDir, ".codex-plugin/plugin.json"), "utf8"));
+  assert.equal(manifest.extensions["com.openai"].onboardingSkill, "./skills/podcasts-get-started/SKILL.md");
+  assert.equal(manifest.extensions["com.openai"].review.test_cases.positive.length, 5);
+  const mcp = JSON.parse(await readFile(path.join(first.stagingDir, ".mcp.json"), "utf8"));
+  assert.deepEqual(Object.keys(mcp.mcpServers), ["octagon-podcasts"]);
+  assert.match(mcp.mcpServers["octagon-podcasts"].url, /\/podcasts\/mcp$/);
+
+  // Every skill names the one tool, keeps the citation contract, and routes earnings calls away.
+  for (const skill of first.catalog.added) {
+    const text = await readFile(path.join(first.stagingDir, `skills/${skill}/SKILL.md`), "utf8");
+    if (!skill.endsWith("get-started")) assert.ok(text.includes("`octagon-podcasts-agent`"), `${skill} names the tool`);
+    assert.ok(!/kalshi|polymarket/i.test(text.replace(/Octagon Prediction Markets plugin/g, "")), `${skill} carries no prediction-market content`);
+  }
+});
+
 test("the prediction-markets profile builds a valid, reproducible, prediction-only package", async t => {
   const first = await (await createBuild({ repoRoot: REPO_ROOT, outRoot: await tempDir(t), profile: "prediction-markets" })).pipeline.run();
   const second = await (await createBuild({ repoRoot: REPO_ROOT, outRoot: await tempDir(t), profile: "prediction-markets" })).pipeline.run();

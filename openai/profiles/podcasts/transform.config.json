@@ -1,0 +1,22 @@
+{
+  "extends": "../../transform.config.json",
+  "includeSkills": [],
+  "excludeSkills": [],
+  "forbiddenPatterns": [
+    {
+      "pattern": "\\b(?:you should|we recommend|our view is|investors should)\\b",
+      "flags": "i",
+      "reason": "the plugin reports speakers' views; it holds none"
+    },
+    {
+      "pattern": "\\b(?:buy|sell|short|overweight|underweight) (?:the stock|shares|it now|now)\\b",
+      "flags": "i",
+      "reason": "no instruction language, even when quoting"
+    },
+    {
+      "pattern": "\\b(?:diarized|speaker-labell?ed)\\b",
+      "flags": "i",
+      "reason": "v1 has no speaker labels; copy must not promise them"
+    }
+  ]
+}
