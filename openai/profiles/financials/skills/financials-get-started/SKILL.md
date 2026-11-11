@@ -56,7 +56,7 @@ Offer two or three of these, adapted to what the user mentioned:
 State these plainly when relevant, and name the plugin that does:
 
 - The filing text the numbers come from: the **Octagon SEC Filings** plugin.
-- Stock prices, market cap and price targets: the **Octagon Market Data** plugin.
+- Stock prices, market cap and price targets: the **Octagon Stock Data** plugin.
 - Management's commentary on the numbers: the **Octagon Earnings Calls** plugin.
 - Everything at once, across sources: the **Octagon AI** plugin.
 - It does not give investment advice. When asked what to buy, sell or hold, offer the data and suggest a licensed advisor.

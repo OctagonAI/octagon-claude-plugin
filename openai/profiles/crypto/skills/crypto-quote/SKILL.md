@@ -38,4 +38,4 @@ Return the current price of one or several cryptocurrency pairs, with the timest
 ## When not to use
 
 - Price history or a comparison over a period: `crypto-price-history` or `crypto-compare`.
-- A stock or ETF quote: the Octagon Market Data plugin.
+- A stock or ETF quote: the Octagon Stock Data plugin.

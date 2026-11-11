@@ -1,5 +1,5 @@
 {
-  "name": "octagon-market-data",
+  "name": "octagon-stock-data",
   "version": "1.0.0",
   "description": "Stock market data with sources and timestamps: quotes, price history and performance across periods, index history, sector and industry performance and P/E ratios, market capitalizations, analyst price targets and grades, ETF and fund quotes, and commodity and forex quotes.",
   "author": {
@@ -20,7 +20,7 @@
     "forex"
   ],
   "mcp": {
-    "serverName": "octagon-market-data",
+    "serverName": "octagon-stock-data",
     "url": "https://mcp.octagonai.co/market-data/mcp",
     "tools": [
       "octagon-stock-data-agent"
@@ -46,9 +46,9 @@
     ]
   },
   "interface": {
-    "displayName": "Octagon Market Data",
+    "displayName": "Octagon Stock Data",
     "shortDescription": "Prices, performance, valuation",
-    "longDescription": "Octagon Market Data gives you stock market data with the source behind every figure, directly in the conversation.\n\nUse it to:\n- Get quotes and price history\n- Compare performance across periods\n- Sector and industry P/E and performance\n- Analyst price targets and grades\n\nEvery answer states the data provider and timestamp it came from, so you can verify it.\n\nOctagon Market Data is a research tool. It does not place trades, move money, or provide personalized investment advice. An Octagon account is required; you sign in the first time you connect.",
+    "longDescription": "Octagon Stock Data gives you stock market data with the source behind every figure, directly in the conversation.\n\nUse it to:\n- Get quotes and price history\n- Compare performance across periods\n- Sector and industry P/E and performance\n- Analyst price targets and grades\n\nEvery answer states the data provider and timestamp it came from, so you can verify it.\n\nOctagon Stock Data is a research tool. It does not place trades, move money, or provide personalized investment advice. An Octagon account is required; you sign in the first time you connect.",
     "developerName": "Octagon AI",
     "category": "Finance",
     "capabilities": [
@@ -58,7 +58,7 @@
       "Analyst price targets and grades",
       "Commodity and forex quotes"
     ],
-    "websiteURL": "https://www.octagonai.co/reports/chatgpt-integration/?utm_source=openai_directory&utm_medium=plugin&utm_campaign=market-data",
+    "websiteURL": "https://www.octagonai.co/reports/chatgpt-integration/?utm_source=openai_directory&utm_medium=plugin&utm_campaign=stock-data",
     "supportURL": "https://www.octagonai.co/contact/",
     "privacyPolicyURL": "https://www.octagonai.co/privacy/",
     "termsOfServiceURL": "https://www.octagonai.co/terms-of-service/",
@@ -72,7 +72,7 @@
     "composerIcon": "./assets/icon.png",
     "logo": "./assets/logo.png"
   },
-  "onboardingSkill": "market-data-get-started",
+  "onboardingSkill": "stock-data-get-started",
   "review": {
     "test_cases": {
       "positive": [
@@ -113,7 +113,7 @@
           "prompt": "NVDA is up 40% in three months. Should I take profits now?"
         },
         {
-          "description": "Statement figures belong to Octagon Financials. The market-data tool is not invoked for an income-statement question; the assistant points to that plugin.",
+          "description": "Statement figures belong to Octagon Financials. The stock-data tool is not invoked for an income-statement question; the assistant points to that plugin.",
           "prompt": "What was Apple's revenue last quarter?"
         },
         {

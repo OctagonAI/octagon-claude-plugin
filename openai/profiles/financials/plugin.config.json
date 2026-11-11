@@ -113,7 +113,7 @@
           "prompt": "Apple's margins are expanding. Should I buy the stock?"
         },
         {
-          "description": "Prices belong to Octagon Market Data. The financials tool is not invoked for a quote; the assistant points to that plugin.",
+          "description": "Prices belong to Octagon Stock Data. The financials tool is not invoked for a quote; the assistant points to that plugin.",
           "prompt": "What is AAPL's stock price right now?"
         },
         {

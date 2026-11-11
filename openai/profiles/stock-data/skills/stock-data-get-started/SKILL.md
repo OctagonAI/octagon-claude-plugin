@@ -1,9 +1,9 @@
 ---
-name: market-data-get-started
-description: Introduce Octagon Market Data, explain what it covers and how to connect, and suggest first requests. Use when the user is new to the plugin, asks what it can do with stock market data, or needs help connecting their Octagon account.
+name: stock-data-get-started
+description: Introduce Octagon Stock Data, explain what it covers and how to connect, and suggest first requests. Use when the user is new to the plugin, asks what it can do with stock market data, or needs help connecting their Octagon account.
 ---
 
-# Get Started with Octagon Market Data
+# Get Started with Octagon Stock Data
 
 Built for anyone who needs a market number with its timestamp and source: analysts checking a quote, a performance window, a sector multiple or a consensus target without opening a terminal. Ask for the figure and the period and get it with its date and provider.
 

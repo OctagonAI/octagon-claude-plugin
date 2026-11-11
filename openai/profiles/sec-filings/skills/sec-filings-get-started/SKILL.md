@@ -56,7 +56,7 @@ Offer two or three of these, adapted to what the user mentioned:
 State these plainly when relevant, and name the plugin that does:
 
 - Earnings calls and management commentary: the **Octagon Earnings Calls** plugin.
-- Stock prices, performance and valuation multiples: the **Octagon Market Data** plugin.
+- Stock prices, performance and valuation multiples: the **Octagon Stock Data** plugin.
 - Financial statements, ratios and estimates: the **Octagon Financials** plugin.
 - Everything at once, across sources: the **Octagon AI** plugin.
 - It does not give investment advice. When asked what to buy, sell or hold, offer the data and suggest a licensed advisor.
