@@ -29,7 +29,7 @@ The Prediction Markets Agent provides:
 
 | Variant | Description | Use Case |
 |---------|-------------|----------|
-| `octagon-prediction-markets-agent` | Default. Returns cached report if available, otherwise generates new; answers search and screening questions in prose (1 credit per lookup) | General use |
+| `octagon-prediction-markets-agent` | Default. Returns the cached report if one exists (free), otherwise generates a new one (3 credits); answers search and screening questions in prose (1 credit per search call) | General use |
 | `octagon-prediction-markets-agent:cache` (`cache: true`) | Reads the cached report for a market URL or ticker; for a question that names no market, returns a structured JSON list of matching open markets. Never generates. Free | Fastest response; finding which markets exist |
 | `octagon-prediction-markets-agent:refresh` (`cache: false`) | Always generates fresh report (3 credits, Plus/Pro/Enterprise) | Most up-to-date, takes several minutes |
 
