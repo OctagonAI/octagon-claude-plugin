@@ -29,9 +29,9 @@ The Prediction Markets Agent provides:
 
 | Variant | Description | Use Case |
 |---------|-------------|----------|
-| `octagon-prediction-markets-agent` | Default. Returns cached report if available, otherwise generates new | General use |
-| `octagon-prediction-markets-agent:cache` | Always retrieves cached report | Fastest response, may not be latest |
-| `octagon-prediction-markets-agent:refresh` | Always generates fresh report | Most up-to-date, takes several minutes |
+| `octagon-prediction-markets-agent` | Default. Returns cached report if available, otherwise generates new; answers search and screening questions in prose (1 credit per lookup) | General use |
+| `octagon-prediction-markets-agent:cache` (`cache: true`) | Reads the cached report for a market URL or ticker; for a question that names no market, returns a structured JSON list of matching open markets. Never generates. Free | Fastest response; finding which markets exist |
+| `octagon-prediction-markets-agent:refresh` (`cache: false`) | Always generates fresh report (3 credits, Plus/Pro/Enterprise) | Most up-to-date, takes several minutes |
 
 ## Example Queries
 
@@ -64,6 +64,12 @@ Analyze when SpaceX will IPO: https://kalshi.com/markets/kxipospacex/when-will-s
 ```
 Generate a fresh report (bypass cache) for: https://kalshi.com/markets/kxbtcminy/how-low-will-bitcoin-fall-this-year/kxbtcminy-27jan01
 ```
+
+### Find Open Markets (no URL yet)
+```
+Which Kalshi NBA game-winner markets are open tonight? Cached data only.
+```
+Call `octagon-prediction-markets-agent` with `cache: true`. The reply is a JSON object with `kind: "discovery"` and a `data` list (venue, event and market tickers, prices, whether a cached report exists). Pick a market, then ask for its report by URL or ticker.
 
 ## Example Response Structure
 
@@ -164,14 +170,14 @@ Combine with other Octagon skills for comprehensive analysis:
 
 4. **Consider liquidity**: Check volume and open interest before sizing positions
 
-5. **Use cache wisely**: Use `:cache` for quick checks, `:refresh` before trading
+5. **Use cache wisely**: Use `cache: true` for quick checks and to find which markets exist (free), `cache: false` before trading
 
 6. **Cross-reference sources**: Combine prediction market analysis with fundamental research
 
 ## Supported Platforms
 
-- **Kalshi**: Full support for all active markets
-- **Polymarket**: Coming soon
+- **Kalshi**: Full support for all active markets (market URL or event ticker)
+- **Polymarket**: Event URL or event slug
 
 ## For More Markets
 

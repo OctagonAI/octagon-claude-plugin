@@ -96,7 +96,7 @@ Do not default to API-key setup. Only mention API-key mode as an advanced fallba
 - In this plugin, only use Octagon tools from server `octagon-claude-plugin` unless the user explicitly asks for another Octagon environment.
 - Prefer `octagon-agent` for broad market-intelligence questions that need several sources.
 - Prefer `octagon-deep-research-agent` for open-ended multi-source research or thematic investigations.
-- Prefer `octagon-prediction-markets-agent` when a Kalshi URL is present or the user wants a prediction market report.
+- Prefer `octagon-prediction-markets-agent` when a Kalshi or Polymarket URL or ticker is present or the user wants a prediction market report; also when the user wants to find which prediction markets exist or are open for a topic (pass `cache: true`; the search is free and returns a JSON list of markets to pick from).
 - Prefer `prediction_markets_history` for structured event history retrieval.
 
 When the connector is healthy, the primary Octagon tool surface is:

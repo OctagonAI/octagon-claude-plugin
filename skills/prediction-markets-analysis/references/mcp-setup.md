@@ -143,9 +143,9 @@ When using the prediction markets agent, you can specify caching behavior:
 
 | Variant | Behavior |
 |---------|----------|
-| `octagon-prediction-markets-agent` | Default - cached if available, else generate |
-| `octagon-prediction-markets-agent:cache` | Always use cached report |
-| `octagon-prediction-markets-agent:refresh` | Always generate fresh report |
+| `octagon-prediction-markets-agent` (`cache` omitted) | Default - cached if available, else generate |
+| `octagon-prediction-markets-agent:cache` (`cache: true`) | Cached report for a market URL/ticker; a JSON list of open markets for a question that names no market. Never generates. Free |
+| `octagon-prediction-markets-agent:refresh` (`cache: false`) | Always generate fresh report (3 credits) |
 
 ## Troubleshooting
 
