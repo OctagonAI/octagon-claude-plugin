@@ -97,9 +97,9 @@ Add to `claude_desktop_config.json`:
 
 | Variant | Description |
 |---------|-------------|
-| `octagon-prediction-markets-agent` | Default - uses cache if available |
-| `octagon-prediction-markets-agent:cache` | Always retrieve cached report |
-| `octagon-prediction-markets-agent:refresh` | Always generate fresh report |
+| `octagon-prediction-markets-agent` | Default - uses cache if available, otherwise generates |
+| `octagon-prediction-markets-agent:cache` | Cached report for a market URL/ticker, or a JSON list of open markets for a topic question. Never generates. Free |
+| `octagon-prediction-markets-agent:refresh` | Always generate fresh report (3 credits) |
 
 ### Documentation
 
