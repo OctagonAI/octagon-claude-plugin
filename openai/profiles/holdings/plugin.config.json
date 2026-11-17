@@ -43,6 +43,17 @@
       }
     ]
   },
+  "worldmonitor": {
+    "name": "Octagon 13F Holdings",
+    "icon": "🏦",
+    "description": "13F institutional holdings, holder portfolios, ownership and insider trades",
+    "authHint": "secret key from octagonai.co, free Starter plan",
+    "defaultTool": "octagon-holdings-agent",
+    "defaultArgs": {
+      "prompt": "Latest 13F filings in the past week and their largest new positions."
+    },
+    "defaultTitle": "13F Holdings"
+  },
   "interface": {
     "displayName": "Octagon 13F Holdings",
     "shortDescription": "Who owns what, by quarter",

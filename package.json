@@ -69,7 +69,10 @@
     "check:kimi": "node tools/openai-plugin/cli.mjs sync --target kimi --check && node tools/openai-plugin/cli.mjs sync --target kimi --check --profile prediction-markets && node tools/openai-plugin/cli.mjs catalog --target kimi --check",
     "entry:kimi": "node tools/openai-plugin/cli.mjs entry --target kimi && node tools/openai-plugin/cli.mjs entry --target kimi --profile prediction-markets",
     "about:kimi": "node tools/openai-plugin/cli.mjs about --target kimi && node tools/openai-plugin/cli.mjs about --target kimi --profile prediction-markets",
-    "catalog:kimi": "node tools/openai-plugin/cli.mjs catalog --target kimi"
+    "catalog:kimi": "node tools/openai-plugin/cli.mjs catalog --target kimi",
+    "catalog:worldmonitor": "node tools/openai-plugin/cli.mjs worldmonitor",
+    "check:worldmonitor": "node tools/openai-plugin/cli.mjs worldmonitor --check",
+    "ts:worldmonitor": "node tools/openai-plugin/cli.mjs worldmonitor --ts"
   },
   "keywords": [
     "mcp",

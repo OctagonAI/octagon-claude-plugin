@@ -45,6 +45,17 @@
       }
     ]
   },
+  "worldmonitor": {
+    "name": "Octagon SEC Filings",
+    "icon": "📑",
+    "description": "Cited answers from 10-K, 10-Q, 8-K, proxy and S-1 filings for 8,000+ companies",
+    "authHint": "secret key from octagonai.co, free Starter plan",
+    "defaultTool": "octagon-sec-agent",
+    "defaultArgs": {
+      "prompt": "Material 8-K filings in the last 24 hours, with filer and item."
+    },
+    "defaultTitle": "SEC Filings"
+  },
   "interface": {
     "displayName": "Octagon SEC Filings",
     "shortDescription": "Read the filing, cited",

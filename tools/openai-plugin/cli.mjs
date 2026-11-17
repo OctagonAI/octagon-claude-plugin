@@ -11,6 +11,11 @@ import { GeminiManifestBuilder } from "./lib/manifest/GeminiManifestBuilder.mjs"
 import { GROK_PLUGINS_DIR, GrokManifestBuilder } from "./lib/manifest/GrokManifestBuilder.mjs";
 import { KIMI_CATALOG_PATH, KIMI_CATALOG_VERSION, KimiManifestBuilder } from "./lib/manifest/KimiManifestBuilder.mjs";
 import { CatalogSync } from "./lib/output/CatalogSync.mjs";
+import {
+  WORLDMONITOR_MANIFEST_ROW_PATH,
+  WORLDMONITOR_PRESETS_PATH,
+  WorldMonitorCatalogBuilder,
+} from "./lib/manifest/WorldMonitorCatalogBuilder.mjs";
 import { PluginConfig } from "./lib/config/PluginConfig.mjs";
 import { Profile } from "./lib/config/Profile.mjs";
 import { layout } from "./lib/createBuild.mjs";
@@ -19,7 +24,7 @@ import { PackageView } from "./lib/validation/PackageView.mjs";
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const REPO_URL = `${SOURCE_REPOSITORY}.git`;
-const COMMANDS = ["build", "validate", "sync", "entry", "about", "catalog"];
+const COMMANDS = ["build", "validate", "sync", "entry", "about", "catalog", "worldmonitor"];
 
 const USAGE = `Usage: node tools/openai-plugin/cli.mjs <command> [options]
 
@@ -32,6 +37,10 @@ Commands:
              Kimi: print the catalog entry (release asset URL, display text, availability)
   about      Gemini, Kimi: print the mirror repository's About settings (description, homepage, topics)
   catalog    Kimi only: write kimi/marketplace.json from every profile with a kimi block; --check reports drift
+  worldmonitor
+             Write worldmonitor/presets.generated.json and the source-attribution row from every
+             profile with a worldmonitor block; --check reports drift; --ts prints the MCP_PRESETS
+             TypeScript to paste into koala73/worldmonitor
 
 Options:
   --target NAME   Package format: openai (default), grok, gemini, or kimi
@@ -40,6 +49,7 @@ Options:
   --online        Also check that every public URL answers 2xx
   --out DIR       Output directory (default: out/)
   --check         With sync: exit non-zero if the committed directory differs from the build
+  --ts            With worldmonitor: print the presets as TypeScript object literals
   --help          Show this message`;
 
 /** @param {import("./lib/validation/Validator.mjs").ValidationReport} validation */
@@ -62,6 +72,7 @@ async function main() {
     options: {
       online: { type: "boolean", default: false },
       check: { type: "boolean", default: false },
+      ts: { type: "boolean", default: false },
       out: { type: "string" },
       profile: { type: "string" },
       target: { type: "string", default: "openai" },
@@ -82,7 +93,7 @@ async function main() {
 }
 
 /**
- * @param {{ online: boolean, check: boolean, out?: string, profile?: string, target: string, help: boolean }} values
+ * @param {{ online: boolean, check: boolean, ts: boolean, out?: string, profile?: string, target: string, help: boolean }} values
  * @param {string[]} positionals
  * @returns {Promise<number>}
  */
@@ -97,6 +108,8 @@ async function runOne(values, positionals) {
     return 2;
   }
   const target = /** @type {import("./lib/target/Target.mjs").TargetId} */ (values.target);
+
+  if (command === "worldmonitor") return worldMonitorCatalog(values);
 
   const outRoot = values.out ? path.resolve(values.out) : undefined;
   const build = await createBuild({ repoRoot: REPO_ROOT, outRoot, online: values.online, profile: values.profile, target });
@@ -219,6 +232,63 @@ async function kimiCatalog(check) {
   await sync.write(catalog);
   console.log(`Wrote ${entries.length} entries to ${KIMI_CATALOG_PATH}`);
   return 0;
+}
+
+/**
+ * Assembles the World Monitor Quick Connect presets from every profile that
+ * declares a `worldmonitor` block, in profile order, plus the one attribution
+ * row their shared host needs; writes or checks both files under
+ * `worldmonitor/`, or prints the TypeScript to paste into their catalog.
+ *
+ * @param {{ check: boolean, ts: boolean }} values
+ * @returns {Promise<number>}
+ */
+async function worldMonitorCatalog({ check, ts }) {
+  const paths = layout(REPO_ROOT);
+  /** @type {import("./lib/manifest/WorldMonitorCatalogBuilder.mjs").WorldMonitorPreset[]} */
+  const presets = [];
+  /** @type {import("./lib/config/PluginConfig.mjs").PluginConfig | undefined} */
+  let first;
+  for (const profile of Profile.all(paths.openaiRoot)) {
+    const config = await PluginConfig.load(profile.pluginConfig);
+    if (!config.data.worldmonitor) continue;
+    first ??= config;
+    presets.push(new WorldMonitorCatalogBuilder(config).preset());
+  }
+  if (!first) {
+    console.error("No profile declares a worldmonitor block; nothing to generate.");
+    return 1;
+  }
+  if (ts) {
+    console.log(presets.map(WorldMonitorCatalogBuilder.renderTypeScript).join("\n"));
+    return 0;
+  }
+  const row = WorldMonitorCatalogBuilder.attributionRow({
+    termsUrl: String(first.data.interface.termsOfServiceURL),
+    homepage: first.data.homepage ?? String(first.data.interface.websiteURL),
+  });
+  const files = [
+    { path: WORLDMONITOR_PRESETS_PATH, content: { presets }, fix: "npm run catalog:worldmonitor" },
+    { path: WORLDMONITOR_MANIFEST_ROW_PATH, content: row, fix: "npm run catalog:worldmonitor" },
+  ];
+  let worst = 0;
+  for (const file of files) {
+    const sync = new CatalogSync({ repoRoot: REPO_ROOT, relativePath: file.path });
+    if (check) {
+      const drift = await sync.check(file.content);
+      if (drift) {
+        console.error(`${file.path} is ${drift}; run: ${file.fix}`);
+        worst = 1;
+      } else {
+        console.log(`${file.path} matches the profiles`);
+      }
+      continue;
+    }
+    await sync.write(file.content);
+    console.log(`Wrote ${file.path}`);
+  }
+  if (!check) console.log(`${presets.length} preset(s) from ${presets.length} profile(s)`);
+  return worst;
 }
 
 /**

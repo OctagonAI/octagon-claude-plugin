@@ -43,6 +43,17 @@
       }
     ]
   },
+  "worldmonitor": {
+    "name": "Octagon Crypto",
+    "icon": "🪙",
+    "description": "Crypto quotes, price history, comparisons and news with timestamps and sources",
+    "authHint": "secret key from octagonai.co, free Starter plan",
+    "defaultTool": "octagon-crypto-agent",
+    "defaultArgs": {
+      "prompt": "BTC, ETH and SOL price and 24h change."
+    },
+    "defaultTitle": "Crypto"
+  },
   "interface": {
     "displayName": "Octagon Crypto",
     "shortDescription": "Crypto quotes and history",

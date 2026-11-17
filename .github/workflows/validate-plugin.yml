@@ -38,6 +38,9 @@ jobs:
       - name: Check that the committed Kimi plugins and catalog match the build
         run: npm run check:kimi
 
+      - name: Check that the committed World Monitor presets match the profiles
+        run: npm run check:worldmonitor
+
       - name: Validate Claude plugin manifest when Claude CLI is available
         run: |
           if command -v claude >/dev/null 2>&1; then

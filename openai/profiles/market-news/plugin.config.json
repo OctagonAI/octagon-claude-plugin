@@ -43,6 +43,17 @@
       }
     ]
   },
+  "worldmonitor": {
+    "name": "Octagon Market News",
+    "icon": "🗞️",
+    "description": "Ticker news, press releases and crypto and forex headlines in a time window",
+    "authHint": "secret key from octagonai.co, free Starter plan",
+    "defaultTool": "octagon-news-agent",
+    "defaultArgs": {
+      "prompt": "Press releases and news in the last 6 hours for NVDA, AAPL and MSFT."
+    },
+    "defaultTitle": "Market News"
+  },
   "interface": {
     "displayName": "Octagon Market News",
     "shortDescription": "Headlines, press releases",

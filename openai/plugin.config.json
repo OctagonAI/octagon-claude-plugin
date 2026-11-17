@@ -93,6 +93,22 @@
       "For questions about Kalshi or Polymarket prediction markets, suggest the `octagon-prediction-markets` plugin instead of answering from memory."
     ]
   },
+  "worldmonitor": {
+    "name": "Octagon AI",
+    "icon": "🔭",
+    "description": "Cited investment research across SEC filings, earnings calls, financials, market data and news",
+    "authHint": "secret key from octagonai.co, free Starter plan",
+    "serverUrl": "https://mcp.octagonai.co/public-markets/mcp",
+    "tools": [
+      "octagon-agent",
+      "octagon-deep-research-agent"
+    ],
+    "defaultTool": "octagon-agent",
+    "defaultArgs": {
+      "prompt": "Top three market-moving company headlines today, each with source and time."
+    },
+    "defaultTitle": "Octagon Research"
+  },
   "interface": {
     "displayName": "Octagon AI",
     "shortDescription": "Cited stock & market research",

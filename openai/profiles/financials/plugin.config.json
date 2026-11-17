@@ -45,6 +45,17 @@
       }
     ]
   },
+  "worldmonitor": {
+    "name": "Octagon Financials",
+    "icon": "🧮",
+    "description": "Financial statements, ratios, growth, analyst estimates and ratings with sources",
+    "authHint": "secret key from octagonai.co, free Starter plan",
+    "defaultTool": "octagon-financials-agent",
+    "defaultArgs": {
+      "prompt": "Companies reporting this week: consensus revenue and EPS estimates."
+    },
+    "defaultTitle": "Financials"
+  },
   "interface": {
     "displayName": "Octagon Financials",
     "shortDescription": "Statements, growth, ratios",

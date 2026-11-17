@@ -45,6 +45,17 @@
       }
     ]
   },
+  "worldmonitor": {
+    "name": "Octagon Stock Data",
+    "icon": "📈",
+    "description": "Quotes, performance, sector and industry P/E, price targets, market caps, commodities and forex",
+    "authHint": "secret key from octagonai.co, free Starter plan",
+    "defaultTool": "octagon-stock-data-agent",
+    "defaultArgs": {
+      "prompt": "S&P 500 sector performance today."
+    },
+    "defaultTitle": "Stock Data"
+  },
   "interface": {
     "displayName": "Octagon Stock Data",
     "shortDescription": "Prices, performance, valuation",
