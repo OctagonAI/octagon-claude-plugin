@@ -79,6 +79,8 @@ async function main() {
       help: { type: "boolean", default: false },
     },
   });
+  // The World Monitor catalog spans every profile by construction; expanding --profile all around it would emit it once per profile.
+  if (positionals[0] === "worldmonitor" && !values.help) return worldMonitorCatalog(values);
   if (values.profile === "all" && !values.help) {
     // Every profile in turn; the worst exit code wins, and output stays in profile order.
     let worst = 0;

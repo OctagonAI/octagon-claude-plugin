@@ -98,7 +98,7 @@ test("preset: a description longer than the catalog card is refused at build tim
 test("renderTypeScript: the object literal matches World Monitor's file style", async t => {
   const config = await loadConfig(t, configData());
   const preset = new WorldMonitorCatalogBuilder(config).preset();
-  preset.defaultArgs = { prompt: "Fed's decision", cache: true };
+  preset.defaultArgs = { prompt: "Fed's decision\nSecond line", cache: true, "as-of": "2026-11-17" };
   const ts = WorldMonitorCatalogBuilder.renderTypeScript(preset);
   assert.equal(ts, [
     "  {",
@@ -109,7 +109,7 @@ test("renderTypeScript: the object literal matches World Monitor's file style", 
     "    authNote: 'Requires Authorization: Bearer <OCTAGON_API_KEY> (secret key from octagonai.co)',",
     "    apiKeyHeader: 'Authorization: Bearer {key}',",
     "    defaultTool: 'octagon-example-agent',",
-    "    defaultArgs: { prompt: 'Fed\\'s decision', cache: true },",
+    "    defaultArgs: { prompt: 'Fed\\'s decision\\nSecond line', cache: true, 'as-of': '2026-11-17' },",
     "    defaultTitle: 'Example',",
     "  },",
   ].join("\n"));

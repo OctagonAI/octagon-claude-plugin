@@ -103,9 +103,11 @@ export class WorldMonitorCatalogBuilder {
    * @returns {string}
    */
   static renderTypeScript(preset) {
-    const quote = (/** @type {string} */ s) => `'${s.replace(/\\/g, "\\\\").replace(/'/g, "\\'")}'`;
+    const quote = (/** @type {string} */ s) =>
+      `'${s.replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/\n/g, "\\n").replace(/\r/g, "\\r")}'`;
+    const propertyName = (/** @type {string} */ key) => (/^[A-Za-z_$][\w$]*$/.test(key) ? key : quote(key));
     const args = Object.entries(preset.defaultArgs)
-      .map(([key, value]) => `${key}: ${typeof value === "string" ? quote(value) : JSON.stringify(value)}`)
+      .map(([key, value]) => `${propertyName(key)}: ${typeof value === "string" ? quote(value) : JSON.stringify(value)}`)
       .join(", ");
     return [
       "  {",
