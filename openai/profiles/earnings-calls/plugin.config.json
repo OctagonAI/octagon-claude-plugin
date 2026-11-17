@@ -43,6 +43,17 @@
       }
     ]
   },
+  "worldmonitor": {
+    "name": "Octagon Earnings Calls",
+    "icon": "📞",
+    "description": "Guidance, Q&A and sentiment from earnings call transcripts, cited to the call",
+    "authHint": "secret key from octagonai.co, free Starter plan",
+    "defaultTool": "octagon-transcripts-agent",
+    "defaultArgs": {
+      "prompt": "Key guidance changes from NVIDIA's most recent earnings call, with short quotes and the call date."
+    },
+    "defaultTitle": "Earnings Calls"
+  },
   "interface": {
     "displayName": "Octagon Earnings Calls",
     "shortDescription": "Guidance, Q&A, sentiment",

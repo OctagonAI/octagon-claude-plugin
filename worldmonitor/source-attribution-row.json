@@ -1,0 +1,14 @@
+{
+  "host": "mcp.octagonai.co",
+  "provider": "Octagon AI",
+  "kind": "structured",
+  "observed": true,
+  "license": "Octagon Terms of Service (https://www.octagonai.co/terms-of-service/); per-request agent output under the user's own API key, not redistributed by World Monitor",
+  "attribution": "Credit Octagon AI and link to https://www.octagonai.co/. Answers carry their own upstream citations (SEC filings, transcripts, market data providers).",
+  "status": "terms-review",
+  "references": [
+    {
+      "path": "src/services/mcp-store.ts"
+    }
+  ]
+}

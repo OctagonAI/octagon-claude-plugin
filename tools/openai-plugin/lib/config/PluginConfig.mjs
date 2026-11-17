@@ -11,6 +11,11 @@ export const ASSET_PREFIX = "./assets/";
  * @param {string} value
  * @returns {boolean} True when `new URL(value)` accepts it; builders call that later.
  */
+/** Counts user-perceived characters, so an emoji with a variation selector or skin tone is one. */
+function graphemes(/** @type {string} */ value) {
+  return [...new Intl.Segmenter(undefined, { granularity: "grapheme" }).segment(value)].length;
+}
+
 function parses(value) {
   try {
     new URL(value);
@@ -42,7 +47,23 @@ const LISTING_FIELDS = Object.freeze(["oauthUrl", "readmeIntro", "scopeNote", "s
  *   grok?: Partial<ListingConfigData> & GrokCatalogData,
  *   gemini?: GeminiConfigData,
  *   kimi?: KimiConfigData,
+ *   worldmonitor?: WorldMonitorConfigData,
  * }} PluginConfigData
+ *
+ * @typedef {{
+ *   name: string,
+ *   icon: string,
+ *   description: string,
+ *   authHint: string,
+ *   defaultTool: string,
+ *   defaultArgs: Record<string, unknown>,
+ *   defaultTitle: string,
+ *   serverUrl?: string,
+ *   tools?: string[],
+ * }} WorldMonitorConfigData The World Monitor Quick Connect preset: catalog
+ *   card copy, the tool and arguments a new dashboard panel calls, and an
+ *   optional endpoint override (with the tools it serves) when the panel must
+ *   not reach everything the plugin's own endpoint exposes.
  *
  * @typedef {{
  *   oauthUrl: string,
@@ -168,7 +189,37 @@ export class PluginConfig {
     if (raw.grok !== undefined) PluginConfig.#checkGrok(raw.grok, raw.listing, check);
     if (raw.gemini !== undefined) PluginConfig.#checkGemini(raw.gemini, raw.mcp, check);
     if (raw.kimi !== undefined) PluginConfig.#checkKimi(raw.kimi, raw.mcp, check);
+    if (raw.worldmonitor !== undefined) PluginConfig.#checkWorldMonitor(raw.worldmonitor, raw.mcp, check);
     check.throwIfAny(source);
+  }
+
+  /**
+   * @param {unknown} block
+   * @param {unknown} mcp
+   * @param {Checker} check
+   */
+  static #checkWorldMonitor(block, mcp, check) {
+    if (!check.object(block, "worldmonitor")) return;
+    for (const key of ["name", "icon", "description", "authHint", "defaultTool", "defaultTitle"]) {
+      check.string(block[key], `worldmonitor.${key}`);
+    }
+    if (typeof block.icon === "string" && graphemes(block.icon) !== 1) check.fail("worldmonitor.icon must be a single emoji");
+    if (!check.object(block.defaultArgs, "worldmonitor.defaultArgs")) return;
+    if (Object.keys(block.defaultArgs).length === 0) check.fail("worldmonitor.defaultArgs must name at least one argument");
+    if (block.serverUrl !== undefined) {
+      if (check.string(block.serverUrl, "worldmonitor.serverUrl")) {
+        if (!block.serverUrl.startsWith("https://")) check.fail("worldmonitor.serverUrl must be an https:// URL");
+        else if (!parses(block.serverUrl)) check.fail("worldmonitor.serverUrl must be a valid URL");
+      }
+      if (block.tools === undefined) check.fail("worldmonitor.tools must list the tools the overriding serverUrl serves");
+      else check.stringArray(block.tools, "worldmonitor.tools");
+    } else if (block.tools !== undefined) {
+      check.fail("worldmonitor.tools is only meaningful with worldmonitor.serverUrl");
+    }
+    const served = block.serverUrl !== undefined ? block.tools : /** @type {any} */ (mcp)?.tools;
+    if (Array.isArray(served) && typeof block.defaultTool === "string" && !served.includes(block.defaultTool)) {
+      check.fail(`worldmonitor.defaultTool "${block.defaultTool}" is not among the tools the preset's endpoint serves`);
+    }
   }
 
   /**
@@ -337,6 +388,17 @@ export class PluginConfig {
       throw new ConfigError(`plugin "${this.data.name}"`, ['a "kimi" block is required to build the Kimi target']);
     }
     return this.data.kimi;
+  }
+
+  /**
+   * @returns {Readonly<WorldMonitorConfigData>}
+   * @throws {ConfigError} when the config has no `worldmonitor` block.
+   */
+  worldmonitor() {
+    if (!this.data.worldmonitor) {
+      throw new ConfigError(`plugin "${this.data.name}"`, ['a "worldmonitor" block is required to build the World Monitor preset']);
+    }
+    return this.data.worldmonitor;
   }
 
   /** @returns {string[]} Asset paths (relative to `openai/`) referenced by the listing. */

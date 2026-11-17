@@ -43,6 +43,17 @@
       }
     ]
   },
+  "worldmonitor": {
+    "name": "Octagon Podcasts",
+    "icon": "🎙️",
+    "description": "What investors and strategists said on finance podcasts, cited to the episode",
+    "authHint": "secret key from octagonai.co, free Starter plan",
+    "defaultTool": "octagon-podcasts-agent",
+    "defaultArgs": {
+      "prompt": "Which companies were discussed most on finance podcasts this week?"
+    },
+    "defaultTitle": "Podcast Signals"
+  },
   "interface": {
     "displayName": "Octagon Podcasts",
     "shortDescription": "What market voices are saying",

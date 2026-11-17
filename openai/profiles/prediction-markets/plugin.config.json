@@ -85,6 +85,18 @@
       "For questions about public companies, SEC filings, or earnings calls, suggest the `octagon-ai` plugin instead of answering from memory."
     ]
   },
+  "worldmonitor": {
+    "name": "Octagon Prediction Markets",
+    "icon": "🎯",
+    "description": "Kalshi and Polymarket odds with model probabilities, evidence grades and price history",
+    "authHint": "secret key from octagonai.co, free Starter plan",
+    "defaultTool": "octagon-prediction-markets-agent",
+    "defaultArgs": {
+      "prompt": "Fed decision markets: current probabilities",
+      "cache": true
+    },
+    "defaultTitle": "Prediction Markets"
+  },
   "interface": {
     "displayName": "Octagon Prediction Markets",
     "shortDescription": "Odds, drivers & mispricings",

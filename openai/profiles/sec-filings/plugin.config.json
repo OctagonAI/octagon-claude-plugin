@@ -45,6 +45,17 @@
       }
     ]
   },
+  "worldmonitor": {
+    "name": "Octagon SEC Filings",
+    "icon": "📑",
+    "description": "Cited answers from 10-K, 10-Q, 8-K, proxy and S-1 filings for 8,000+ companies",
+    "authHint": "secret key from octagonai.co, free Starter plan",
+    "defaultTool": "octagon-sec-agent",
+    "defaultArgs": {
+      "prompt": "Summarize NVIDIA's most recent 8-K: filing date, items reported, and what it disclosed, with a link to the filing."
+    },
+    "defaultTitle": "SEC Filings"
+  },
   "interface": {
     "displayName": "Octagon SEC Filings",
     "shortDescription": "Read the filing, cited",

@@ -1,0 +1,135 @@
+{
+  "presets": [
+    {
+      "name": "Octagon AI",
+      "icon": "🔭",
+      "description": "Cited investment research across SEC filings, earnings calls, financials, market data and news",
+      "serverUrl": "https://mcp.octagonai.co/public-markets/mcp",
+      "authNote": "Requires Authorization: Bearer <OCTAGON_API_KEY> (secret key from octagonai.co, free Starter plan)",
+      "apiKeyHeader": "Authorization: Bearer {key}",
+      "defaultTool": "octagon-agent",
+      "defaultArgs": {
+        "prompt": "Top three market-moving company headlines today, each with source and time."
+      },
+      "defaultTitle": "Octagon Research"
+    },
+    {
+      "name": "Octagon Crypto",
+      "icon": "🪙",
+      "description": "Crypto quotes, price history, comparisons and news with timestamps and sources",
+      "serverUrl": "https://mcp.octagonai.co/crypto/mcp",
+      "authNote": "Requires Authorization: Bearer <OCTAGON_API_KEY> (secret key from octagonai.co, free Starter plan)",
+      "apiKeyHeader": "Authorization: Bearer {key}",
+      "defaultTool": "octagon-crypto-agent",
+      "defaultArgs": {
+        "prompt": "Retrieve the real-time quote for BTCUSD."
+      },
+      "defaultTitle": "Bitcoin"
+    },
+    {
+      "name": "Octagon Earnings Calls",
+      "icon": "📞",
+      "description": "Guidance, Q&A and sentiment from earnings call transcripts, cited to the call",
+      "serverUrl": "https://mcp.octagonai.co/earnings-calls/mcp",
+      "authNote": "Requires Authorization: Bearer <OCTAGON_API_KEY> (secret key from octagonai.co, free Starter plan)",
+      "apiKeyHeader": "Authorization: Bearer {key}",
+      "defaultTool": "octagon-transcripts-agent",
+      "defaultArgs": {
+        "prompt": "Key guidance changes from NVIDIA's most recent earnings call, with short quotes and the call date."
+      },
+      "defaultTitle": "Earnings Calls"
+    },
+    {
+      "name": "Octagon Financials",
+      "icon": "🧮",
+      "description": "Financial statements, ratios, growth, analyst estimates and ratings with sources",
+      "serverUrl": "https://mcp.octagonai.co/financials/mcp",
+      "authNote": "Requires Authorization: Bearer <OCTAGON_API_KEY> (secret key from octagonai.co, free Starter plan)",
+      "apiKeyHeader": "Authorization: Bearer {key}",
+      "defaultTool": "octagon-financials-agent",
+      "defaultArgs": {
+        "prompt": "Consensus revenue and EPS estimates for AAPL, MSFT and NVDA for the current quarter, with the as-of date and source."
+      },
+      "defaultTitle": "Financials"
+    },
+    {
+      "name": "Octagon 13F Holdings",
+      "icon": "🏦",
+      "description": "13F institutional holdings, holder portfolios, ownership and insider trades",
+      "serverUrl": "https://mcp.octagonai.co/holdings/mcp",
+      "authNote": "Requires Authorization: Bearer <OCTAGON_API_KEY> (secret key from octagonai.co, free Starter plan)",
+      "apiKeyHeader": "Authorization: Bearer {key}",
+      "defaultTool": "octagon-holdings-agent",
+      "defaultArgs": {
+        "prompt": "List the five most recent 13F filings, with filer, filing date and link."
+      },
+      "defaultTitle": "13F Holdings"
+    },
+    {
+      "name": "Octagon Market News",
+      "icon": "🗞️",
+      "description": "Ticker news, press releases and crypto and forex headlines in a time window",
+      "serverUrl": "https://mcp.octagonai.co/news/mcp",
+      "authNote": "Requires Authorization: Bearer <OCTAGON_API_KEY> (secret key from octagonai.co, free Starter plan)",
+      "apiKeyHeader": "Authorization: Bearer {key}",
+      "defaultTool": "octagon-news-agent",
+      "defaultArgs": {
+        "prompt": "Press releases and news in the last 6 hours for NVDA, AAPL and MSFT."
+      },
+      "defaultTitle": "Market News"
+    },
+    {
+      "name": "Octagon Podcasts",
+      "icon": "🎙️",
+      "description": "What investors and strategists said on finance podcasts, cited to the episode",
+      "serverUrl": "https://mcp.octagonai.co/podcasts/mcp",
+      "authNote": "Requires Authorization: Bearer <OCTAGON_API_KEY> (secret key from octagonai.co, free Starter plan)",
+      "apiKeyHeader": "Authorization: Bearer {key}",
+      "defaultTool": "octagon-podcasts-agent",
+      "defaultArgs": {
+        "prompt": "Which companies were discussed most on finance podcasts this week?"
+      },
+      "defaultTitle": "Podcast Signals"
+    },
+    {
+      "name": "Octagon Prediction Markets",
+      "icon": "🎯",
+      "description": "Kalshi and Polymarket odds with model probabilities, evidence grades and price history",
+      "serverUrl": "https://mcp.octagonai.co/prediction-markets/mcp",
+      "authNote": "Requires Authorization: Bearer <OCTAGON_API_KEY> (secret key from octagonai.co, free Starter plan)",
+      "apiKeyHeader": "Authorization: Bearer {key}",
+      "defaultTool": "octagon-prediction-markets-agent",
+      "defaultArgs": {
+        "prompt": "Fed decision markets: current probabilities",
+        "cache": true
+      },
+      "defaultTitle": "Prediction Markets"
+    },
+    {
+      "name": "Octagon SEC Filings",
+      "icon": "📑",
+      "description": "Cited answers from 10-K, 10-Q, 8-K, proxy and S-1 filings for 8,000+ companies",
+      "serverUrl": "https://mcp.octagonai.co/sec/mcp",
+      "authNote": "Requires Authorization: Bearer <OCTAGON_API_KEY> (secret key from octagonai.co, free Starter plan)",
+      "apiKeyHeader": "Authorization: Bearer {key}",
+      "defaultTool": "octagon-sec-agent",
+      "defaultArgs": {
+        "prompt": "Summarize NVIDIA's most recent 8-K: filing date, items reported, and what it disclosed, with a link to the filing."
+      },
+      "defaultTitle": "SEC Filings"
+    },
+    {
+      "name": "Octagon Stock Data",
+      "icon": "📈",
+      "description": "Quotes, performance, sector and industry P/E, price targets, market caps, commodities and forex",
+      "serverUrl": "https://mcp.octagonai.co/market-data/mcp",
+      "authNote": "Requires Authorization: Bearer <OCTAGON_API_KEY> (secret key from octagonai.co, free Starter plan)",
+      "apiKeyHeader": "Authorization: Bearer {key}",
+      "defaultTool": "octagon-stock-data-agent",
+      "defaultArgs": {
+        "prompt": "Today's S&P 500 sector performance as a table of sector and percent change, with the data date and source."
+      },
+      "defaultTitle": "Stock Data"
+    }
+  ]
+}
