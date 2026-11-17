@@ -61,7 +61,7 @@
       "apiKeyHeader": "Authorization: Bearer {key}",
       "defaultTool": "octagon-holdings-agent",
       "defaultArgs": {
-        "prompt": "Latest 13F filings in the past week and their largest new positions."
+        "prompt": "List the five most recent 13F filings, with filer, filing date and link."
       },
       "defaultTitle": "13F Holdings"
     },
