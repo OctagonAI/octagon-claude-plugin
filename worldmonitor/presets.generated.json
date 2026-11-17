@@ -22,9 +22,9 @@
       "apiKeyHeader": "Authorization: Bearer {key}",
       "defaultTool": "octagon-crypto-agent",
       "defaultArgs": {
-        "prompt": "BTC, ETH and SOL price and 24h change."
+        "prompt": "Retrieve the real-time quote for BTCUSD."
       },
-      "defaultTitle": "Crypto"
+      "defaultTitle": "Bitcoin"
     },
     {
       "name": "Octagon Earnings Calls",
@@ -35,7 +35,7 @@
       "apiKeyHeader": "Authorization: Bearer {key}",
       "defaultTool": "octagon-transcripts-agent",
       "defaultArgs": {
-        "prompt": "Guidance changes from earnings calls held yesterday."
+        "prompt": "Key guidance changes from NVIDIA's most recent earnings call, with short quotes and the call date."
       },
       "defaultTitle": "Earnings Calls"
     },
@@ -48,7 +48,7 @@
       "apiKeyHeader": "Authorization: Bearer {key}",
       "defaultTool": "octagon-financials-agent",
       "defaultArgs": {
-        "prompt": "Companies reporting this week: consensus revenue and EPS estimates."
+        "prompt": "Consensus revenue and EPS estimates for AAPL, MSFT and NVDA for the current quarter, with the as-of date and source."
       },
       "defaultTitle": "Financials"
     },
@@ -114,7 +114,7 @@
       "apiKeyHeader": "Authorization: Bearer {key}",
       "defaultTool": "octagon-sec-agent",
       "defaultArgs": {
-        "prompt": "Material 8-K filings in the last 24 hours, with filer and item."
+        "prompt": "Summarize NVIDIA's most recent 8-K: filing date, items reported, and what it disclosed, with a link to the filing."
       },
       "defaultTitle": "SEC Filings"
     },
@@ -127,7 +127,7 @@
       "apiKeyHeader": "Authorization: Bearer {key}",
       "defaultTool": "octagon-stock-data-agent",
       "defaultArgs": {
-        "prompt": "S&P 500 sector performance today."
+        "prompt": "Today's S&P 500 sector performance as a table of sector and percent change, with the data date and source."
       },
       "defaultTitle": "Stock Data"
     }

@@ -50,7 +50,7 @@
     "authHint": "secret key from octagonai.co, free Starter plan",
     "defaultTool": "octagon-transcripts-agent",
     "defaultArgs": {
-      "prompt": "Guidance changes from earnings calls held yesterday."
+      "prompt": "Key guidance changes from NVIDIA's most recent earnings call, with short quotes and the call date."
     },
     "defaultTitle": "Earnings Calls"
   },

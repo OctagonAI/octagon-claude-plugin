@@ -52,7 +52,7 @@
     "authHint": "secret key from octagonai.co, free Starter plan",
     "defaultTool": "octagon-sec-agent",
     "defaultArgs": {
-      "prompt": "Material 8-K filings in the last 24 hours, with filer and item."
+      "prompt": "Summarize NVIDIA's most recent 8-K: filing date, items reported, and what it disclosed, with a link to the filing."
     },
     "defaultTitle": "SEC Filings"
   },

@@ -52,7 +52,7 @@
     "authHint": "secret key from octagonai.co, free Starter plan",
     "defaultTool": "octagon-stock-data-agent",
     "defaultArgs": {
-      "prompt": "S&P 500 sector performance today."
+      "prompt": "Today's S&P 500 sector performance as a table of sector and percent change, with the data date and source."
     },
     "defaultTitle": "Stock Data"
   },

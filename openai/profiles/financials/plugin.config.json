@@ -52,7 +52,7 @@
     "authHint": "secret key from octagonai.co, free Starter plan",
     "defaultTool": "octagon-financials-agent",
     "defaultArgs": {
-      "prompt": "Companies reporting this week: consensus revenue and EPS estimates."
+      "prompt": "Consensus revenue and EPS estimates for AAPL, MSFT and NVDA for the current quarter, with the as-of date and source."
     },
     "defaultTitle": "Financials"
   },

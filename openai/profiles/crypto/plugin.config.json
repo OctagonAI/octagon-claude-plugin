@@ -50,9 +50,9 @@
     "authHint": "secret key from octagonai.co, free Starter plan",
     "defaultTool": "octagon-crypto-agent",
     "defaultArgs": {
-      "prompt": "BTC, ETH and SOL price and 24h change."
+      "prompt": "Retrieve the real-time quote for BTCUSD."
     },
-    "defaultTitle": "Crypto"
+    "defaultTitle": "Bitcoin"
   },
   "interface": {
     "displayName": "Octagon Crypto",
