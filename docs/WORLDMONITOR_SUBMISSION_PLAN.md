@@ -136,7 +136,7 @@ Row shape, from the Alpha Vantage precedent:
 
 | # | Repo | Change | Done when |
 |---|---|---|---|
-| O1 | octagon-remote-mcp | Bearer API-key fallback in `oauthMiddleware` (section 1.1), shared validator, tests, `X-Octagon-Key` optional | `curl -H 'Authorization: Bearer sk_…' https://mcp.octagonai.co/sec/mcp` → `tools/list` returns `octagon-sec-agent`; CI green; deployed |
+| O1 | octagon-remote-mcp | Bearer API-key fallback in `oauthMiddleware` (section 1.1), shared validator, tests, `X-Octagon-Key` optional | A `POST https://mcp.octagonai.co/sec/mcp` with `Authorization: Bearer sk_…`, an `initialize` then `tools/list` JSON-RPC body (what `scripts/probe-worldmonitor.mjs` sends) returns `octagon-sec-agent`; tests green; deployed |
 | O2 | octagon-remote-mcp | Fix the stale "74 finance and business podcasts" count in the podcasts preset `instructions` (PR #28 removed it from the tool description only) | Live `initialize` on `/podcasts/mcp` carries no hard-coded show count |
 | O3 | octagonai.co | Page `/docs/world-monitor/` (or a section on the integrations page): what the presets do, credits per refresh, create a dedicated key, revoke, link to World Monitor's MCP panel docs | Public URL usable in `authNote` and in the WM PR |
 | O4 | octagonai.co | One-paragraph redistribution statement for the ledger (section 3) | Linked from the manifest `license` field |
